@@ -1,16 +1,34 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
 
+
 class NewUser extends Component{
+	contextTypes: {
+		router: React.PropTypes.object
+	}
+
+	//create the component
+	constructor(){
+		super();
+		this.state = {user:[]}
+	}
 
 	submit(e){
 		e.preventDefault();
-		var email = this.refs.email.value();
-		var password = this.refs.password.value();
+		var userEmail = this.refs.email.value;
+		var password = this.refs.password.value;
+		var that = this;
 
-		firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
- 			 var errorCode = error.code;
- 			 var errorMessage = error.message;
+
+		firebase.auth().createUserWithEmailAndPassword(userEmail, password).catch(function(error) {
+			var userListRef = firebase.database().ref('users');
+			var newUser = userListRef.push();
+			
+			newUser.set({
+				email: userEmail
+			});
+			
+			that.context.router.push('/');
 		});
 	}
 
@@ -19,24 +37,24 @@ class NewUser extends Component{
 			<div>
 				<h3>Create A New Account</h3>
 				<form onSubmit={this.submit.bind(this) }>
-				<table>
-					<tbody>
-					<tr>
-						<td>Email</td>
-						<td><input type="text" ref="email" placeholder="Your email address"/></td>
-					</tr>
-					<tr>
-						<td>Password</td>
-						<td><input type="password" ref="password"/></td>
-					</tr>
-					<tr><button type="submit">Submit</button></tr>
-					</tbody>
-				</table>
+					<table>
+						<tbody>
+						<tr>
+							<td>Email</td>
+							<td><input type="text" ref="email" placeholder="Your email address"/></td>
+						</tr>
+						<tr>
+							<td>Password</td>
+							<td><input type="password" ref="password"/></td>
+						</tr>
+						</tbody>
+					</table>
+
+					<button type="submit">Submit</button>
 				</form>
 			</div>
 		);
 	}
-	
-}
 
+}
 export default NewUser;
