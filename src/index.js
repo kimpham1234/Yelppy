@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { render } from 'react-dom'
-import { Router, Route, hashHistory, IndexRoute } from 'react-router'
+import { Router, Route, hashHistory} from 'react-router'
 import App from './modules/App';
-import NewUser from './modules/user/NewUser'
+import Restaurants from './modules/restaurant/Restaurants';
+import NewRestaurant from './modules/restaurant/NewRestaurant';
+import NewUser from './modules/user/NewUser';
 import './index.css';
 import * as firebase from 'firebase';
 
@@ -20,9 +21,11 @@ firebase.initializeApp(config);
 
 ReactDOM.render((
 	<Router history={hashHistory}>
-		<Route path="/" component={App}/>
-			<Route path='/newUser' component={NewUser}/>
-	</Router>
-  	),
+        <Route path="/" component={App}>
+            <Route path='/restaurants' component={Restaurants}/>
+            <Route path='/restaurants/new' component={NewRestaurant}/><Route path='/newUser' component={NewUser}/>
+        </Route>
+    </Router>),
   document.getElementById('root')
 );
+
