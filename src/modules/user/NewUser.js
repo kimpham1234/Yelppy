@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
+import {hashHistory} from 'react-router';
 
 
 class NewUser extends Component{
-	contextTypes: {
-		router: React.PropTypes.object
-	}
+	//contextTypes: {
+	//	router: React.PropTypes.object
+	//}
 
 	//create the component
 	constructor(){
@@ -28,7 +29,8 @@ class NewUser extends Component{
 				email: userEmail
 			});
 			
-			that.context.router.push('/');
+			//that.context.router.push('/');
+			hashHistory.push('/');
 		});
 	}
 
