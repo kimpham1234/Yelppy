@@ -21,12 +21,11 @@ firebase.initializeApp(config);
 
 ReactDOM.render((
 	<Router history={hashHistory}>
-		<Route path="/" component={App}>
-      <Route path='/restaurants' component={Restaurants}/>
-        <Route path='/restaurants/new' component={NewRestaurant}/>
-			<Route path='/newUser' component={NewUser}/>
-    </Route>
-	</Router>),
+        <Route path="/" component={App}>
+            <Route path='/restaurants' component={Restaurants}/>
+            <Route path='/restaurants/new' component={NewRestaurant}/><Route path='/newUser' component={NewUser}/>
+        </Route>
+    </Router>),
   document.getElementById('root')
 );
 

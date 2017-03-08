@@ -1,26 +1,37 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router'
-import logo from '../logo.svg';
+import { LinkContainer } from 'react-router-bootstrap'
+//import logo from '../logo.svg';
 import '../App.css';
+import '../bootstrap/css/bootstrap.css';
+import NavigationBar from './NavigationBar.js';
 
 class App extends Component {
-  
+
+
   render() {
-    return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to Yelppy</h2>
-        </div>
-        <p className="App-intro">
-          Come here to find and review yummy places!
-          <Link to='/restaurants'>View Restaurants</Link>
-          <Link to='/newUser'>New User</Link>
-        </p>
-        { this.props.children }
-      </div>
+
+      console.log(this.props);
+      return (
+          <div className="App">
+              <div className="App-header">
+                  <h2>Welcome to Yelppy</h2>
+                  <NavigationBar></NavigationBar>
+              </div>
+              <div>
+                  <p className="App-intro">
+                      Come here to find and review yummy places!
+                      <Link to='/restaurants'>View Restaurants</Link>
+                  </p>
+              </div>
+              { this.props.children }
+          </div>
     );
   }
+
+
+
+
 }
 
 export default App;
