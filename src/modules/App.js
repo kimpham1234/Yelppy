@@ -4,7 +4,6 @@ import { LinkContainer } from 'react-router-bootstrap'
 //import logo from '../logo.svg';
 import '../App.css';
 import '../bootstrap/css/bootstrap.css';
-import NavigationBar from './NavigationBar.js';
 
 class App extends Component {
 
@@ -16,7 +15,6 @@ class App extends Component {
           <div className="App">
               <div className="App-header">
                   <h2>Welcome to Yelppy</h2>
-                  <NavigationBar></NavigationBar>
               </div>
               <div>
                   <p className="App-intro">

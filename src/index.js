@@ -8,6 +8,7 @@ import NewUser from './modules/user/NewUser';
 import './index.css';
 import * as firebase from 'firebase';
 
+var routes = require('./config/routes.js');
 
 var config = {
     apiKey: "AIzaSyAOKXV0Wnc-cmBhsMb2U3zZM2q9Z1FRqfE",
@@ -19,13 +20,5 @@ var config = {
 firebase.initializeApp(config);
 
 
-ReactDOM.render((
-	<Router history={hashHistory}>
-        <Route path="/" component={App}>
-            <Route path='/restaurants' component={Restaurants}/>
-            <Route path='/restaurants/new' component={NewRestaurant}/><Route path='/newUser' component={NewUser}/>
-        </Route>
-    </Router>),
-  document.getElementById('root')
-);
+ReactDOM.render(routes, document.getElementById('root'));
 
