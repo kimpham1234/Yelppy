@@ -1,19 +1,17 @@
 import React from 'react';
-//import ReactDOM from 'react-dom';
 import { Router, Route, hashHistory, IndexRoute } from 'react-router'
-import App from '../modules/App';
-import Restaurants from '../modules/restaurant/Restaurants';
-import NewRestaurant from '../modules/restaurant/NewRestaurant';
-import NewUser from '../modules/user/NewUser';
 import '../index.css';
+import Restaurants from '../modules/restaurant/Restaurants.js';
+import NewRestaurant from '../modules/restaurant/NewRestaurant.js';
+import NewUser from '../modules/user/NewUser.js';
+import Layout from '../modules/home/layout.js';
 
 import * as requireAuth from './requireAuth.js';
 
-var routes = (
+let routes = (
     <Router history={hashHistory}>
-        <Route path="/" component={App}>
+        <Route path="/" component={Layout}>
             <Route path='/restaurants' component={Restaurants}/>
-            <Route path='/restaurants/new' component={NewRestaurant}/>
             <Route path='/newUser' component={NewUser}/>
         </Route>
     </Router>

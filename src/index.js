@@ -1,10 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, hashHistory} from 'react-router'
-import App from './modules/App';
-import Restaurants from './modules/restaurant/Restaurants';
-import NewRestaurant from './modules/restaurant/NewRestaurant';
-import NewUser from './modules/user/NewUser';
 import './index.css';
 import * as firebase from 'firebase';
 
