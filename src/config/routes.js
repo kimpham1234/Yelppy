@@ -1,3 +1,4 @@
+// routing
 import React from 'react';
 import { Router, Route, hashHistory, IndexRoute } from 'react-router'
 import '../index.css';

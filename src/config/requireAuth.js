@@ -1,3 +1,4 @@
+// linking firebase with the application
 var firebase = require('firebase');
 var hashHistory = require('react-router').hashHistory;
 
