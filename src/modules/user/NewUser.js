@@ -10,11 +10,9 @@ class NewUser extends Component{
 	//contextTypes: {
 	//	router: React.PropTypes.object
 	//}
-
-	//create the component
 	constructor(){
 		super();
-		this.state = {user:[]}
+		this.state = {user:[]};
 	}
 
 	submit(e){

@@ -3,16 +3,17 @@ import { Link } from 'react-router'
 import * as firebase from 'firebase';
 
 class Restaurants extends Component{
-	//create the component
- 	constructor(){
-	    super();
-	    this.state = {restaurants:[]}
+
+	constructor(){
+		super();
+		this.state = {restaurants:[]};
 	}
 
 	componentWillMount(){
 		console.log("mounting");
 		var restaurantListRef = firebase.database().ref('restaurants');
 		var that = this;
+		this.setState({restaurants: []});
 
 		restaurantListRef.once('value', function(snapshot) {
 		  snapshot.forEach(function(childSnapshot) {

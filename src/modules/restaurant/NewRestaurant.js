@@ -8,10 +8,6 @@ class NewRestaurant extends Component{
 		router: React.PropTypes.object
 	}
 
-	constructor(){
-	    super();
-	}
-
 	submit(e){
 		e.preventDefault();
 		var restaurantListRef = firebase.database().ref('restaurants');
