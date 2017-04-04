@@ -23,25 +23,19 @@ class RestaurantDetail extends Component{
 			console.log("temp id " + tempId);
 		}.bind(this));
 
-		console.log("the id is " + tempId);
-/*
-
-		var that = this; 
 
 		var reviewListRef = firebase.database().ref('reviews');
-		reviewListRef.orderByChild('id').equalTo(this.id).on('child_added',  function(snapshot) {
-			that.state.reviews.push(snapshot.val());
+		reviewListRef.orderByChild('id').equalTo(this.id).on('child_added',function(snapshot) {
+			this.state.reviews.push(snapshot.val());
 		    console.log(snapshot.val())
-		    that.setState({reviews: that.state.reviews})
-		}.bind(this));*/
+		    this.setState({reviews: this.state.reviews})
+		}.bind(this));
 	}
 	
-	getReview(){
-		console.log("reviews for " + this.name);
-	}
+	
 
 	render() {
-		var show = 	<div>
+		var showDetail = 	<div>
 						<ul>
 						    <li>Name:{ this.name }</li>
 						    <li>Rating:{ this.rating }/5</li>
@@ -50,13 +44,24 @@ class RestaurantDetail extends Component{
 				    	</ul>
 				    	<button type="button"><Link to={'/reviews/new/'+this.id}>Write a review</Link></button>
 					</div>;
-
+		var showReview =(
+				<div>
+			      {this.state.reviews.map((review, index) =>(
+				    <ul key={index}>
+				    	<li>Author: {review.author} </li>
+					    <li>Rating {review.rating }/5</li>
+					    <li>Review:{review.text }</li>
+				    </ul>))}
+			    </div>
+			)
 
 		return (
 			<div>
 				<h1>Restaurant</h1>
 				<Link to={'/restaurants/'+this.props.params.name}>Reload</Link><br></br>
-				{show}
+				{showDetail}
+				<h2> Reviews </h2>
+				{showReview}
 		    </div>
 	)}
 
