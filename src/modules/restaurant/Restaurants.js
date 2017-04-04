@@ -23,10 +23,6 @@ class Restaurants extends Component{
 		});
 	}
 
-	componentWillUnmount(){
-		this.restaurantListRef.off();
-	}
-
 	render(){
 		return(
 			<div>
