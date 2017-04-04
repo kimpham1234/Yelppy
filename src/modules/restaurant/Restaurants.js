@@ -11,15 +11,20 @@ class Restaurants extends Component{
 
 	componentWillMount(){
 		console.log("mounting");
-		var restaurantListRef = firebase.database().ref('restaurants');
+		this.restaurantListRef = firebase.database().ref('restaurants');
 		var that = this;
-		this.setState({restaurants: []});
 
-		restaurantListRef.once('value', function(snapshot) {
+		this.restaurantListRef.on('value', function(snapshot) {
 		  snapshot.forEach(function(childSnapshot) {
 		    that.state.restaurants.push(childSnapshot.val());
+		    console.log(childSnapshot.val())
+		    that.setState({restaurants: that.state.restaurants})
 		  });
 		});
+	}
+
+	componentWillUnmount(){
+		this.restaurantListRef.off();
 	}
 
 	render(){
