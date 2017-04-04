@@ -174,6 +174,13 @@ let Layout = React.createClass({
                             Come here to find and review yummy places!<br></br>
                             <Link to='/restaurants'>View Restaurants</Link>
                         </p>
+
+                        <p> Home<br></br>
+                        Note: some routes has not been put up but can be access:
+                        1/ Login: root+/login
+                        2/ Reviews: root+/review
+                        Will put these up later
+                        </p>
                     </div>
                 </div>
 
