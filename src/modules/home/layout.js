@@ -176,9 +176,9 @@ let Layout = React.createClass({
                         </p>
 
                         <p> Home<br></br>
-                        Note: some routes has not been put up but can be access:
-                        1/ Login: root+/login
-                        2/ Reviews: root+/review
+                        Note: some routes has not been put up but can be access:<br></br>
+                        1/ Login: root+/login<br></br>
+                        2/ Reviews: root+/review<br></br>
                         Will put these up later
                         </p>
                     </div>
