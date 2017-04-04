@@ -12,7 +12,9 @@ class RestaurantDetail extends Component{
 	componentWillMount(){
 		console.log("mounting");
 		var restaurantRef = firebase.database().ref('restaurants');
+
 		var tempId = '';
+
 		restaurantRef.orderByChild('name').equalTo(this.props.params.name.split('_').join(' ')).on('child_added',  function(snapshot) {
 			var value = snapshot.val();
 			this.name = value.name;
