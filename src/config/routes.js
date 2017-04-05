@@ -22,6 +22,7 @@ let routes = (
             <Route path='/restaurants' component={Restaurants}/>
             <Route path='/restaurants/new' component={NewRestaurant}/>
             <Route path="/restaurants/:name" component={RestaurantDetail}/>
+            <Route path='/restaurants/:name/:storenum' component={RestaurantDetail}/>
             <Route path='/newUser' component={NewUser}/>
             <Route path='/reviews/edit/:id' component={Edit}/>
             <Route path='/login' component={Login}/>
