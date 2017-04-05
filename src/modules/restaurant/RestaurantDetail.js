@@ -15,15 +15,19 @@ class RestaurantDetail extends Component{
 
 		var tempId = '';
 
-		restaurantRef.orderByChild('name').equalTo(this.props.params.name.split('_').join(' ')).on('child_added',  function(snapshot) {
-			var value = snapshot.val();
-			this.name = value.name;
-            this.storenum = value.storenum;
-			this.rating = value.rating;
-			this.location = value.loc;
-			this.id = snapshot.key;
-			tempId = snapshot.key;
-			console.log("temp id " + tempId);
+		restaurantRef.orderByChild('name')
+                     .equalTo(this.props.params.name.split('_').join(' '))
+                     .on('child_added', function(snapshot) {
+            if (snapshot.val().storenum === this.props.params.storenum) {
+                var value = snapshot.val();
+    			this.name = value.name;
+                this.storenum = value.storenum;
+    			this.rating = value.rating;
+    			this.location = value.loc;
+    			this.id = snapshot.key;
+    			tempId = snapshot.key;
+    			console.log("temp id " + tempId);
+            }
 		}.bind(this));
 
 
@@ -39,12 +43,28 @@ class RestaurantDetail extends Component{
 
 	render() {
 		var showDetail = 	<div>
-						<ul>
-						    <li>Name:{ this.name }</li>
-						    <li>Rating:{ this.rating }/5</li>
-						    <li>Address:{ this.location }</li>
-						    <li>id: {this.id}</li>
-				    	</ul>
+						<table>
+						    <tr>
+                                <td>Name</td>
+                                <td>{ this.name }</td>
+                            </tr>
+						    <tr>
+                                <td>Store Number</td>
+                                <td>{ this.storenum }</td>
+                            </tr>
+						    <tr>
+                                <td>Rating</td>
+                                <td>{ this.rating }/5</td>
+                            </tr>
+						    <tr>
+                                <td>Address</td>
+                                <td>{ this.location }</td>
+                            </tr>
+						    <tr>
+                                <td>ID</td>
+                                <td>{ this.id }</td>
+                            </tr>
+				    	</table>
 				    	<button type="button"><Link to={'/reviews/new/'+this.id}>Write a review</Link></button>
 					</div>;
 		var showReview =(
@@ -52,8 +72,8 @@ class RestaurantDetail extends Component{
 			      {this.state.reviews.map((review, index) =>(
 				    <ul key={index}>
 				    	<li>Author: {review.author} </li>
-					    <li>Rating {review.rating }/5</li>
-					    <li>Review:{review.text }</li>
+					    <li>Rating: {review.rating }/5</li>
+					    <li>Review: {review.text }</li>
 				    </ul>))}
 			    </div>
 			)
@@ -61,7 +81,7 @@ class RestaurantDetail extends Component{
 		return (
 			<div>
 				<h1>Restaurant</h1>
-				<Link to={'/restaurants/'+this.props.params.name}>Reload</Link><br></br>
+				<Link to={'/restaurants/'+this.props.params.name+((typeof this.props.params.storenum == 'undefined') ? '' : '/'+this.props.params.storenum)}>Reload</Link><br></br>
 				{showDetail}
 				<h2> Reviews </h2>
 				{showReview}
