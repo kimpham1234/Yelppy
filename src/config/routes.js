@@ -9,6 +9,7 @@ import NewUser from '../modules/user/NewUser.js';
 import Reviews from '../modules/review/Reviews.js';
 import NewReview from '../modules/review/NewReview';
 import Login from '../modules/user/Login.js';
+import Edit from '../modules/review/Edit.js';
 //end by Kim
 
 import Layout from '../modules/home/layout.js';
@@ -22,6 +23,7 @@ let routes = (
             <Route path='/restaurants/new' component={NewRestaurant}/>
             <Route path="/restaurants/:name" component={RestaurantDetail}/>
             <Route path='/newUser' component={NewUser}/>
+            <Route path='/reviews/edit/:id' component={Edit}/>
             <Route path='/login' component={Login}/>
             <Route path='/reviews' component={Reviews}/>
             <Route path='/reviews/new/:id' component={NewReview}/>

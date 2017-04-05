@@ -6,7 +6,7 @@ class RestaurantDetail extends Component{
 
 	constructor(){
 		super();
-		this.state = {name: String, rating: String, location: String, id: String, reviews: []};
+		this.state = {name: String, rating: String, location: String, id: String, reviews: [], keys: []};
 	}
 
 	componentWillMount(){
@@ -29,12 +29,11 @@ class RestaurantDetail extends Component{
 		var reviewListRef = firebase.database().ref('reviews');
 		reviewListRef.orderByChild('id').equalTo(this.id).on('child_added',function(snapshot) {
 			this.state.reviews.push(snapshot.val());
-		    console.log(snapshot.val())
+		    this.state.keys.push(snapshot.key);
 		    this.setState({reviews: this.state.reviews})
+		    this.setState({keys: this.state.keys})
 		}.bind(this));
 	}
-	
-	
 
 	render() {
 		var showDetail = 	<div>
@@ -46,13 +45,15 @@ class RestaurantDetail extends Component{
 				    	</ul>
 				    	<button type="button"><Link to={'/reviews/new/'+this.id}>Write a review</Link></button>
 					</div>;
+
 		var showReview =(
 				<div>
 			      {this.state.reviews.map((review, index) =>(
 				    <ul key={index}>
 				    	<li>Author: {review.author} </li>
-					    <li>Rating {review.rating }/5</li>
+					    <li>Rating: {review.rating }/5</li>
 					    <li>Review:{review.text }</li>
+					    <li><button type="button"><Link to={'/reviews/edit/'+this.state.keys[index]}>Edit</Link></button></li>
 				    </ul>))}
 			    </div>
 			)
@@ -66,7 +67,5 @@ class RestaurantDetail extends Component{
 				{showReview}
 		    </div>
 	)}
-
 }
-
 export default RestaurantDetail;

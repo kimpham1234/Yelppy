@@ -28,7 +28,7 @@ class Restaurants extends Component{
 		return(
 			<div>
 				<h1>List of restaurant</h1>
-				<Link to='/new'>New</Link>
+				<Link to='restaurants/new'>New</Link>
 				<div>
 			      {this.state.restaurants.map((restaurant, index) =>(
 				    <ul key={index}>
