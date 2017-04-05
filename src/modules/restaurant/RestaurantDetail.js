@@ -18,6 +18,7 @@ class RestaurantDetail extends Component{
 		restaurantRef.orderByChild('name').equalTo(this.props.params.name.split('_').join(' ')).on('child_added',  function(snapshot) {
 			var value = snapshot.val();
 			this.name = value.name;
+            this.storenum = value.storenum;
 			this.rating = value.rating;
 			this.location = value.loc;
 			this.id = snapshot.key;
@@ -33,8 +34,8 @@ class RestaurantDetail extends Component{
 		    this.setState({reviews: this.state.reviews})
 		}.bind(this));
 	}
-	
-	
+
+
 
 	render() {
 		var showDetail = 	<div>
