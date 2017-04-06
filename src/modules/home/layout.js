@@ -188,6 +188,18 @@ let Layout = React.createClass({
                     {this.props.children}
                 </div>
 
+                <div className = "footerholder">
+                    <div className = "footer">
+                      <p>Team name: Mean</p>
+                      <p>Course: CMPE/SE 133 Spring 2017</p>
+                      <p>Copyright by: Team Mean</p>
+                      <p>Contact information: <a href="mailto:team.react-js@gmail.com">
+                      team.react-js@gmail.com</a>.</p>
+                    </div>
+                </div>
+                
+
+
             </div>
         )
     }
