@@ -37,7 +37,6 @@ export default class SearchResults extends Component{
         this.searchCallback = this.searchCallback.bind(this);
         this.state.request.keyword = this.props.location.state.searchString;
         this.searchService.nearbySearch(this.state.request, this.searchCallback);
-        //console.log(this.state);
 
     }
 
