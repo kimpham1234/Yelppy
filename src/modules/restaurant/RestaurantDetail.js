@@ -19,7 +19,7 @@ class RestaurantDetail extends Component{
 			this.location = value.loc;
 		}.bind(this));
 
-}
+	}
 	
 
 	render() {

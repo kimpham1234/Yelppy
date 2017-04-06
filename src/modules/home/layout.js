@@ -2,13 +2,13 @@ import React from 'react';
 import * as firebase from 'firebase';
 import { Link } from 'react-router';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap';
 import Search from './search.js';
 
 
 let Layout = React.createClass({
 
-    getInitialState(){
+    getInitialState: function(){
         return {
             isLoggedIn: (null != firebase.auth().currentUser),
             requests: []
@@ -136,17 +136,19 @@ let Layout = React.createClass({
 
         let restaurants;
         let newUser;
+        let search;
 
         if(this.state.isLoggedIn){
             //logged in navbar setup
             restaurants = <LinkContainer to="/restaurants"><NavItem eventKey={1}>Restaurants</NavItem></LinkContainer>;
             newUser = <LinkContainer to='/newUser'><NavItem eventKey={2}>Create an account</NavItem></LinkContainer>;
+            search = <Search></Search>;
         }
         else{
             //not logged in version of navbar
             restaurants = <LinkContainer to="/restaurants"><NavItem eventKey={1}>Restaurants</NavItem></LinkContainer>;
             newUser = <LinkContainer to='/newUser'><NavItem eventKey={2}>Create an account</NavItem></LinkContainer>;
-            // in progress... search =
+            search = <Search></Search>;
 
         }
 
@@ -163,6 +165,7 @@ let Layout = React.createClass({
                         {restaurants}
                         {newUser}
                     </Nav>
+                    {search}
                 </Navbar>
 
                 <div className="App">
