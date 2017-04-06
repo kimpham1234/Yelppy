@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router'
 import * as firebase from 'firebase';
+import { Navbar, Nav, NavItem, Jumbotron } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap'
 
 class RestaurantDetail extends Component{
 
@@ -65,6 +67,8 @@ class RestaurantDetail extends Component{
 				{showDetail}
 				<h2> Reviews </h2>
 				{showReview}
+
+				
 		    </div>
 	)}
 }
