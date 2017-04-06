@@ -66,15 +66,14 @@ export default class SearchResults extends Component{
     searchCallback(results, status){
         if(status == google.maps.places.PlacesServiceStatus.OK){
 
-            var tempArr;
+            var tempArr = [];
             for(var i = 0; i < results.length; i++){
-                tempArr = this.state.markers.slice();
                 tempArr.push({ position: {
                     lat: results[i].geometry.location.lat(),
                     lng: results[i].geometry.location.lng()
                 }});
-                this.setState({ markers: tempArr });
             }
+            this.setState({ markers: tempArr });
         }
     }
 
