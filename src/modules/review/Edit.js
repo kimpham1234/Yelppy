@@ -9,7 +9,7 @@ class Edit extends Component{
 
 	constructor(){
 		super();
-		this.state = {review: String, rating: String, id: String};
+		this.state = {review: String, rating: String, review_id: String, author: String, resId: String};
 	}
 
 	componentWillMount(){
@@ -21,13 +21,32 @@ class Edit extends Component{
 			console.log("snapshot" + snapshot.val().text);
 			this.review = value.text;
 			this.rating = value.rating;
-			this.id = this.props.params.id;
-			console.log("rating" + this.rating);
+			this.author = value.author;
+			this.resId = value.id;
+			this.review_id = this.props.params.id;
 		}.bind(this));
 	}
 
 	submit(e){
+		var currentUser = firebase.auth().currentUser;
+		if(currentUser!=null && currentUser.email == this.author){
+			e.preventDefault();
+			
+			var reviewRef = firebase.database().ref('reviews/' + this.props.params.id);
+			console.log("the ref is " +reviewRef);
+			reviewRef.set({
+				author: this.author,
+				rating: this.refs.rating.value,
+				text: this.refs.review.value,
+				id: this.resId
+			});
 
+			var path = '/restaurants';
+			hashHistory.push(path);
+
+			
+
+		}
 	}
 
 	
@@ -48,8 +67,6 @@ class Edit extends Component{
 			      		<td>  <textArea cols="50" type="text" ref="review" placeholder={this.review} /></td>
 			      	</tr>
 
-			      	<input type="hidden" ref="id" value={this.props.params.id}/>
-			  
 			      	<button type="submit">Submit</button>
 			      </table>
 				</form>

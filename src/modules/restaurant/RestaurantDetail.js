@@ -6,7 +6,7 @@ class RestaurantDetail extends Component{
 
 	constructor(){
 		super();
-		this.state = {name: String, rating: String, location: String, id: String, reviews: [], keys: []};
+		this.state = {name: String, rating: String, num: Number, location: String, id: String, reviews: [], keys: []};
 	}
 
 	componentWillMount(){
@@ -18,7 +18,6 @@ class RestaurantDetail extends Component{
 		restaurantRef.orderByChild('name')
                      .equalTo(this.props.params.name.split('_').join(' '))
                      .on('child_added', function(snapshot) {
-            if (snapshot.val().storenum === this.props.params.storenum) {
                 var value = snapshot.val();
     			this.name = value.name;
                 this.storenum = value.storenum;
@@ -27,7 +26,7 @@ class RestaurantDetail extends Component{
     			this.id = snapshot.key;
     			tempId = snapshot.key;
     			console.log("temp id " + tempId);
-            }
+            
 		}.bind(this));
 
 
@@ -72,6 +71,7 @@ class RestaurantDetail extends Component{
 			      {this.state.reviews.map((review, index) =>(
 				    <ul key={index}>
 				    	<li>Author: {review.author} </li>
+				    	<li>Rating: {review.rating} </li>
 					    <li>Review:{review.text }</li>
 					    <li><button type="button"><Link to={'/reviews/edit/'+this.state.keys[index]}>Edit</Link></button></li>
 

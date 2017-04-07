@@ -32,7 +32,7 @@ class Restaurants extends Component{
 				<div>
 			      {this.state.restaurants.map((restaurant, index) =>(
 				    <ul key={index}>
-				    	<li>Name: <Link to={'/restaurants/' + restaurant.name.split(' ').join('_') + ((typeof restaurant.storenum == 'undefined') ? '' : '/'+restaurant.storenum)}>{restaurant.name}</Link></li>
+				    	<li>Name: <Link to={'/restaurants/' + restaurant.name.split(' ').join('_')}>{restaurant.name}</Link></li>
 					    <li>Rating:{ restaurant.rating }/5</li>
 					    <li>Address:{ restaurant.loc }</li>
 				    </ul>))}
