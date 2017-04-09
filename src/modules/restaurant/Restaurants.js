@@ -7,6 +7,7 @@ class Restaurants extends Component{
 	constructor(){
 		super();
 		this.state = {restaurants:[]};
+		
 	}
 
 	componentWillMount(){
