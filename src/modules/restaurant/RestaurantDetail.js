@@ -10,8 +10,11 @@ class RestaurantDetail extends Component{
 	}
 
 	componentWillMount(){
-        this.id = this.props.params.name;
-		console.log("mounting, key="+this.id);
+        this.id = this.props.params.key;
+        if (!this.id) { // Key is frequently passed as "name" instead of "key"; reason unknown
+            this.id = this.props.params.name;
+        }
+		console.log("mounting");
 		var restaurantRef = firebase.database().ref('restaurants');
 
 		restaurantRef.orderByKey().equalTo(this.id).on('child_added', function(snapshot) {
