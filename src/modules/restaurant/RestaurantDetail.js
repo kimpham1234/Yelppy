@@ -10,24 +10,17 @@ class RestaurantDetail extends Component{
 	}
 
 	componentWillMount(){
-		console.log("mounting");
+        this.id = this.props.params.name;
+		console.log("mounting, key="+this.id);
 		var restaurantRef = firebase.database().ref('restaurants');
 
-		var tempId = '';
-
-		restaurantRef.orderByChild('name')
-                     .equalTo(this.props.params.name.split('_').join(' '))
-                     .on('child_added', function(snapshot) {
-            if (snapshot.val().storenum === this.props.params.storenum) {
-                var value = snapshot.val();
-    			this.name = value.name;
-                this.storenum = value.storenum;
-    			this.rating = value.rating;
-    			this.location = value.loc;
-    			this.id = snapshot.key;
-    			tempId = snapshot.key;
-    			console.log("temp id " + tempId);
-            }
+		restaurantRef.orderByKey().equalTo(this.id).on('child_added', function(snapshot) {
+            var value = snapshot.val();
+			this.name = value.name;
+            this.storenum = value.storenum;
+			this.rating = value.rating;
+			this.location = value.loc;
+			console.log("id=" + this.id);
 		}.bind(this));
 
 
@@ -43,7 +36,7 @@ class RestaurantDetail extends Component{
 
 	render() {
 		var showDetail = 	<div>
-						<table>
+						<table><tbody>
 						    <tr>
                                 <td>Name</td>
                                 <td>{ this.name }</td>
@@ -64,8 +57,8 @@ class RestaurantDetail extends Component{
                                 <td>ID</td>
                                 <td>{ this.id }</td>
                             </tr>
-				    	</table>
-				    	<button type="button"><Link to={'/reviews/new/'+this.id}>Write a review</Link></button>
+				    	</tbody></table>
+				    	<button type="button"><Link to={'/reviews/new/'+this.id.valueOf()}>Write a review</Link></button>
 					</div>;
 		var showReview =(
 				<div>
@@ -81,7 +74,7 @@ class RestaurantDetail extends Component{
 		return (
 			<div>
 				<h1>Restaurant</h1>
-				<Link to={'/restaurants/'+this.props.params.name+((typeof this.props.params.storenum == 'undefined') ? '' : '/'+this.props.params.storenum)}>Reload</Link><br></br>
+				<Link to={'/restaurants/'+this.id}>Reload</Link><br></br>
 				{showDetail}
 				<h2> Reviews </h2>
 				{showReview}

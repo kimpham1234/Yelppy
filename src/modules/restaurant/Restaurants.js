@@ -16,7 +16,7 @@ class Restaurants extends Component{
 
 		this.restaurantListRef.on('value', function(snapshot) {
 		  snapshot.forEach(function(childSnapshot) {
-		    that.state.restaurants.push(childSnapshot.val());
+		    that.state.restaurants.push(childSnapshot);
 		    console.log(childSnapshot.val())
 		    that.setState({restaurants: that.state.restaurants})
 		  });
@@ -32,9 +32,9 @@ class Restaurants extends Component{
 				<div>
 			      {this.state.restaurants.map((restaurant, index) =>(
 				    <ul key={index}>
-				    	<li>Name: <Link to={'/restaurants/' + restaurant.name.split(' ').join('_') + ((typeof restaurant.storenum == 'undefined') ? '' : '/'+restaurant.storenum)}>{restaurant.name}</Link></li>
-					    <li>Rating:{ restaurant.rating }/5</li>
-					    <li>Address:{ restaurant.loc }</li>
+				    	<li>Name: <Link to={'/restaurants/' + restaurant.key}>{restaurant.val().name}</Link></li>
+					    <li>Rating:{ restaurant.val().rating }/5</li>
+					    <li>Address:{ restaurant.val().loc }</li>
 				    </ul>))}
 			    </div>
 		    </div>

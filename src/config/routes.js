@@ -20,8 +20,9 @@ let routes = (
         <Route path="/" component={Layout}>
             <Route path='/restaurants' component={Restaurants}/>
             <Route path='/restaurants/new' component={NewRestaurant}/>
-            <Route path="/restaurants/:name" component={RestaurantDetail}/>
-            <Route path='/restaurants/:name/:storenum' component={RestaurantDetail}/>
+            //<Route path="/restaurants/:name" component={RestaurantDetail}/>
+            //<Route path='/restaurants/:name/:storenum' component={RestaurantDetail}/>
+            <Route path='/restaurants/:key' component={RestaurantDetail}/>
             <Route path='/newUser' component={NewUser}/>
             <Route path='/login' component={Login}/>
             <Route path='/reviews' component={Reviews}/>
