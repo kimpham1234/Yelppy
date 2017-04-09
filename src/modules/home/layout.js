@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap'
 import Search from './search.js';
-
+import "../../App.css";
 
 let Layout = React.createClass({
 
@@ -155,7 +155,7 @@ let Layout = React.createClass({
                 <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <a href="#">Yelppy</a>
+                            <a href="#/">Yelppy</a>
                         </Navbar.Brand>
                     </Navbar.Header>
 
@@ -187,6 +187,17 @@ let Layout = React.createClass({
                 <div className="container">
                     {this.props.children}
                 </div>
+
+                <div className = "footerholder">
+                    <div className = "footer">
+                      <p>Team name: Mean</p>
+                      <p>Course: CMPE/SE 133 Spring 2017</p>
+                      <p>Copyright by: Team Mean</p>
+                      <p>Contact information: <a href="mailto:team.react-js@gmail.com">
+                      team.react-js@gmail.com</a>.</p>
+                    </div>
+                </div>
+                
 
             </div>
         )
