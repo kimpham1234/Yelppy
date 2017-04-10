@@ -131,8 +131,8 @@ class RestaurantDetail extends Component{
 				    	</table>
 
 				    	{this.state.links.map((link, index) =>(
-				    	<a key = {index}>
-				    	<img src={link} width="220" height="160"/>
+				    	<a key = {index} target="_blank" href = {link}>
+				    	<img src={link} width="220" height="160" />
 				    	</a>
 				    ))}
 				    <div>
