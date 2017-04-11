@@ -43,9 +43,6 @@ class Edit extends Component{
 
 			var path = '/restaurants';
 			hashHistory.push(path);
-
-			
-
 		}
 	}
 
@@ -55,16 +52,16 @@ class Edit extends Component{
 			<div>
 				<div>
 			      <form className="col-md-2" onSubmit={this.submit.bind(this) }>
-			      <h4> Edit your review </h4>
+			      <h4> Edit your review for</h4>
 			      <table>
 			      	<tr>
 			      		<td> Rating </td>
-			      		<td>  <input type="text" ref="rating" placeholder={this.rating}/> </td>
+			      		<td>  <input type="text" ref="rating" value={this.rating}/> </td>
 			      	</tr>
 
 			      	<tr>
 			      		<td> Review </td>
-			      		<td>  <textArea cols="50" type="text" ref="review" placeholder={this.review} /></td>
+			      		<td>  <textArea cols="50" type="text" ref="review" value={this.review} /></td>
 			      	</tr>
 
 			      	<button type="submit">Submit</button>
