@@ -1,10 +1,11 @@
 import React from 'react';
 import * as firebase from 'firebase';
 import { Link } from 'react-router';
+import { LoginLink, LogoutLink, Authenticated, NotAuthenticated } from 'react-stormpath';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap'
 import Search from './search.js';
-import "../../App.css";
+
 
 let Layout = React.createClass({
 
@@ -136,16 +137,21 @@ let Layout = React.createClass({
 
         let restaurants;
         let newUser;
+        let logIn;
+        let logOut;
+        
 
         if(this.state.isLoggedIn){
             //logged in navbar setup
             restaurants = <LinkContainer to="/restaurants"><NavItem eventKey={1}>Restaurants</NavItem></LinkContainer>;
-            newUser = <LinkContainer to='/newUser'><NavItem eventKey={2}>Create an account</NavItem></LinkContainer>;
+            //logOut = <LinkContainer to='#'><NavItem eventKey={2}>Log Out</NavItem></LinkContainer>;
         }
         else{
             //not logged in version of navbar
             restaurants = <LinkContainer to="/restaurants"><NavItem eventKey={1}>Restaurants</NavItem></LinkContainer>;
-            newUser = <LinkContainer to='/newUser'><NavItem eventKey={2}>Create an account</NavItem></LinkContainer>;
+            logIn = <LinkContainer to="/login"><NavItem eventKey={2}>Log In</NavItem></LinkContainer>;
+            newUser = <LinkContainer to='/newUser'><NavItem eventKey={3}>Create an account</NavItem></LinkContainer>;
+             logOut = <LinkContainer to='#'><NavItem eventKey={2}>Log Out</NavItem></LinkContainer>;
             // in progress... search =
 
         }
@@ -155,13 +161,16 @@ let Layout = React.createClass({
                 <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <a href="#/">Yelppy</a>
+                            <a href="#">Yelppy</a>
                         </Navbar.Brand>
                     </Navbar.Header>
 
                     <Nav>
                         {restaurants}
                         {newUser}
+                        {logIn}
+                        {logOut}
+
                     </Nav>
                 </Navbar>
 
@@ -187,17 +196,6 @@ let Layout = React.createClass({
                 <div className="container">
                     {this.props.children}
                 </div>
-
-                <div className = "footerholder">
-                    <div className = "footer">
-                      <p>Team name: Mean</p>
-                      <p>Course: CMPE/SE 133 Spring 2017</p>
-                      <p>Copyright by: Team Mean</p>
-                      <p>Contact information: <a href="mailto:team.react-js@gmail.com">
-                      team.react-js@gmail.com</a>.</p>
-                    </div>
-                </div>
-                
 
             </div>
         )

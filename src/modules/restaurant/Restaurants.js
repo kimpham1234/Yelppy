@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import { Link } from 'react-router'
 import * as firebase from 'firebase';
@@ -65,3 +66,4 @@ class Restaurants extends Component{
 }
 
 export default Restaurants;
+
