@@ -1,3 +1,4 @@
+
 import React,{ Component } from 'react';
 import * as firebase from 'firebase';
 import {hashHistory} from 'react-router'
@@ -16,7 +17,8 @@ class NewRestaurant extends Component{
 		  name: this.refs.name.value,
           storenum: this.refs.storenum.value,
 		  rating: this.refs.rating.value,
-		  loc: this.refs.loc.value
+		  loc: this.refs.loc.value,
+		  images: [""]
 		});
 
 		//this.context.router.push('/restaurants');
@@ -43,3 +45,4 @@ class NewRestaurant extends Component{
 }
 
 export default NewRestaurant;
+
