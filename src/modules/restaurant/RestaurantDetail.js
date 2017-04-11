@@ -8,7 +8,7 @@ class RestaurantDetail extends Component{
 
 	constructor(){
 		super();
-		this.state = {name: String, rating: String, num: Number, location: String, id: String, reviews: [], keys: [], images: [], links: [], currentUser: ""};
+		this.state = {name: String, rating: Number, num: Number, location: String, id: String, reviews: [], keys: [], images: [], links: [], currentUser: ""};
 		this.imageUpload = this.imageUpload.bind(this);
 	}
 
@@ -17,6 +17,8 @@ class RestaurantDetail extends Component{
 		this.currentUser = firebase.auth().currentUser;
 		var restaurantRef = firebase.database().ref('restaurants');
 		var tempId = '';
+		this.state.num = 0;
+		this.state.rating = 0;
 		restaurantRef.orderByChild('name')
                      .equalTo(this.props.params.name.split('_').join(' '))
                      .on('child_added', function(snapshot) {
@@ -30,6 +32,7 @@ class RestaurantDetail extends Component{
     			tempId = snapshot.key;
             
 		}.bind(this));
+
 		var reviewListRef = firebase.database().ref('reviews');
 		reviewListRef.orderByChild('id').equalTo(this.id).on('child_added',function(snapshot) {
 			this.state.reviews.push(snapshot.val());
@@ -37,6 +40,9 @@ class RestaurantDetail extends Component{
 		    this.setState({reviews: this.state.reviews})
 		    this.setState({keys: this.state.keys})
 		}.bind(this));
+
+
+		
 		firebase.database().ref('restaurants/'+this.id+'/images').on("child_added", function(snapshot) {
   		var url = snapshot.val();
   			if(url!="") {
@@ -119,7 +125,7 @@ class RestaurantDetail extends Component{
                             </tr>
                             <tr>
                                 <td>Rating</td>
-                                <td>{ this.rating }/5</td>
+                                <td>{ this.rating}/5</td>
                             </tr>
 						    <tr>
                                 <td>Store Number</td>
