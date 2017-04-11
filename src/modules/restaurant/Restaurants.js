@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { Link } from 'react-router'
 import * as firebase from 'firebase';
@@ -30,7 +29,11 @@ class Restaurants extends Component{
 	render(){
 		var counter = 1;
 		return(
+
 			<div>
+				<h1>List of restaurant</h1>
+				<Link to='restaurants/new'>New</Link>
+				
 				<Table striped condensed hover responsive>
 					<thead>
 				      <tr>
@@ -66,4 +69,3 @@ class Restaurants extends Component{
 }
 
 export default Restaurants;
-

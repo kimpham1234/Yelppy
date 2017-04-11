@@ -1,4 +1,3 @@
-
 // routing
 import React from 'react';
 import { Router, Route, hashHistory, IndexRoute } from 'react-router'
@@ -17,6 +16,8 @@ import Layout from '../modules/home/layout.js';
 import Homepage from '../modules/home/homepage.js';
 import RestaurantDetail from '../modules/restaurant/RestaurantDetail.js';
 import * as requireAuth from './requireAuth.js';
+import Profile from '../modules/user/Profile.jsx';
+import Logout from '../modules/user/Logout.jsx';
 
 let routes = (
     <Router history={hashHistory}>
@@ -27,8 +28,10 @@ let routes = (
             <Route path="/restaurants/:name" component={RestaurantDetail}/>
             <Route path='/restaurants/:name/:storenum' component={RestaurantDetail}/>
             <Route path='/newUser' component={NewUser}/>
+            <Route path='/profile' component={Profile}/>
             <Route path='/reviews/edit/:id' component={Edit}/>
             <Route path='/login' component={Login}/>
+            <Route path='/logout' component={Logout}/>
             <Route path='/reviews' component={Reviews}/>
             <Route path='/reviews/new/:id' component={NewReview}/>
         </Route>
@@ -36,4 +39,3 @@ let routes = (
 );
 
 module.exports = routes;
-

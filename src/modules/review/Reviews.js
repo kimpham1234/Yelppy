@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router'
 import * as firebase from 'firebase';
 import "../../App.css";
+import { Table, buttonsInstance } from 'react-bootstrap';
 
 class Review extends Component{
 
@@ -29,15 +30,34 @@ class Review extends Component{
 	render(){
 		return(
 			<div>
-				<h1>Reviews</h1>
-				<div>
-			      {this.state.reviews.map((review, index) =>(
-				    <ul key={index}>
-					    <li>Author:{ review.author }</li>
-					    <li>Rating:{ review.rating }/5</li>
-					    <li>Review:{ review.text }</li>
-				    </ul>))}
-			    </div>
+				<h1>List of reviews</h1>
+				<Table striped condensed hover responsive>
+					<thead>
+					    <tr>
+					        <th>Author</th>
+					        <th>Rating</th>
+					        <th>Review</th>
+					    </tr>
+					</thead>
+					<tbody>
+						{
+							this.state.reviews.map((review, index) =>(
+							<tr key={index}>
+								<td>
+				    				{ review.author }
+				    			</td>
+
+				    			<td>
+				    				{ review.rating }
+				    			</td>
+
+				    			<td>
+				    				{ review.text }
+				    			</td>
+							</tr>
+						))}
+					</tbody>
+				</Table>
 		    </div>
 		    );
 	}

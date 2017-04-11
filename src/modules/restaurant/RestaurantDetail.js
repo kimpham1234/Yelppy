@@ -1,6 +1,5 @@
-
 import React, { Component } from 'react';
-import { Link } from 'react-router'
+import { Link, Router } from 'react-router'
 import * as firebase from 'firebase';
 import { Navbar, Nav, NavItem, Button, ButtonToolbar, Jumbotron, Table, buttonsInstance } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap'
@@ -119,23 +118,11 @@ class RestaurantDetail extends Component{
 	render() {
 		
 		var showDetail = 	<div>
-						<table>
-						    <tr>
-                                <td> <h1>{this.name}</h1> </td>
-                            </tr>
-                            <tr>
-                                <td>Rating</td>
-                                <td>{ this.rating}/5</td>
-                            </tr>
-						    <tr>
-                                <td>Store Number</td>
-                                <td>{ this.storenum }</td>
-                            </tr>
-						    <tr>
-                                <td>Address</td>
-                                <td>{ this.location }</td>
-                            </tr>
-				    	</table>
+
+						<h1>{this.name}</h1>
+						<li>Rating: { this.rating }</li>
+					    <li>Store Number: { this.storenum }/5</li>
+					    <li>Address: { this.location }</li><br></br>
 
 				    	{this.state.links.map((link, index) =>(
 				    	<a key = {index} target="_blank" href = {link}>
@@ -146,7 +133,7 @@ class RestaurantDetail extends Component{
 				    	
 				    	
 				    	
-				    	
+				    	<br></br>
 				    	<table>
 				    		<tr>
 				    			<td>Add a Photo:</td>
@@ -164,25 +151,38 @@ class RestaurantDetail extends Component{
 
 		var showReview =(
 				<div>
-					<table>
-			      {this.state.reviews.map((review, index) =>(
-				    <tr id = "imageList" key={index}>
-				    	<td>{review.author} </td>
-				    	<td>
-				    	<p>Rating: {review.rating} </p>
-					    <p>Review:{review.text }</p>
-					    </td>
-					    <td><button type="button" ><Link to={'/reviews/edit/'+this.state.keys[index]}>Edit</Link></button>
-					   </td>
-				    </tr>))}
-				    </table>
+				<Table striped condensed hover responsive>
+					<thead>
+					    <tr>
+					        <th>Author</th>
+					        <th>Rating</th>
+					        <th>Review</th>
+					    </tr>
+					</thead>
+					<tbody>
+						{
+							this.state.reviews.map((review, index) =>(
+							<tr key={index}>
+								<td>
+				    				{ review.author }
+				    			</td>
 
-			    </div>
+				    			<td>
+				    				{ review.rating }
+				    			</td>
+
+				    			<td>
+				    				{ review.text }
+				    			</td>
+							</tr>
+						))}
+					</tbody>
+				</Table>
+		    </div>
 			)
-
 		return (
 			<div>
-				<Link to={'/restaurants/'+this.props.params.name+((typeof this.props.params.storenum == 'undefined') ? '' : '/'+this.props.params.storenum)}>Reload</Link><br></br>
+				<Link to='restaurants'>Back to Restaurant List</Link><br></br>
 				{showDetail}
 				<h2> Reviews </h2>
 				{showReview}
@@ -191,5 +191,4 @@ class RestaurantDetail extends Component{
 }
 
 export default RestaurantDetail;
-
 
