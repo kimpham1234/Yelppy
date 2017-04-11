@@ -46,9 +46,6 @@ class Edit extends Component{
 			});
 			var path = '/restaurants';
 			hashHistory.push(path);
-
-			
-
 		}
 	}
 

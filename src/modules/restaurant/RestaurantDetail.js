@@ -150,6 +150,7 @@ class RestaurantDetail extends Component{
 					        <th>Author</th>
 					        <th>Rating</th>
 					        <th>Review</th>
+					        <th>Edit Button</th>
 					    </tr>
 					</thead>
 					<tbody>
@@ -166,6 +167,10 @@ class RestaurantDetail extends Component{
 
 				    			<td>
 				    				{ review.text }
+				    			</td>
+
+				    			<td>
+				    				<button type="button" ><Link to={'/reviews/edit/'+this.state.keys[index]}>Edit</Link></button>
 				    			</td>
 							</tr>
 						))}
