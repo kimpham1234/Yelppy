@@ -20,6 +20,7 @@ class NewReview extends Component{
 		}.bind(this));
 	}
 
+
 	submit(e){
 		var currentUser = firebase.auth().currentUser;
 		if(currentUser!=null){
@@ -30,7 +31,7 @@ class NewReview extends Component{
 			  author: currentUser.email,
 			  rating: this.refs.rating.value,
 			  text: this.refs.review.value,
-			  id: this.refs.id.value
+			  id: this.refs.id.value,
 			});
 
 			var path = '/restaurants/'+this.state.restaurant;
@@ -58,7 +59,6 @@ class NewReview extends Component{
 			      	</tr>
 			      	
 			      	<input type="hidden" ref="id" value={this.props.params.id}/>
-			  
 			      	<button type="submit">Submit</button>
 			      </table>
 				</form>

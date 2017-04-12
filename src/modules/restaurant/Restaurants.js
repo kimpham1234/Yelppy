@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router'
+import { Link } from 'react-router';
 import * as firebase from 'firebase';
+import { Table, buttonsInstance } from 'react-bootstrap';
 
 class Restaurants extends Component{
 
 	constructor(){
 		super();
 		this.state = {restaurants:[]};
+		
 	}
 
 	componentWillMount(){
@@ -25,18 +27,42 @@ class Restaurants extends Component{
 
 
 	render(){
+		var counter = 1;
 		return(
+
 			<div>
 				<h1>List of restaurant</h1>
 				<Link to='restaurants/new'>New</Link>
-				<div>
-			      {this.state.restaurants.map((restaurant, index) =>(
-				    <ul key={index}>
-				    	<li>Name: <Link to={'/restaurants/' + restaurant.key}>{restaurant.val().name}</Link></li>
-					    <li>Rating:{ restaurant.val().rating }/5</li>
-					    <li>Address:{ restaurant.val().loc }</li>
-				    </ul>))}
-			    </div>
+				
+				<Table striped condensed hover responsive>
+					<thead>
+				      <tr>
+				        <th>#</th>
+				        <th>Name</th>
+				        <th>Rating</th>
+				        <th>Address</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				    	{this.state.restaurants.map((restaurant, index) => (
+				    		<tr key={index}>
+				    			<td>
+				    				{counter++}
+				    			</td>
+				    			<td>
+				    				<Link to={'/restaurants/'+restaurant.key}>{restaurant.val().name}</Link>
+				    			</td>
+				    			<td>
+				    				{ restaurant.val().rating }/5
+				    			</td>
+				    			<td>
+				    				{ restaurant.val().loc }
+				    			</td>
+				    		</tr>
+
+				    	))}
+				    </tbody>
+				</Table>
 		    </div>
 	)}
 
