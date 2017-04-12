@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router'
+import { Link } from 'react-router';
 import * as firebase from 'firebase';
 import { Table, buttonsInstance } from 'react-bootstrap';
 
