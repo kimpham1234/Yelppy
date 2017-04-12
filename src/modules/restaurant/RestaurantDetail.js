@@ -12,21 +12,22 @@ class RestaurantDetail extends Component{
 	}
 
 	componentWillMount(){
-        this.id = this.props.params.key;
-        if (!this.id) { // Key is frequently passed as "name" instead of "key"; reason unknown
-            this.id = this.props.params.name;
-        }
 		console.log("mounting");
 		this.currentUser = firebase.auth().currentUser;
 		var restaurantRef = firebase.database().ref('restaurants');
-
-		restaurantRef.orderByKey().equalTo(this.id).on('child_added', function(snapshot) {
-            var value = snapshot.val();
-			this.name = value.name;
-            this.storenum = value.storenum;
-			this.rating = value.rating;
-			this.location = value.loc;
-			console.log("id=" + this.id);
+		var tempId = '';
+		restaurantRef.orderByChild('name')
+                     .equalTo(this.props.params.name.split('_').join(' '))
+                     .on('child_added', function(snapshot) {
+                var value = snapshot.val();
+    			this.name = value.name;
+                this.storenum = value.storenum;
+    			this.rating = value.rating;
+    			this.location = value.loc;
+    			this.id = snapshot.key;
+    			this.images = value.images;
+    			tempId = snapshot.key;
+            
 		}.bind(this));
 		var reviewListRef = firebase.database().ref('reviews');
 		reviewListRef.orderByChild('id').equalTo(this.id).on('child_added',function(snapshot) {
