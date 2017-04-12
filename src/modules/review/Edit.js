@@ -10,6 +10,8 @@ class Edit extends Component{
 	constructor(){
 		super();
 		this.state = {review: String, rating: String, review_id: String, author: String, resId: String};
+		
+
 	}
 
 	componentWillMount(){
@@ -27,6 +29,8 @@ class Edit extends Component{
 		}.bind(this));
 	}
 
+	
+
 	submit(e){
 		var currentUser = firebase.auth().currentUser;
 		if(currentUser!=null && currentUser.email == this.author){
@@ -38,14 +42,10 @@ class Edit extends Component{
 				author: this.author,
 				rating: this.refs.rating.value,
 				text: this.refs.review.value,
-				id: this.resId
+				id: this.resId,
 			});
-
 			var path = '/restaurants';
 			hashHistory.push(path);
-
-			
-
 		}
 	}
 
@@ -66,7 +66,7 @@ class Edit extends Component{
 			      		<td> Review </td>
 			      		<td>  <textArea cols="50" type="text" ref="review" placeholder={this.review} /></td>
 			      	</tr>
-
+			      	
 			      	<button type="submit">Submit</button>
 			      </table>
 				</form>

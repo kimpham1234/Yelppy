@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import Search from './search.js';
-
+import "../../App.css";
 
 let Layout = React.createClass({
 
@@ -136,20 +136,25 @@ let Layout = React.createClass({
 
         let restaurants;
         let newUser;
+        let sign_in_out;
         let search;
+
 
         if(this.state.isLoggedIn){
             //logged in navbar setup
             restaurants = <LinkContainer to="/restaurants"><NavItem eventKey={1}>Restaurants</NavItem></LinkContainer>;
-            newUser = <LinkContainer to='/newUser'><NavItem eventKey={2}>Create an account</NavItem></LinkContainer>;
+            newUser = <LinkContainer to='/profile'><NavItem eventKey={2}>Profile</NavItem></LinkContainer>;
+            sign_in_out = <LinkContainer to='/logout'><NavItem eventKey={2}>Sign out</NavItem></LinkContainer>;
             search = <Search></Search>;
+
         }
         else{
             //not logged in version of navbar
             restaurants = <LinkContainer to="/restaurants"><NavItem eventKey={1}>Restaurants</NavItem></LinkContainer>;
             newUser = <LinkContainer to='/newUser'><NavItem eventKey={2}>Create an account</NavItem></LinkContainer>;
+            sign_in_out = <LinkContainer to='/login'><NavItem eventKey={2}>Sign in</NavItem></LinkContainer>;
             search = <Search></Search>;
-
+          
         }
 
         return(
@@ -157,13 +162,14 @@ let Layout = React.createClass({
                 <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <a href="#">Yelppy</a>
+                            <a href="#/">Yelppy</a>
                         </Navbar.Brand>
                     </Navbar.Header>
 
                     <Nav>
                         {restaurants}
                         {newUser}
+                        {sign_in_out}
                     </Nav>
                     {search}
                 </Navbar>
@@ -173,23 +179,36 @@ let Layout = React.createClass({
                         <h2>Welcome to Yelppy</h2>
                     </div>
                     <div>
-                        <p className="App-intro">
-                            Come here to find and review yummy places!<br></br>
+                        <p className="App-intro"><strong><i>
+                            Come here to find and review yummy places!</i></strong><br></br>
                             <Link to='/restaurants'>View Restaurants</Link>
                         </p>
-
-                        <p> Home<br></br>
+                        {/* 
+                            <p> Home<br></br>
                         Note: some routes has not been put up but can be access:<br></br>
                         1/ Login: root+/login<br></br>
                         2/ Reviews: root+/review<br></br>
                         Will put these up later
                         </p>
+                         */}
+                        
                     </div>
                 </div>
 
                 <div className="container">
                     {this.props.children}
                 </div>
+
+                <div className = "footerholder">
+                    <div className = "footer">
+                      <p>Team name: Mean</p>
+                      <p>Course: CMPE/SE 133 Spring 2017</p>
+                      <p>Copyright by: Team Mean</p>
+                      <p>Contact information: <a href="mailto:team.react-js@gmail.com">
+                      team.react-js@gmail.com</a>.</p>
+                    </div>
+                </div>
+                
 
             </div>
         )
