@@ -11,26 +11,28 @@ class Restaurants extends Component{
 
 	componentWillMount(){
 		console.log("mounting");
-		var restaurantListRef = firebase.database().ref('restaurants');
+		this.restaurantListRef = firebase.database().ref('restaurants');
 		var that = this;
-		this.setState({restaurants: []});
 
-		restaurantListRef.once('value', function(snapshot) {
+		this.restaurantListRef.on('value', function(snapshot) {
 		  snapshot.forEach(function(childSnapshot) {
 		    that.state.restaurants.push(childSnapshot.val());
+		    console.log(childSnapshot.val())
+		    that.setState({restaurants: that.state.restaurants})
 		  });
 		});
 	}
+
 
 	render(){
 		return(
 			<div>
 				<h1>List of restaurant</h1>
-				<Link to='/new'>New</Link>
+				<Link to='restaurants/new'>New</Link>
 				<div>
 			      {this.state.restaurants.map((restaurant, index) =>(
 				    <ul key={index}>
-				    	<li>Name: <Link to={'/restaurants/'+restaurant.name}>{restaurant.name}</Link></li>
+				    	<li>Name: <Link to={'/restaurants/' + restaurant.name.split(' ').join('_')}>{restaurant.name}</Link></li>
 					    <li>Rating:{ restaurant.rating }/5</li>
 					    <li>Address:{ restaurant.loc }</li>
 				    </ul>))}

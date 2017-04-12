@@ -102,8 +102,6 @@ export default class SearchResults extends Component{
                     keyword: this.props.location.state.searchString
                 }
             }, function () {
-                console.log('we have this tempLat ' + tempLat);
-                console.log('we have this tempLng ' + tempLng);
                 this.setState({
                     center: {lat: tempLat, lng: tempLng}
                 }, function () {
