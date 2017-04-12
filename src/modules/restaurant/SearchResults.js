@@ -26,7 +26,6 @@ export default class SearchResults extends Component{
     constructor(props){
 
         super(props);
-
         this.state = {
             markers: [],
             request: {
