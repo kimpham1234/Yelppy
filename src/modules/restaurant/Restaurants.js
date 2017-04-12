@@ -18,7 +18,7 @@ class Restaurants extends Component{
 
 		this.restaurantListRef.on('value', function(snapshot) {
 		  snapshot.forEach(function(childSnapshot) {
-		    that.state.restaurants.push(childSnapshot.val());
+		    that.state.restaurants.push(childSnapshot);
 		    console.log(childSnapshot.val())
 		    that.setState({restaurants: that.state.restaurants})
 		  });
@@ -50,13 +50,13 @@ class Restaurants extends Component{
 				    				{counter++}
 				    			</td>
 				    			<td>
-				    				<Link to={'/restaurants/'+restaurant.name.split(' ').join('_')}>{restaurant.name}</Link>
+				    				<Link to={'/restaurants/'+restaurant.key}>{restaurant.val().name}</Link>
 				    			</td>
 				    			<td>
-				    				{ restaurant.rating }/5
+				    				{ restaurant.val().rating }/5
 				    			</td>
 				    			<td>
-				    				{ restaurant.loc }
+				    				{ restaurant.val().loc }
 				    			</td>
 				    		</tr>
 
