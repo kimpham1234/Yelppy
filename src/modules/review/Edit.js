@@ -21,6 +21,9 @@ class Edit extends Component{
 		reviewListRef.orderByKey().equalTo(this.props.params.id).on('child_added',function(snapshot) {
 			var value = snapshot.val();
 			console.log("snapshot" + snapshot.val().text);
+		//	setState({this.state.review: value.text})
+
+
 			this.review = value.text;
 			this.rating = value.rating;
 			this.author = value.author;

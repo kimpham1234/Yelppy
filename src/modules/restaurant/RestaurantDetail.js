@@ -22,14 +22,13 @@ class RestaurantDetail extends Component{
                      .equalTo(this.props.params.name.split('_').join(' '))
                      .on('child_added', function(snapshot) {
                 var value = snapshot.val();
-    			this.name = value.name;
+    			this.name = value.name;   //this.setState({this.state.name: kfnkf})
                 this.storenum = value.storenum;
     			this.rating = value.rating;
     			this.location = value.loc;
     			this.id = snapshot.key;
     			this.images = value.images;
     			tempId = snapshot.key;
-            
 		}.bind(this));
 
 		var reviewListRef = firebase.database().ref('reviews');
