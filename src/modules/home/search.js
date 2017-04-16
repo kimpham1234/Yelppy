@@ -1,19 +1,35 @@
 import React, { Component } from 'react';
 //import * as firebase from 'firebase';
-import { Navbar, FormGroup, FormControl, Button } from 'react-bootstrap';
+import { Navbar, FormGroup, FormControl, Button, MenuItem, DropdownButton } from 'react-bootstrap';
 import { hashHistory } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
 import ReactDOM from 'react-dom';
 
+
+const businessTypes = ['amusement_park', 'bakery', 'bar', 'beauty_salon', 'bicycle_store',
+                        'book_store', 'cafe', 'car_dealer', 'car_rental', 'department_store', 'electronics_store',
+                        'florist', 'gym', 'hardware_store', 'home_goods_store', 'jewelry_store', 'liquor_store', 'locksmith',
+                        'lodging', 'meal_delivery', 'movie_theater', 'moving_company', 'night_club', 'pet_store', 'plumber',
+                        'restaurant', 'shoe_store', 'shopping_mall', 'store', 'travel_agency'];
 
 class Search extends Component{
 
     constructor(){
         super();
         this.state = {
-            searchString: ''
+            searchString: '',
+            locationString: '',
+            searchType: 'restaurant',
+            businessTypes: businessTypes
         };
         this.handleSearch = this.handleSearch.bind(this);
+        this.typeChange = this.typeChange.bind(this);
+        this.typeComponents = businessTypes.map((type, index) =>(
+            <MenuItem eventKey={index} onSelect={() => this.typeChange(event, type)}>
+                {type.split('_').join(' ')}
+            </MenuItem>
+        ));
+
         //this.updateSearchString = this.updateSearchString.bind(this);
     }
 
@@ -30,9 +46,18 @@ class Search extends Component{
             pathname: path,
             state: {
                 searchString: searchVal,
-                locationString: locationVal
+                locationString: locationVal,
+                searchType: this.state.searchType
             }
         });
+    }
+
+    typeChange(event, type){
+        event.preventDefault();
+        event.stopPropagation();
+        if( event.type == "react-click" ){
+            this.setState({ searchType: type.split('_').join(' ') });
+        }
     }
 
     /*updateSearchString(){
@@ -52,7 +77,12 @@ class Search extends Component{
                     <FormControl componentClass="input"
                                  type="text"
                                  ref="searchString"
-                                 placeholder="Search for restaurants"/>
+                                 placeholder="Search for"/>
+                    <DropdownButton id="dropdownMenu"
+                                    title={this.state.searchType}
+                                    role="menuitem">
+                        {this.typeComponents}
+                    </DropdownButton>
                     <span> near </span>
                     <FormControl componentClass="input"
                                  type="text"
