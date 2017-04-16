@@ -9,19 +9,23 @@ class NewRestaurant extends Component{
 	}
 
 	submit(e){
-		e.preventDefault();
-		var restaurantListRef = firebase.database().ref('restaurants');
-		var newRestaurant = restaurantListRef.push();
-		newRestaurant.set({
-		  name: this.refs.name.value,
-          storenum: this.refs.storenum.value,
-		  rating: this.refs.rating.value,
-		  loc: this.refs.loc.value,
-		  images: [""]
-		});
+		// e.preventDefault();
+		// var restaurantListRef = firebase.database().ref('restaurants');
+		// var newRestaurant = restaurantListRef.push();
+		// newRestaurant.set({
+		//   name: this.refs.name.value,
+  //         storenum: this.refs.storenum.value,
+		//   rating: this.refs.rating.value,
+		//   loc: this.refs.loc.value,
+		//   images: [""]
+		// });
 
-		//this.context.router.push('/restaurants');
-		hashHistory.push('/');
+		// //this.context.router.push('/restaurants');
+		// hashHistory.push('/');
+
+		// testing
+		console.log('name', this.refs.name.value);
+		console.log('rating', this.refs.rating.value);
 	}
 
 	render(){

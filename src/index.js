@@ -14,7 +14,8 @@ var config = {
     messagingSenderId: "235665157636"
 };
 firebase.initializeApp(config);
-
+export const ref = firebase.database().ref();
+export const firebaseAuth = firebase.auth;
 
 
 ReactDOM.render(routes, document.getElementById('root'));
