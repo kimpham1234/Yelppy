@@ -6,20 +6,18 @@ class NewReview extends Component{
 
 	constructor(){
 		super();
-		this.state = {restaurant: String};
+		this.state = {restaurantName: String, restaurantId: String};
 	}
 
 	componentWillMount(){
-		console.log("mounting");
-		this.restaurantRef = firebase.database().ref('restaurants');
+		console.log("New review Mounting");
+		this.restaurantRef = firebase.database().ref('business');
 		var that = this;
-		this.restaurantRef.orderByKey().equalTo(this.props.params.id).on('child_added',  function(snapshot) {
-			var res = snapshot.val();
-			var name = res.name;
-			that.setState({restaurant: name});
+		this.restaurantRef.orderByKey().equalTo(this.props.params.id).once('child_added',  function(snapshot) {
+			that.setState({restaurantName: snapshot.val().name});
+			that.setState({restaurantId: snapshot.val().id});
 		}.bind(this));
 	}
-
 
 	submit(e){
 		var currentUser = firebase.auth().currentUser;
@@ -34,8 +32,9 @@ class NewReview extends Component{
 			  id: this.refs.id.value,
 			});
 
-			var path = '/restaurants/'+this.state.restaurant;
-
+			var path = '/restaurants/'+this.state.restaurantId;
+			console.log(this.state.restaurantId)
+			console.log(path);
 			hashHistory.push(path);
 			
 		}

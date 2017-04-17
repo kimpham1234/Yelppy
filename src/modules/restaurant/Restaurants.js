@@ -8,32 +8,43 @@ class Restaurants extends Component{
 	constructor(){
 		super();
 		this.state = {restaurants:[]};
-		
 	}
 
 	componentWillMount(){
-		console.log("mounting");
-		this.restaurantListRef = firebase.database().ref('restaurants');
+		console.log("Restaurants mounting");
+		this.restaurantListRef = firebase.database().ref('business');
 		var that = this;
 
-		this.restaurantListRef.on('value', function(snapshot) {
+		var list = [];
+
+		//listen for the value of restaurant once when first load
+		this.restaurantListRef.once('value', function(snapshot) {
 		  snapshot.forEach(function(childSnapshot) {
-		    that.state.restaurants.push(childSnapshot.val());
-		    console.log(childSnapshot.val())
-		    that.setState({restaurants: that.state.restaurants})
+		    //that.state.restaurants.push(childSnapshot.val());
+		    //that.setState({restaurants: that.state.restaurants})
+		    list.push(childSnapshot.val());
 		  });
+		  that.setState({restaurants: list});
 		});
+
+		//listen for removal
+		this.restaurantListRef.on('child_removed', function(oldChildSnapshot) {
+		   var toRemoved =  list.indexOf(oldChildSnapshot);
+		   list.splice(toRemoved, 1);
+		   that.setState({restaurants: list});
+		})
 	}
 
+	componentWillUnmount(){
+		this.restaurantListRef.off();
+	}
 
 	render(){
 		var counter = 1;
 		return(
-
 			<div>
 				<h1>List of restaurant</h1>
 				<Link to='restaurants/new'>New</Link>
-				
 				<Table striped condensed hover responsive>
 					<thead>
 				      <tr>
@@ -47,16 +58,16 @@ class Restaurants extends Component{
 				    	{this.state.restaurants.map((restaurant, index) => (
 				    		<tr key={index}>
 				    			<td>
-				    				{counter++}
+				    				{index}
 				    			</td>
 				    			<td>
-				    				<Link to={'/restaurants/'+restaurant.name.split(' ').join('_')}>{restaurant.name}</Link>
+				    				<Link to={'/restaurants/'+restaurant.id}>{restaurant.name}</Link>
 				    			</td>
 				    			<td>
-				    				{ restaurant.rating }/5
+				    				{ (restaurant.rating == "") ? 0 : restaurant.rating }/5
 				    			</td>
 				    			<td>
-				    				{ restaurant.loc }
+				    				{ restaurant.location.display_address[0] + ', '+restaurant.location.display_address[1] }
 				    			</td>
 				    		</tr>
 
@@ -65,7 +76,6 @@ class Restaurants extends Component{
 				</Table>
 		    </div>
 	)}
-
 }
 
 export default Restaurants;
