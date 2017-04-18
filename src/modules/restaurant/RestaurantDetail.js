@@ -18,6 +18,24 @@ class RestaurantDetail extends Component{
 		this.imageUpload = this.imageUpload.bind(this);
 	}
 
+	setReview(key){
+		var review_temp_list = [];
+		var reviewKey_temp_list = [];
+		console.log('in setReview snapshotKey_temp'+ key);
+		var that = this;
+		this.reviewListRef = firebase.database().ref('reviews');
+		this.reviewListRef.orderByChild('id').equalTo(key).on('child_added',function(snapshot) {
+			review_temp_list.push(snapshot.val());
+			reviewKey_temp_list.push(snapshot.key);
+			that.setState({reviews: review_temp_list});
+			that.setState({reviewKeys: reviewKey_temp_list});
+		}.bind(this));
+	}
+
+	sample(){
+		console.log('yay');
+	}
+
 	componentWillMount(){
 		console.log("Restaurant details mounting");
 		this.restaurantRef = firebase.database().ref('business');
@@ -31,7 +49,10 @@ class RestaurantDetail extends Component{
        			for(var i = 0; i < val.location.display_address.length; i++){
        				address += val.location.display_address[i]+', ';
        			}
-       			that.setState({snapshotKey: snapshotKey_temp});
+       			that.setState({snapshotKey: snapshotKey_temp}, (snapshotKey)=>{
+       				console.log('in call back'+ snapshotKey_temp);
+       				that.setReview(snapshotKey_temp);
+       			});
             	that.setState({name: val.name});
             	that.setState({rating: val.rating});
             	that.setState({numReview: val.numReview});
@@ -42,24 +63,29 @@ class RestaurantDetail extends Component{
             	that.setState({coordinates: val.coordinates});
             	that.setState({phone: val.phone});
             	that.setState({price: val.price});
-            	that.setState({images: val.images});       
+            	that.setState({images: val.images});  
 		}.bind(this));
 
 		//var review_temp_list = [];
 		//var reviewKey_temp_list = [];
-		var reviewListRef = firebase.database().ref('reviews');
-		reviewListRef.orderByChild('id').equalTo(snapshotKey_temp).on('child_added',function(snapshot) {
+
+		console.log('snapshotKey_temp'+ snapshotKey_temp);
+		this.reviewListRef = firebase.database().ref('reviews');
+		this.reviewListRef.orderByChild('id').equalTo(snapshotKey_temp).on('child_added',function(snapshot) {
 			this.state.reviews.push(snapshot.val());
 		    this.state.reviewKeys.push(snapshot.key);
 		    this.setState({reviews: this.state.reviews})
 		    this.setState({reviewKeys: this.state.keys})
 		}.bind(this));
+		
 
 		//this.setState({reviews: review_temp_list});
 		//this.setState({reviewKeys: reviewKey_temp_list});
 		//console.log(review_temp_list);
 		
 	}
+
+	
 
 	componentWillUnmount(){
 		this.restaurantRef.off();
