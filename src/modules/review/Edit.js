@@ -10,7 +10,7 @@ class Edit extends Component{
 	constructor(){
 		super();
 		this.state = {review: String, rating: String, review_id: String, author: String, resId: String};
-		
+
 
 	}
 
@@ -29,13 +29,13 @@ class Edit extends Component{
 		}.bind(this));
 	}
 
-	
+
 
 	submit(e){
 		var currentUser = firebase.auth().currentUser;
 		if(currentUser!=null && currentUser.email == this.author){
 			e.preventDefault();
-			
+
 			var reviewRef = firebase.database().ref('reviews/' + this.props.params.id);
 			console.log("the ref is " +reviewRef);
 			reviewRef.set({
@@ -47,19 +47,19 @@ class Edit extends Component{
 			var path = '/restaurants';
 			hashHistory.push(path);
 
-			
+
 
 		}
 	}
 
-	
+
 	render(){
 		return(
 			<div>
 				<div>
 			      <form className="col-md-2" onSubmit={this.submit.bind(this) }>
 			      <h4> Edit your review </h4>
-			      <table>
+			      <table><tbody>
 			      	<tr>
 			      		<td> Rating </td>
 			      		<td>  <input type="text" ref="rating" placeholder={this.rating}/> </td>
@@ -69,9 +69,9 @@ class Edit extends Component{
 			      		<td> Review </td>
 			      		<td>  <textArea cols="50" type="text" ref="review" placeholder={this.review} /></td>
 			      	</tr>
-			      	
+
 			      	<button type="submit">Submit</button>
-			      </table>
+			      </tbody></table>
 				</form>
 			    </div>
 			</div>

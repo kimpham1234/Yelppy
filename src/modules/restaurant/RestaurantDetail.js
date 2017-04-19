@@ -27,7 +27,7 @@ class RestaurantDetail extends Component{
     			this.id = snapshot.key;
     			this.images = value.images;
     			tempId = snapshot.key;
-            
+
 		}.bind(this));
 		var reviewListRef = firebase.database().ref('reviews');
 		reviewListRef.orderByChild('id').equalTo(this.id).on('child_added',function(snapshot) {
@@ -58,7 +58,7 @@ class RestaurantDetail extends Component{
 
 		// Upload file and metadata to the object 'images/mountains.jpg'
 		var uploadTask = firebaseStorage.ref('images/' + this.name + '/' + this.currentUser.email+'/'+ file.name).put(file, metadata);
-		
+
 		// Listen for state changes, errors, and completion of the upload.
 		uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
 		  function(snapshot) {
@@ -91,7 +91,7 @@ class RestaurantDetail extends Component{
 		  // Upload completed successfully, now we can get the download URL
 		  var downloadURL = uploadTask.snapshot.downloadURL;
 		  this.images.push(downloadURL)
-		  
+
 		  var resRef = firebase.database().ref('restaurants/' + this.id);
 
 		  resRef.set({
@@ -108,9 +108,9 @@ class RestaurantDetail extends Component{
 
 
 }
-	
+
 	render() {
-		
+
 		var showDetail = 	<div>
 						<h1>{this.name}</h1>
 						<li>Rating: { this.rating }</li>
@@ -123,11 +123,11 @@ class RestaurantDetail extends Component{
 				    	</a>
 				    ))}
 				    <div>
-				    	
-				    	
-				    	
+
+
+
 				    	<br></br>
-				    	<table>
+				    	<table><tbody>
 				    		<tr>
 				    			<td>Add a Photo:</td>
 				    			<td></td>
@@ -136,7 +136,7 @@ class RestaurantDetail extends Component{
 				    			<td><input type="file" id="input"/></td>
 				    			<td><button type="button" onClick = {this.imageUpload}>Add</button></td>
 				    		</tr>
-				    	</table>
+				    	</tbody></table>
 				    	<button type="button"><Link to={'/reviews/new/'+this.id}>Write a review</Link></button>
 
 				    </div>
@@ -184,4 +184,3 @@ class RestaurantDetail extends Component{
 }
 
 export default RestaurantDetail;
-

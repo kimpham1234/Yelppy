@@ -37,7 +37,7 @@ class NewReview extends Component{
 			var path = '/restaurants/'+this.state.restaurant;
 
 			hashHistory.push(path);
-			
+
 		}
 	}
 
@@ -47,7 +47,7 @@ class NewReview extends Component{
 				<div>
 			      <form className="col-md-2" onSubmit={this.submit.bind(this) }>
 			      <h4> Write a review for {this.state.restaurant} </h4>
-			      <table>
+			      <table><tbody>
 			      	<tr>
 			      		<td> Rating </td>
 			      		<td>  <input type="text" ref="rating" placeholder="Rating on scale of 5"/> </td>
@@ -57,10 +57,10 @@ class NewReview extends Component{
 			      		<td> Review </td>
 			      		<td>  <textArea cols="50" type="text" ref="review" placeholder="Share your thoughts..."/></td>
 			      	</tr>
-			      	
+
 			      	<input type="hidden" ref="id" value={this.props.params.id}/>
 			      	<button type="submit">Submit</button>
-			      </table>
+			      </tbody></table>
 				</form>
 			    </div>
 			</div>
