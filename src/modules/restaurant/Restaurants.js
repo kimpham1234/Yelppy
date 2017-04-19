@@ -43,12 +43,12 @@ class Restaurants extends Component{
 		var counter = 1;
 		return(
 			<div>
-				<h1>List of restaurant</h1>
+				<h1>List of restaurants</h1>
 				<Link to='restaurants/new'>New</Link>
 				<Table striped condensed hover responsive>
 					<thead>
 				      <tr>
-				        <th>#</th>
+				        <th></th>
 				        <th>Name</th>
 				        <th>Rating</th>
 				        <th>Address</th>
@@ -58,7 +58,7 @@ class Restaurants extends Component{
 				    	{this.state.restaurants.map((restaurant, index) => (
 				    		<tr key={index}>
 				    			<td>
-				    				{index}
+				    				<img src={restaurant.avatar} alt={'Avatar for '+restaurant.name} height="32"></img>
 				    			</td>
 				    			<td>
 				    				<Link to={'/restaurants/'+restaurant.id}>{restaurant.name}</Link>
