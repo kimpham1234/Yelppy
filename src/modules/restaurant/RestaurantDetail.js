@@ -3,11 +3,10 @@ import { Link, Router } from 'react-router'
 import * as firebase from 'firebase';
 import { Navbar, Nav, NavItem, Button, ButtonToolbar, Jumbotron, Table, buttonsInstance } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap'
+
+const picURL = "https://firebasestorage.googleapis.com/v0/b/yelppy-80fb2.appspot.com/o/images%2FDefault%2FnoPictureYet.png?alt=media&token=d07db72a-0963-488e-b228-9ab020bd0d41";
+
 class RestaurantDetail extends Component{
-
-	let picURL = "https://firebasestorage.googleapis.com/v0/b/yelppy-80fb2.appspot.com/o/images%2FDefault%2FnoPictureYet.png?alt=media&token=d07db72a-0963-488e-b228-9ab020bd0d41"
-
-
 	constructor(){
 		super();
 		//this.state = {name: String, rating: String, numberOfReviews: Number, location: String, id: String, reviews: [], keys: [], images: [], links: [], currentUser: ""};
