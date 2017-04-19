@@ -12,7 +12,7 @@ class RestaurantDetail extends Component{
 					  avatar: String, categories: String, coordinates: [], phone: String, location: String,
 					  snapshotKey: String,
 					  reviewKeys:[],
-					  reviews: [], 
+					  reviews: [],
 					  images: []
 					 }
 		this.imageUpload = this.imageUpload.bind(this);
@@ -63,7 +63,7 @@ class RestaurantDetail extends Component{
             	that.setState({coordinates: val.coordinates});
             	that.setState({phone: val.phone});
             	that.setState({price: val.price});
-            	that.setState({images: val.images});  
+            	that.setState({images: val.images});
 		}.bind(this));
 
 		//var review_temp_list = [];
@@ -77,21 +77,21 @@ class RestaurantDetail extends Component{
 		    this.setState({reviews: this.state.reviews})
 		    this.setState({reviewKeys: this.state.keys})
 		}.bind(this));
-		
+
 
 		//this.setState({reviews: review_temp_list});
 		//this.setState({reviewKeys: reviewKey_temp_list});
 		//console.log(review_temp_list);
-		
+
 	}
 
-	
+
 
 	componentWillUnmount(){
 		this.restaurantRef.off();
 	}
 
-	
+
 	imageUpload(){
 		console.log("in image upload");
 		var currentUser = firebase.auth().currentUser;
@@ -99,7 +99,7 @@ class RestaurantDetail extends Component{
 		if(currentUser!=null){
 			console.log("upload");
 			var firebaseStorage = firebase.storage();
-			
+
 			// File or Blob named mountains.jpg
 			var file = document.getElementById('input').files[0];
 
@@ -152,7 +152,7 @@ class RestaurantDetail extends Component{
 			//end image upload
 		}
 }
-	
+
 	render() {
 		var showDetail = (
 			<div>
@@ -174,10 +174,10 @@ class RestaurantDetail extends Component{
 				       )
 					)}
 				</div>
-				
-				<div>  	
+
+				<div>
 			    	<br></br>
-			    	<table>
+			    	<table><tbody>
 			    		<tr>
 			    			<td>Add a Photo:</td>
 			    			<td></td>
@@ -186,12 +186,12 @@ class RestaurantDetail extends Component{
 			    			<td><input type="file" id="input"/></td>
 			    			<td><button type="button" onClick = {this.imageUpload}>Add</button></td>
 			    		</tr>
-			    	</table>
+			    	</tbody></table>
 			    	<button type="button"><Link to={'/reviews/new/'+this.state.snapshotKey}>Write a review</Link></button>
 		    	</div>
 	    	</div>
 		)
-		
+
 		var showReview = (
 			<div>
 				<Table striped condensed hover responsive>
@@ -237,8 +237,7 @@ class RestaurantDetail extends Component{
 		)
 
 	}
-		
+
 }
 
 export default RestaurantDetail;
-

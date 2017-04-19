@@ -10,7 +10,7 @@ class Edit extends Component{
 	constructor(){
 		super();
 		this.state = {resPathId: String, review: String, rating: String, review_id: String, author: String, resId: String};
-		
+
 
 	}
 
@@ -46,7 +46,7 @@ class Edit extends Component{
 			});
 			hashHistory.push('/restaurants/'+this.state.resPathId);
 		}
-		
+
 	}
 
 	delete(){
@@ -58,7 +58,7 @@ class Edit extends Component{
 			reviewRef.remove();
 			hashHistory.push('/restaurants/'+this.state.resPathId);
 		}
-		
+
 	}
 
 	render(){
@@ -67,7 +67,7 @@ class Edit extends Component{
 				<div>
 			      <form className="col-md-2" onSubmit={this.submit.bind(this) }>
 			      <h4> Edit your review </h4>
-			      <table>
+			      <table><tbody>
 			      	<tr>
 			      		<td> Rating </td>
 			      		<td>  <input type="text" ref="rating" defaultValue={this.state.rating}/> </td>
@@ -77,9 +77,9 @@ class Edit extends Component{
 			      		<td> Review </td>
 			      		<td>  <textArea cols="50" type="text" ref="review" defaultValue={this.state.review} /></td>
 			      	</tr>
-			      	
+
 			      	<button id="submit" type="submit">Submit</button>
-			      </table>
+			      </tbody></table>
 				</form>
 
 			    <div>
