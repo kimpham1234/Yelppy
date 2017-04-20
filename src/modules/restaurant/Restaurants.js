@@ -43,7 +43,7 @@ class Restaurants extends Component{
 		var counter = 1;
 		return(
 			<div>
-				<h1>List of restaurant</h1>
+				<h1>List of restaurants</h1>
 				<Link to='restaurants/new'>New</Link>
 				<Table striped condensed hover responsive>
 					<thead>
