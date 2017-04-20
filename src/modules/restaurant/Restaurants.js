@@ -48,7 +48,7 @@ class Restaurants extends Component{
 				<Table striped condensed hover responsive>
 					<thead>
 				      <tr>
-				        <th>#</th>
+				        <th></th>
 				        <th>Name</th>
 				        <th>Rating</th>
 				        <th>Address</th>
@@ -58,7 +58,7 @@ class Restaurants extends Component{
 				    	{this.state.restaurants.map((restaurant, index) => (
 				    		<tr key={index}>
 				    			<td>
-				    				{index}
+				    				<img src={restaurant.avatar} alt={'Avatar for '+restaurant.name} height="32"></img>
 				    			</td>
 				    			<td>
 				    				<Link to={'/restaurants/'+restaurant.id}>{restaurant.name}</Link>
