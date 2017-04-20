@@ -8,7 +8,7 @@ class RestaurantDetail extends Component{
 	constructor(){
 		super();
 		//this.state = {name: String, rating: String, numberOfReviews: Number, location: String, id: String, reviews: [], keys: [], images: [], links: [], currentUser: ""};
-		this.state = {name: String, rating: String, numReview: String, id: String,  price: String,
+		this.state = {name: String, rating:String, numReview: String, id: String,  price: String,
 					  avatar: String, categories: String, coordinates: [], phone: String, location: String,
 					  snapshotKey: String,
 					  reviewKeys:[],
@@ -55,6 +55,7 @@ class RestaurantDetail extends Component{
        			});
             	that.setState({name: val.name});
             	that.setState({rating: val.rating});
+
             	that.setState({numReview: val.numReview});
             	that.setState({id: val.id});
             	that.setState({location: address})
@@ -65,7 +66,6 @@ class RestaurantDetail extends Component{
             	that.setState({price: val.price});
             	that.setState({images: val.images});
 		}.bind(this));
-
 		//var review_temp_list = [];
 		//var reviewKey_temp_list = [];
 
@@ -161,7 +161,7 @@ class RestaurantDetail extends Component{
 					<li><img src={ this.state.avatar } width="100" height="100"/></li>
 					<li>Rating: {' '+ this.state.rating==0 ? 0 : this.state.rating }/5</li>
 					<li>Address: {' '+ this.state.location}</li>
-					<li>Reviews: {' '+ this.state.review==0 ? 0 : this.state.review }</li>
+					<li>Reviews: {' '+ this.state.numReview==0 ? 0 : this.state.numReview }</li>
 				    <li>Categories: {' '+ this.state.categories }</li>
 				    <li>Phone: {' '+ this.state.phone }</li>
 				    <li>Price: { ' '+this.state.price }</li><br></br>

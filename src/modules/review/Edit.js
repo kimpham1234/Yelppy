@@ -30,7 +30,9 @@ class Edit extends Component{
 				}.bind(this));
 			});
 			that.setState({review_id: this.props.params.id});
+			
 		}.bind(this));
+		
 	}
 
 	submit(e){
@@ -45,6 +47,7 @@ class Edit extends Component{
 				text: this.refs.review.value
 			});
 			hashHistory.push('/restaurants/'+this.state.resPathId);
+			this.updateReview(this.state.resId);
 		}
 
 	}
@@ -60,6 +63,28 @@ class Edit extends Component{
 		}
 
 	}
+
+	updateReview(e){
+		var reviewListRef = firebase.database().ref('reviews');
+		var total = 0;
+		var numberOfReviews = 0;
+		console.log(e);
+
+		reviewListRef.orderByChild('id').equalTo(e).on('child_added',function(snapshot) {
+			total+=Number(snapshot.val().rating);
+			numberOfReviews ++;
+		}.bind(this));
+
+		var resRef = firebase.database().ref('business/'+e).update({
+				rating: this.round(Number(total / numberOfReviews)),
+				numReview: numberOfReviews
+			});
+
+	}
+	round(number) {
+    var value = (number * 2).toFixed() / 2;
+    return value;
+}
 
 	render(){
 		return(
