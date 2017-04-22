@@ -1,0 +1,61 @@
+.App {
+  text-align: center;
+  width: 100%;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.form_center {
+  display:block;
+  margin:0 auto;
+}
+
+.App-header {
+  background-image: url("./modules/pictures/yelppy.jpg");
+  background-color: #cccccc;
+  height: 120px;
+  padding: 20px;
+  color: black;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.yelppy-photo {
+  display: block;
+    margin: 0 auto;
+  border-radius: 20px;
+  opacity: 0.7
+}
+
+.footerholder {
+    background: none repeat scroll 0 0 transparent;
+    bottom: 0;
+    position: relative;
+    text-align: center;
+    width: 100%;
+}
+.footer {
+  display: block;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #efefef;
+  text-align: left;
+  border-radius: 5px;
+  height:150px;
+  padding-top: 20px;
+   padding-left: 50px;
+   padding-right: 20px;
+   padding-bottom: 20px;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
