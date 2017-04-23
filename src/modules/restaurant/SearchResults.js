@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { withGoogleMap, GoogleMapLoader, GoogleMap, Marker, InfoWindow } from 'react-google-maps';
 import { Link } from 'react-router';
+import * as firebase from 'firebase';
 
 
 const GettingStartedGoogleMap = withGoogleMap(props => (
@@ -53,6 +54,8 @@ export default class SearchResults extends Component{
             }
         };
 
+        this.businessRef = firebase.database().ref('business');
+
         this.searchService = new google.maps.places.PlacesService(document.getElementById('map'));
         this.searchCallback = this.searchCallback.bind(this);
         this.locationSearchCallback = this.locationSearchCallback.bind(this);
@@ -85,10 +88,57 @@ export default class SearchResults extends Component{
         if(status == google.maps.places.PlacesServiceStatus.OK){
             //console.log(results);
             let tempArr = [];
-            console.log(results);
+            //console.log(results);
+
+
+            let localRef = "";
             let tempBounds = new google.maps.LatLngBounds();
             for(var i = 0; i < results.length; i++){
-                console.log(results[i].vicinity.split(','));
+                //console.log(results[i]);
+                let tempID = "";
+                let newBusiness = "";
+                let that = this;
+                tempID = results[i].place_id;
+                //console.log("tempID after assignment" + tempID);
+                console.log("tempID in if statement: " + tempID);
+                that.businessRef.orderByChild('id').equalTo(tempID).on('value', function (snapshot) {
+                    console.log("tempID in query callback: " + tempID);
+                    if (snapshot.val() == null) {
+                        that.searchService.getDetails({placeId: tempID}, function (place, status) {
+                            console.log("tempID inside google callback: " + tempID);
+                            if (status == google.maps.places.PlacesServiceStatus.OK) {
+                                let placeArr = place.formatted_address.split(',');
+                                newBusiness = that.businessRef.push();
+                                newBusiness.set({
+                                    avatar: place.photos[0].getUrl({maxWidth: 700}),
+                                    categories: place.types,
+                                    id: place.place_id,
+                                    coordinates: {
+                                        latitutde: place.geometry.location.lat(),
+                                        longitude: place.geometry.location.lng()
+                                    },
+                                    images: ["https://firebasestorage.googleapis.com/v0/b/yelppy-80fb2.appspot.com/o/images%2FDefault%2FnoPictureYet.png?alt=media&token=d07db72a-0963-488e-b228-9ab020bd0d41"],
+                                    name: place.name,
+                                    location: {
+                                        address1: placeArr[0].trim(),
+                                        address2: "",
+                                        address3: "",
+                                        city: placeArr[1].trim(),
+                                        state: placeArr[2].trim().split(' ')[0].trim(),
+                                        zip_code: placeArr[2].trim().split(' ')[1].trim(),
+                                        display_address: [placeArr[0].trim(), (placeArr[1].trim() + ', ' + placeArr[2].trim().split(' ')[0].trim())]
+                                    },
+                                    numReview: 0,
+                                    phone: place.formatted_phone_number,
+                                    price: "",
+                                    rating: 0
+                                });
+                            }
+
+                        });
+                    }
+                });
+
                 tempArr.push({
                     position: {
                         lat: results[i].geometry.location.lat(),
@@ -112,7 +162,7 @@ export default class SearchResults extends Component{
                             <tspan x="50%" y="40%">{results[i].vicinity.split(',')[0]}</tspan>
                             <tspan x="50%" y="60%">{results[i].vicinity.split(',')[1].trim()}</tspan>
                             <tspan x="50%" y="88%">
-                                <Link to={'/businessDetail/'+results[i].geometry.location.lat() + '/' + results[i].geometry.location.lng()}>Review this restaurant</Link>
+                                <Link to={'/restaurants/'+results[i].place_id}>Review this restaurant</Link>
                             </tspan>
                         </text>
                     </svg>
@@ -166,8 +216,6 @@ export default class SearchResults extends Component{
     handleBoundsChanged(){
         this.setState({
             bounds: this.googleMap.getBounds()
-        }, function(){
-            console.log(this.state.bounds);
         });
     }
 
