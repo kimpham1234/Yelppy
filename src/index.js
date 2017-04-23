@@ -15,8 +15,7 @@ var config = {
 };
 firebase.initializeApp(config);
 
-
-
 ReactDOM.render(routes, document.getElementById('root'));
 
-
+export const ref = firebase.database().ref();
+export const firebaseAuth = firebase.auth();
