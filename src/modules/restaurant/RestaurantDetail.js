@@ -45,7 +45,7 @@ class RestaurantDetail extends Component{
         this.restaurantRef = firebase.database().ref('business');
         var that = this;
         var snapshotKey_temp = "";
-        this.restaurantRef.orderByChild('coordinates').equalTo(this.props.params.coordinates)
+        this.restaurantRef.orderByChild('id').equalTo(this.props.params.id)
             .on('child_added', function(snapshot) {
                 snapshotKey_temp = snapshot.key;
                 var val = snapshot.val();

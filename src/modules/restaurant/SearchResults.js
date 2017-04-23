@@ -112,7 +112,7 @@ export default class SearchResults extends Component{
                             <tspan x="50%" y="40%">{results[i].vicinity.split(',')[0]}</tspan>
                             <tspan x="50%" y="60%">{results[i].vicinity.split(',')[1].trim()}</tspan>
                             <tspan x="50%" y="88%">
-                                <Link to={'/restaurants/'+results[i].name}>Review this restaurant</Link>
+                                <Link to={'/businessDetail/'+results[i].geometry.location.lat() + '/' + results[i].geometry.location.lng()}>Review this restaurant</Link>
                             </tspan>
                         </text>
                     </svg>
