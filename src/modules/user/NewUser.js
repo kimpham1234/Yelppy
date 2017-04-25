@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import * as firebase from 'firebase';
 import "../../App.css";
-
+import { auth } from '../helpers/users-auth';
 import {hashHistory} from 'react-router';
-
+import {passingToProfile} from './Profile'
 
 class NewUser extends Component{
 	//contextTypes: {
@@ -20,9 +20,11 @@ class NewUser extends Component{
 		
 		var userEmail = this.refs.email.value;
 		var password = this.refs.password.value;
+		var first = this.refs.first.value;
+		var last = this.refs.last.value;
 		var that = this;
-
-
+		/*
+		// working code
 		firebase.auth().createUserWithEmailAndPassword(userEmail, password).catch(function(error) {
 			var userListRef = firebase.database().ref('users');
 			var newUser = userListRef.push();
@@ -33,6 +35,10 @@ class NewUser extends Component{
 			//that.context.router.push('/');
 		});
 		hashHistory.push('/');
+		*/
+		auth(userEmail, password, first, last);
+		hashHistory.push('/');
+		passingToProfile(userEmail, first, last);
 	}
 
 	render(){
@@ -52,6 +58,8 @@ class NewUser extends Component{
 
 				<form onSubmit={this.submit.bind(this)}>
 			        <input type="text" ref="email" placeholder="Your email address"/><br></br>
+			        <input type="text" ref="first" placeholder="Your first name"/><br></br>
+			        <input type="text" ref="last" placeholder="Your last name"/><br></br>
                     <input type="password" ref="password" placeholder="Your password"/><br></br>
 			        <button type="submit">Submit</button>
 			    </form>

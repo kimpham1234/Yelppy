@@ -23,6 +23,7 @@ class Login extends Component{
 		// var password = "123456"
 
 		// working code
+		/*
 		firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
 			// Handle Errors here.
 			var errorCode = error.code;
@@ -35,13 +36,13 @@ class Login extends Component{
 			console.log(error);
 		});
 		hashHistory.push('/');
+		*/
 		
-
-		// e.preventDefault();
-		// login(this.refs.email.value, this.refs.password.value);
-		// hashHistory.push('/');
-		// console.log('email', this.refs.email.value);
-		// console.log('password', this.refs.password.value);
+		e.preventDefault();
+		login(email, password);
+		hashHistory.push('/');
+		// console.log('email', email);
+		// console.log('password', password);
 	}
 
 	render(){
