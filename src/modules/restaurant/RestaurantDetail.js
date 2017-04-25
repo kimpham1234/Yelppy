@@ -9,88 +9,85 @@ import { LinkContainer } from 'react-router-bootstrap'
 const picURL = "https://firebasestorage.googleapis.com/v0/b/yelppy-80fb2.appspot.com/o/images%2FDefault%2FnoPictureYet.png?alt=media&token=d07db72a-0963-488e-b228-9ab020bd0d41";
 
 class RestaurantDetail extends Component{
-    constructor(){
-        super();
-        //this.state = {name: String, rating: String, numberOfReviews: Number, location: String, id: String, reviews: [], keys: [], images: [], links: [], currentUser: ""};
-        this.state = {name: String, rating:String, numReview: String, id: String,  price: String,
-            avatar: String, categories: String, coordinates: [], phone: String, location: String,
-            snapshotKey: String,
-            reviewKeys:[],
-            reviews: [],
-            images: []
-        }
-        this.imageUpload = this.imageUpload.bind(this);
-    }
+	constructor(){
+		super();
+		//this.state = {name: String, rating: String, numberOfReviews: Number, location: String, id: String, reviews: [], keys: [], images: [], links: [], currentUser: ""};
+		this.state = {name: String, rating:String, numReview: String, id: String,  price: String,
+					  avatar: String, categories: String, coordinates: [], phone: String, location: String,
+					  snapshotKey: String,
+					  reviewKeys:[],
+					  reviews: [],
+					  images: []
+					 }
+		this.imageUpload = this.imageUpload.bind(this);
+	}
 
-    setReview(key){
-        var review_temp_list = [];
-        var reviewKey_temp_list = [];
-        console.log('in setReview snapshotKey_temp'+ key);
-        var that = this;
-        this.reviewListRef = firebase.database().ref('reviews');
-        this.reviewListRef.orderByChild('id').equalTo(key).on('child_added',function(snapshot) {
-            review_temp_list.push(snapshot.val());
-            reviewKey_temp_list.push(snapshot.key);
-            that.setState({reviews: review_temp_list});
-            that.setState({reviewKeys: reviewKey_temp_list});
-        }.bind(this));
-    }
+	setReview(key){
+		var review_temp_list = [];
+		var reviewKey_temp_list = [];
+		console.log('in setReview snapshotKey_temp'+ key);
+		var that = this;
+		this.reviewListRef = firebase.database().ref('reviews');
+		this.reviewListRef.orderByChild('id').equalTo(key).on('child_added',function(snapshot) {
+			review_temp_list.push(snapshot.val());
+			reviewKey_temp_list.push(snapshot.key);
+			that.setState({reviews: review_temp_list});
+			that.setState({reviewKeys: reviewKey_temp_list});
+		}.bind(this));
+	}
 
-    sample(){
-        console.log('yay');
-    }
+	sample(){
+		console.log('yay');
+	}
 
-    componentWillMount(){
-        console.log("Restaurant details mounting");
-        this.restaurantRef = firebase.database().ref('business');
-        var that = this;
-        var snapshotKey_temp = "";
-        console.log(this);
-        this.restaurantRef.orderByChild('id').equalTo(this.props.params.id)
-            .on('child_added', function(snapshot) {
-                console.log(snapshot.val());
-                snapshotKey_temp = snapshot.key;
-                var val = snapshot.val();
-                var address = "";
-                for(var i = 0; i < val.location.display_address.length; i++){
-                    address += val.location.display_address[i]+', ';
-                }
-                that.setState({snapshotKey: snapshotKey_temp}, (snapshotKey)=>{
-                    console.log('in call back'+ snapshotKey_temp);
-                    that.setReview(snapshotKey_temp);
-                });
-                that.setState({
-                    name: val.name,
-                    rating: val.rating,
-                    numReview: val.numReview,
-                    id: val.id,
-                    location: address,
-                    avatar: val.avatar,
-                    categories: val.categories,
-                    coordinates: val.coordinates,
-                    phone: val.phone,
-                    price: val.price,
-                    images: val.images
-                });
-            }.bind(this));
-        //var review_temp_list = [];
-        //var reviewKey_temp_list = [];
+	componentWillMount(){
+		console.log("Restaurant details mounting");
+		this.restaurantRef = firebase.database().ref('business');
+		var that = this;
+		var snapshotKey_temp = "";
+		this.restaurantRef.orderByChild('id').equalTo(this.props.params.id)
+										.on('child_added', function(snapshot) {
+              	snapshotKey_temp = snapshot.key;
+              	var val = snapshot.val();
+       			var address = "";
+       			for(var i = 0; i < val.location.display_address.length; i++){
+       				address += val.location.display_address[i]+', ';
+       			}
+       			that.setState({snapshotKey: snapshotKey_temp}, (snapshotKey)=>{
+       				console.log('in call back'+ snapshotKey_temp);
+       				that.setReview(snapshotKey_temp);
+       			});
+            	that.setState({name: val.name});
+            	that.setState({rating: val.rating});
 
-        console.log('snapshotKey_temp'+ snapshotKey_temp);
-        this.reviewListRef = firebase.database().ref('reviews');
-        this.reviewListRef.orderByChild('id').equalTo(snapshotKey_temp).on('child_added',function(snapshot) {
-            this.state.reviews.push(snapshot.val());
-            this.state.reviewKeys.push(snapshot.key);
-            this.setState({reviews: this.state.reviews})
-            this.setState({reviewKeys: this.state.keys})
-        }.bind(this));
+            	that.setState({numReview: val.numReview});
+            	that.setState({id: val.id});
+            	that.setState({location: address})
+            	that.setState({avatar: val.avatar});
+            	that.setState({categories: val.categories});
+            	that.setState({coordinates: val.coordinates});
+            	that.setState({phone: val.phone});
+            	that.setState({price: val.price});
+            	that.setState({images: val.images});
+		}.bind(this));
+		//var review_temp_list = [];
+		//var reviewKey_temp_list = [];
+
+		console.log('snapshotKey_temp'+ snapshotKey_temp);
+		this.reviewListRef = firebase.database().ref('reviews');
+		this.reviewListRef.orderByChild('id').equalTo(snapshotKey_temp).on('child_added',function(snapshot) {
+			this.state.reviews.push(snapshot.val());
+		    this.state.reviewKeys.push(snapshot.key);
+		    this.setState({reviews: this.state.reviews})
+		    this.setState({reviewKeys: this.state.keys})
+		}.bind(this));
 
 
-        //this.setState({reviews: review_temp_list});
-        //this.setState({reviewKeys: reviewKey_temp_list});
-        //console.log(review_temp_list);
+		//this.setState({reviews: review_temp_list});
+		//this.setState({reviewKeys: reviewKey_temp_list});
+		//console.log(review_temp_list);
 
-    }
+	}
 
 
 
@@ -182,6 +179,7 @@ class RestaurantDetail extends Component{
                     )}
 				</div>
 
+
 				<div>
 					<br></br>
 					<table><tbody>
@@ -200,6 +198,7 @@ class RestaurantDetail extends Component{
         )
 
         var showReview = (
+
 			<div>
 				<Table striped condensed hover responsive>
 					<thead>
@@ -229,6 +228,7 @@ class RestaurantDetail extends Component{
 								<td>
 									<button type="button" ><Link to={'/reviews/edit/'+this.state.reviewKeys[index]}>Edit</Link></button>
 								</td>
+
 							</tr>
                         ))}
 					</tbody>
@@ -244,6 +244,7 @@ class RestaurantDetail extends Component{
         )
 
     }
+
 
 }
 
