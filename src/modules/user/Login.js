@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import "../../App.css";
 import { login, resetPassword } from '../helpers/users-auth';
-
+import {passingToProfile} from './Profile'
 import {hashHistory} from 'react-router';
 
 class Login extends Component{
@@ -41,6 +41,7 @@ class Login extends Component{
 		e.preventDefault();
 		login(email, password);
 		hashHistory.push('/');
+		//passingToProfile(email, "", "");
 		// console.log('email', email);
 		// console.log('password', password);
 	}

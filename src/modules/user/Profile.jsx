@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
-var first = '';
-var last = '';
+var first = '-1';
+var last = '-1';
 
 export function passingToProfile(email, aFirst, aLast) {
 	console.log('hello testing');
@@ -17,25 +17,37 @@ export function passingToProfile(email, aFirst, aLast) {
 export default class Profile extends Component {
 	constructor(){
 		super();
-		this.state = {currentUser: String, first: String, last: String};
+		this.state = {first: String, last: String}
 	}
 	componentWillMount() {
 		this.currentUser = firebase.auth().currentUser;
-		console.log('first', first);
-		console.log('last', last);
-		this.first=first;
-		this.last=last;
+		this.currentUserRef = firebase.database().ref('users');
+		console.log('currentUser', this.currentUser);
+		var displayName = this.currentUser.displayName;
+		if (displayName == null)
+		{
+			console.log("testing");
+			this.currentUserRef.orderByChild('email').equalTo(this.currentUser.email)
+										.on('child_added', function(snapshot) {
+              	var val = snapshot.val();
+              	this.setState({first: val.first});
+              	this.setState({last: val.last});
+			}.bind(this));
+		}
+		else
+		{
+			var firstAndLast = this.currentUser.displayName.split(" ");
+			this.setState({first: firstAndLast[0]});
+			this.setState({last: firstAndLast[1]});	
+		}
+		console.log('currentUser', this.currentUser);
 	}
 
 	render() {
 		return (
 			<div>
-				{/*
-				<li>First name: {this.currentUser.first}</li>
-			    <li>Last name: {this.currentUser.last}</li>
-			    */}
-			    <li>First name: {this.first}</li>
-			    <li>Last name: {this.last}</li>
+			    <li>First name: {this.state.first}</li>
+			    <li>Last name: {this.state.last}</li>
 				<li>Email: {this.currentUser.email}</li>
 			</div>
 		)
