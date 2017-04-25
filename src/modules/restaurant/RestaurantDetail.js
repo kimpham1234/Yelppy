@@ -41,53 +41,56 @@ class RestaurantDetail extends Component{
 	}
 
 	componentWillMount(){
-		console.log("Restaurant details mounting");
-		this.restaurantRef = firebase.database().ref('business');
-		var that = this;
-		var snapshotKey_temp = "";
-		this.restaurantRef.orderByChild('id').equalTo(this.props.params.id)
-										.on('child_added', function(snapshot) {
-              	snapshotKey_temp = snapshot.key;
-              	var val = snapshot.val();
-       			var address = "";
-       			for(var i = 0; i < val.location.display_address.length; i++){
-       				address += val.location.display_address[i]+', ';
-       			}
-       			that.setState({snapshotKey: snapshotKey_temp}, (snapshotKey)=>{
-       				console.log('in call back'+ snapshotKey_temp);
-       				that.setReview(snapshotKey_temp);
-       			});
-            	that.setState({name: val.name});
-            	that.setState({rating: val.rating});
+        console.log("Restaurant details mounting");
+        this.restaurantRef = firebase.database().ref('business');
+        var that = this;
+        var snapshotKey_temp = "";
+        console.log(this);
+        this.restaurantRef.orderByChild('id').equalTo(this.props.params.id)
+            .on('child_added', function(snapshot) {
+                console.log(snapshot.val());
+                snapshotKey_temp = snapshot.key;
+                var val = snapshot.val();
+                var address = "";
+                for(var i = 0; i < val.location.display_address.length; i++){
+                    address += val.location.display_address[i]+', ';
+                }
+                that.setState({snapshotKey: snapshotKey_temp}, (snapshotKey)=>{
+                    console.log('in call back'+ snapshotKey_temp);
+                    that.setReview(snapshotKey_temp);
+                });
+                that.setState({
+                    name: val.name,
+                    rating: val.rating,
+                    numReview: val.numReview,
+                    id: val.id,
+                    location: address,
+                    avatar: val.avatar,
+                    categories: val.categories,
+                    coordinates: val.coordinates,
+                    phone: val.phone,
+                    price: val.price,
+                    images: val.images
+                });
+            }.bind(this));
+        //var review_temp_list = [];
+        //var reviewKey_temp_list = [];
 
-            	that.setState({numReview: val.numReview});
-            	that.setState({id: val.id});
-            	that.setState({location: address})
-            	that.setState({avatar: val.avatar});
-            	that.setState({categories: val.categories});
-            	that.setState({coordinates: val.coordinates});
-            	that.setState({phone: val.phone});
-            	that.setState({price: val.price});
-            	that.setState({images: val.images});
-		}.bind(this));
-		//var review_temp_list = [];
-		//var reviewKey_temp_list = [];
-
-		console.log('snapshotKey_temp'+ snapshotKey_temp);
-		this.reviewListRef = firebase.database().ref('reviews');
-		this.reviewListRef.orderByChild('id').equalTo(snapshotKey_temp).on('child_added',function(snapshot) {
-			this.state.reviews.push(snapshot.val());
-		    this.state.reviewKeys.push(snapshot.key);
-		    this.setState({reviews: this.state.reviews})
-		    this.setState({reviewKeys: this.state.keys})
-		}.bind(this));
+        console.log('snapshotKey_temp'+ snapshotKey_temp);
+        this.reviewListRef = firebase.database().ref('reviews');
+        this.reviewListRef.orderByChild('id').equalTo(snapshotKey_temp).on('child_added',function(snapshot) {
+            this.state.reviews.push(snapshot.val());
+            this.state.reviewKeys.push(snapshot.key);
+            this.setState({reviews: this.state.reviews})
+            this.setState({reviewKeys: this.state.keys})
+        }.bind(this));
 
 
-		//this.setState({reviews: review_temp_list});
-		//this.setState({reviewKeys: reviewKey_temp_list});
-		//console.log(review_temp_list);
+        //this.setState({reviews: review_temp_list});
+        //this.setState({reviewKeys: reviewKey_temp_list});
+        //console.log(review_temp_list);
 
-	}
+    }
 
 
 

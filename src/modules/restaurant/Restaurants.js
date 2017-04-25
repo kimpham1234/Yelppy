@@ -77,7 +77,6 @@ class Restaurants extends Component{
 				</Table>
 		    </div>
 	)}
->>>>>>> 2dd9b4a27c0dc90ef9fdf9573d4f7b7bf8fb4e26
 }
 
 export default Restaurants;
