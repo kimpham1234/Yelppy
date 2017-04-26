@@ -9,9 +9,8 @@ import { LinkContainer } from 'react-router-bootstrap'
 const picURL = "https://firebasestorage.googleapis.com/v0/b/yelppy-80fb2.appspot.com/o/images%2FDefault%2FnoPictureYet.png?alt=media&token=d07db72a-0963-488e-b228-9ab020bd0d41";
 
 class RestaurantDetail extends Component{
-	constructor(){
-		super();
-		//this.state = {name: String, rating: String, numberOfReviews: Number, location: String, id: String, reviews: [], keys: [], images: [], links: [], currentUser: ""};
+	constructor(props){
+        super(props);
 		this.state = {name: String, rating:String, numReview: String, id: String,  price: String,
 					  avatar: String, categories: String, coordinates: [], phone: String, location: String,
 					  snapshotKey: String,
@@ -26,7 +25,6 @@ class RestaurantDetail extends Component{
 	setReview(key){
 		var review_temp_list = [];
 		var reviewKey_temp_list = [];
-		// console.log('in setReview snapshotKey_temp'+ key);
 		var that = this;
 		this.reviewListRef = firebase.database().ref('reviews');
 		this.reviewListRef.orderByChild('id').equalTo(key).on('child_added',function(snapshot) {
@@ -38,18 +36,14 @@ class RestaurantDetail extends Component{
 	}
 
 	sample(){
-		// console.log('yay');
 	}
 
 	componentWillMount(){
-        // console.log("Restaurant details mounting");
         this.restaurantRef = firebase.database().ref('business');
         var that = this;
         var snapshotKey_temp = "";
-        // console.log(this);
         this.restaurantRef.orderByChild('id').equalTo(this.props.params.id)
             .on('child_added', function(snapshot) {
-                // console.log(snapshot.val());
                 snapshotKey_temp = snapshot.key;
                 var val = snapshot.val();
                 var address = "";
@@ -57,7 +51,6 @@ class RestaurantDetail extends Component{
                     address += val.location.display_address[i]+', ';
                 }
                 that.setState({snapshotKey: snapshotKey_temp}, (snapshotKey)=>{
-                    // console.log('in call back'+ snapshotKey_temp);
                     that.setReview(snapshotKey_temp);
                 });
                 that.setState({
@@ -88,9 +81,6 @@ class RestaurantDetail extends Component{
 
 
 
-        // this.setState({reviews: review_temp_list});
-        // this.setState({reviewKeys: reviewKey_temp_list});
-        // console.log('testing1', review_temp_list);
         this.setState({currentUser: firebase.auth().currentUser});
     }
 
@@ -102,11 +92,9 @@ class RestaurantDetail extends Component{
 
 
     imageUpload(){
-        // console.log("in image upload");
         var currentUser = firebase.auth().currentUser;
         console.log(currentUser);
         if(currentUser!=null){
-            // console.log("upload");
             var firebaseStorage = firebase.storage();
 
             // File or Blob named mountains.jpg
@@ -163,10 +151,6 @@ class RestaurantDetail extends Component{
     }
 
     render() {
-        // console.log('reviews', this.state.reviews);
-        // console.log('currentUser', this.state.currentUser);
-        // console.log('reviewKey', this.state.reviewKeys);
-
         var showDetail = (
 			<div>
 				<div>
@@ -248,7 +232,6 @@ class RestaurantDetail extends Component{
 				</Table>
 			</div>
         )
-        // console.log('business key', this.state.snapshotKey);
         return (
 			<div>
                 {showDetail}
@@ -256,10 +239,6 @@ class RestaurantDetail extends Component{
                 {showReview}
 			</div>
         )
-
     }
-
-
 }
-
 export default RestaurantDetail;

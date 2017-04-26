@@ -15,12 +15,10 @@ class Edit extends Component{
 	}
 
 	componentWillMount(){
-		console.log("Edit will mount");
 		var that = this;
 		this.reviewListRef = firebase.database();
 		this.reviewListRef.ref('reviews/'+this.props.params.id).once('value',function(snapshot) {
 			var value = snapshot.val();
-			console.log("snapshot" + snapshot.val().text);
 			that.setState({review: value.text});
 			that.setState({rating: value.rating});
 			that.setState({author: value.author});
@@ -39,7 +37,6 @@ class Edit extends Component{
 		e.preventDefault();
 		var currentUser = firebase.auth().currentUser;
 		if(currentUser!=null && currentUser.email===this.state.author){
-			console.log('in submit');
 			var resPath = "";
 			var reviewRef = firebase.database().ref('reviews/' + this.props.params.id);
 			reviewRef.update({
@@ -49,26 +46,34 @@ class Edit extends Component{
 			hashHistory.push('/restaurants/'+this.state.resPathId);
 			this.updateReview(this.state.resId);
 		}
-
+		else
+		{
+			alert('Sorry. You cannot edit this review.' 
+				+' Only its own user can edit this review');
+			hashHistory.push('/restaurants/'+this.state.resPathId);
+		}
 	}
 
 	delete(){
 		var currentUser = firebase.auth().currentUser;
 		if(currentUser!=null && currentUser.email===this.state.author){
-			console.log('in submit');
 			var resPath = "";
 			var reviewRef = firebase.database().ref('reviews/' + this.props.params.id);
 			reviewRef.remove();
 			hashHistory.push('/restaurants/'+this.state.resPathId);
 		}
-
+		else
+		{
+			alert('Sorry. You cannot delete this review.' 
+				+' Only its own user can delete this review');
+			hashHistory.push('/restaurants/'+this.state.resPathId);
+		}
 	}
 
 	updateReview(e){
 		var reviewListRef = firebase.database().ref('reviews');
 		var total = 0;
 		var numberOfReviews = 0;
-		console.log(e);
 
 		reviewListRef.orderByChild('id').equalTo(e).on('child_added',function(snapshot) {
 			total+=Number(snapshot.val().rating);
@@ -90,7 +95,7 @@ class Edit extends Component{
 		return(
 			<div>
 				<div>
-			      <form className="col-md-2" onSubmit={this.submit.bind(this) }>
+			      <form onSubmit={this.submit.bind(this) }>
 			      <h4> Edit your review </h4>
 			      <table><tbody>
 			      	<tr>
@@ -102,14 +107,10 @@ class Edit extends Component{
 			      		<td> Review </td>
 			      		<td>  <textArea cols="50" type="text" ref="review" defaultValue={this.state.review} /></td>
 			      	</tr>
-
-			      	<button id="submit" type="submit">Submit</button>
 			      </tbody></table>
+			      <button id="submit" type="submit">Submit</button><br></br>
 				</form>
-
-			    <div>
-			   		 <button type="delete" onClick={this.delete.bind(this)}>Delete this review</button>
-			    </div>
+				<button type="delete" onClick={this.delete.bind(this)}>Delete</button>
 			    </div>
 
 

@@ -10,7 +10,6 @@ class NewReview extends Component{
 	}
 
 	componentWillMount(){
-		console.log("New review Mounting");
 		this.restaurantRef = firebase.database().ref('business');
 		var that = this;
 		this.restaurantRef.orderByKey().equalTo(this.props.params.id).once('child_added',  function(snapshot) {
@@ -24,7 +23,7 @@ class NewReview extends Component{
 
 	submit(e){
 		var currentUser = firebase.auth().currentUser;
-		if(currentUser!=null){
+		if(currentUser!==null && this.refs.rating!=="" && this.refs.review.value!==""){
 			e.preventDefault();
 			var reviewListRef = firebase.database().ref('reviews');
 			var newReviewRef = reviewListRef.push();
@@ -36,10 +35,16 @@ class NewReview extends Component{
 			});
 
 			var path = '/restaurants/'+this.state.restaurantId;
-			console.log(path);
 			hashHistory.push(path);
 			this.updateReview(this.state.restaurantKey);
-
+		}
+		else if (currentUser==null)
+		{
+			alert('Sorry. You are not logged in');
+		}
+		else if (this.refs.rating!=null || this.refs.review.value!=null)
+		{
+			alert('Sorry. Inputs cannot be empty');
 		}
 	}
 
@@ -47,7 +52,6 @@ class NewReview extends Component{
 		var reviewListRef = firebase.database().ref('reviews');
 		var total = 0;
 		var numberOfReviews = 0;
-		console.log(e);
 
 		reviewListRef.orderByChild('id').equalTo(e).on('child_added',function(snapshot) {
 			total+=Number(snapshot.val().rating);
@@ -82,11 +86,11 @@ class NewReview extends Component{
 			      		<td> Review </td>
 			      		<td>  <textArea cols="50" type="text" ref="review" placeholder="Share your thoughts..."/></td>
 			      	</tr>
-
-			      	<input type="hidden" ref="id" value={this.props.params.id}/>
-			      	<button type="submit">Submit</button>
+			      	
 			      </tbody></table>
+			      <button type="submit">Submit</button>
 				</form>
+				<input type="hidden" ref="id" value={this.props.params.id}/>
 			    </div>
 			</div>
 		)
