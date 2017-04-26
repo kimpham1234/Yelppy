@@ -1,8 +1,0 @@
-#!/bin/bash
-echo "Begin loading"
-node yelpBusiness.js $1 $2
-node yelpLoad.js &
-
-
-
-
