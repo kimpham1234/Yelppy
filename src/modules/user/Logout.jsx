@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-
 import {hashHistory} from 'react-router';
 // import * as firebase from 'firebase';
 import { logout } from '../helpers/users-auth';
+import { Button } from 'react-bootstrap';
 class Logout extends Component {
 	submit(e) {
 		/* working code
@@ -23,9 +23,12 @@ class Logout extends Component {
 	render() {
 		return (
 			<div>
+			{/*
 				<form onSubmit={this.submit.bind(this)}>
 			        <button type="submit">Sign out</button>
 			    </form>
+			*/}
+			<Button onClick={this.submit.bind(this)} type="button">Logout</Button>
 			</div>
 		)
 	}

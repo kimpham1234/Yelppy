@@ -1,18 +1,41 @@
 import * as firebase from 'firebase';
 import { ref, firebaseAuth } from '../../index';
 
-
+/*
 export function saveUser (user) {
-	return ref.child('users/${user.uid}/info')
+	console.log('i m in saveUser');
+	return ref.child('users')
 		.set({
 			email: user.email,
-			uid: user.uid
+			first: 'Kim',
+			last: 'Pham'
 		})
 		.then(() => user)
 }
-export function auth (email, password) {
-	return firebaseAuth().createUserWithEmailAndPassword(email, password)
-		.then(saveUser);
+*/
+export function auth (email, password, first, last) {
+	return firebaseAuth.createUserWithEmailAndPassword(email, password)
+		.then(function(user) {
+			// console.log('testing', email, password, first, last);
+			var newUser = ref.child('users').push();
+			newUser.set({
+				email: email,
+				first: first,
+				last: last
+			});
+			alert('Your account is ready.');
+		}, function(error) {
+			// Handle Errors here.
+			var errorCode = error.code;
+			var errorMessage = error.message;
+			if (errorCode == 'auth/weak-password') {
+				alert('The password is too weak.');
+			} else {
+				alert(errorMessage);
+			}
+			console.log(error);
+		});
+		
 }
 export function login (email, password) {
 	console.log('i m in login/users-auth');
