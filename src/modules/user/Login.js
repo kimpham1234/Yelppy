@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import * as firebase from 'firebase';
 import "../../App.css";
-
 import {hashHistory} from 'react-router';
 
 

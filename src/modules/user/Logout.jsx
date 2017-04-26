@@ -4,9 +4,9 @@ import firebase from 'firebase';
 class Profile extends Component {
 
 	logOut() {
-    firebase.auth().signOut().then(function() {
-      this.setState({user: null});
-    }.bind(this));
+    	firebase.auth().signOut().then(function() {
+      		this.setState({user: null});
+    	}.bind(this));
 	}
 
 	render() {

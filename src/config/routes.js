@@ -11,6 +11,7 @@ import NewUser from '../modules/user/NewUser.js';
 import Reviews from '../modules/review/Reviews.js';
 import NewReview from '../modules/review/NewReview';
 import Login from '../modules/user/Login.js';
+import FacebookLogin from '../modules/facebook-user/FacebookLogin.jsx';
 import Edit from '../modules/review/Edit.js';
 //end by Kim
 
@@ -32,6 +33,7 @@ let routes = (
             <Route path='/profile' component={Profile}/>
             <Route path='/reviews/edit/:id' component={Edit}/>
             <Route path='/login' component={Login}/>
+            <Route path='/facebook_login' component={FacebookLogin}/>
             <Route path='/logout' component={Logout}/>
             <Route path='/reviews' component={Reviews}/>
             <Route path='/reviews/new/:id' component={NewReview}/>
