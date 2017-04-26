@@ -3,7 +3,9 @@ import React from 'react';
 import { Router, Route, hashHistory, IndexRoute } from 'react-router'
 import '../index.css';
 import Restaurants from '../modules/restaurant/Restaurants.js';
-//added by Kim
+import SearchResults from '../modules/restaurant/SearchResults.js';
+import BusinessDetail from '../modules/business/BusinessDetail.js';
+//added by kim for some testing
 import NewRestaurant from '../modules/restaurant/NewRestaurant.js';
 import NewUser from '../modules/user/NewUser.js';
 import Reviews from '../modules/review/Reviews.js';
@@ -25,8 +27,7 @@ let routes = (
             <IndexRoute component={Homepage}/>
             <Route path='/restaurants' component={Restaurants}/>
             <Route path='/restaurants/new' component={NewRestaurant}/>
-            <Route path="/restaurants/:name" component={RestaurantDetail}/>
-            <Route path='/restaurants/:name/:storenum' component={RestaurantDetail}/>
+            <Route path="/restaurants/:id" component={RestaurantDetail}/>
             <Route path='/newUser' component={NewUser}/>
             <Route path='/profile' component={Profile}/>
             <Route path='/reviews/edit/:id' component={Edit}/>
@@ -34,6 +35,8 @@ let routes = (
             <Route path='/logout' component={Logout}/>
             <Route path='/reviews' component={Reviews}/>
             <Route path='/reviews/new/:id' component={NewReview}/>
+            <Route path='/results(/:searchString)(/:location)' component={SearchResults} />
+            <Route path="/businessDetail(/:lat)(/:lng)" component={BusinessDetail} />
         </Route>
     </Router>
 );

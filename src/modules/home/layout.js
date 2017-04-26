@@ -2,13 +2,13 @@ import React from 'react';
 import * as firebase from 'firebase';
 import { Link } from 'react-router';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap';
 import Search from './search.js';
 import "../../App.css";
 
 let Layout = React.createClass({
 
-    getInitialState(){
+    getInitialState: function(){
         return {
             isLoggedIn: (null != firebase.auth().currentUser),
             requests: []
@@ -137,19 +137,24 @@ let Layout = React.createClass({
         let restaurants;
         let newUser;
         let sign_in_out;
+        let search;
+
 
         if(this.state.isLoggedIn){
             //logged in navbar setup
             restaurants = <LinkContainer to="/restaurants"><NavItem eventKey={1}>Restaurants</NavItem></LinkContainer>;
             newUser = <LinkContainer to='/profile'><NavItem eventKey={2}>Profile</NavItem></LinkContainer>;
             sign_in_out = <LinkContainer to='/logout'><NavItem eventKey={2}>Sign out</NavItem></LinkContainer>;
+            search = <Search></Search>;
+
         }
         else{
             //not logged in version of navbar
             restaurants = <LinkContainer to="/restaurants"><NavItem eventKey={1}>Restaurants</NavItem></LinkContainer>;
             newUser = <LinkContainer to='/newUser'><NavItem eventKey={2}>Create an account</NavItem></LinkContainer>;
-            // in progress... search =
             sign_in_out = <LinkContainer to='/login'><NavItem eventKey={2}>Sign in</NavItem></LinkContainer>;
+            search = <Search></Search>;
+          
         }
 
         return(
@@ -166,6 +171,7 @@ let Layout = React.createClass({
                         {newUser}
                         {sign_in_out}
                     </Nav>
+                    {search}
                 </Navbar>
 
                 <div className="App">
