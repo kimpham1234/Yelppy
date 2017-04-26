@@ -33,14 +33,10 @@ export function auth (email, password, first, last) {
 			} else {
 				alert(errorMessage);
 			}
-			console.log(error);
 		});
 		
 }
 export function login (email, password) {
-	console.log('i m in login/users-auth');
-	console.log('email', email);
-	console.log('password', password);
 
 	return firebaseAuth.signInWithEmailAndPassword(email, password).then(function() {
 		alert('Successfully signed in')
@@ -59,7 +55,6 @@ export function resetPassword (email) {
 	return firebaseAuth.sendPasswordResetEmail(email);
 }
 export function logout () {
-	console.log('i m in logout/users-auth');
 	return firebaseAuth.signOut().then(function() {
 		alert('Successfully signed out')
 	}).catch((error) => {

@@ -12,7 +12,6 @@ class Restaurants extends Component{
 	}
 
 	componentWillMount(){
-		console.log("Restaurants mounting");
 		this.restaurantListRef = firebase.database().ref('business');
 		var that = this;
 

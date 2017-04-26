@@ -10,13 +10,12 @@ class NewReview extends Component{
 	}
 
 	componentWillMount(){
-		console.log("New review Mounting");
 		this.restaurantRef = firebase.database().ref('business');
-		var that = this;
+		//var that = this;
 		this.restaurantRef.orderByKey().equalTo(this.props.params.id).once('child_added',  function(snapshot) {
-			that.setState({restaurantName: snapshot.val().name});
-			that.setState({restaurantId: snapshot.val().id});
-			that.setState({restaurantKey: snapshot.key});
+			this.setState({restaurantName: snapshot.val().name});
+			this.setState({restaurantId: snapshot.val().id});
+			this.setState({restaurantKey: snapshot.key});
 			this.updateReview(snapshot.key);
 		}.bind(this));
 		
@@ -36,10 +35,8 @@ class NewReview extends Component{
 			});
 
 			var path = '/restaurants/'+this.state.restaurantId;
-			console.log(path);
 			hashHistory.push(path);
 			this.updateReview(this.state.restaurantKey);
-
 		}
 	}
 
@@ -47,7 +44,6 @@ class NewReview extends Component{
 		var reviewListRef = firebase.database().ref('reviews');
 		var total = 0;
 		var numberOfReviews = 0;
-		console.log(e);
 
 		reviewListRef.orderByChild('id').equalTo(e).on('child_added',function(snapshot) {
 			total+=Number(snapshot.val().rating);
@@ -63,15 +59,14 @@ class NewReview extends Component{
 	round(number) {
     var value = (number * 2).toFixed() / 2;
     return value;
-}
-
-
+	}
+	
 	render(){
 		return(
 			<div>
 				<div>
 			      <form className="col-md-2" onSubmit={this.submit.bind(this) }>
-			      <h4> Write a review for {this.state.restaurant} </h4>
+			      <h4> Write a review for {this.state.restaurantName} </h4>
 			      <table><tbody>
 			      	<tr>
 			      		<td> Rating </td>
@@ -82,10 +77,12 @@ class NewReview extends Component{
 			      		<td> Review </td>
 			      		<td>  <textArea cols="50" type="text" ref="review" placeholder="Share your thoughts..."/></td>
 			      	</tr>
-
-			      	<input type="hidden" ref="id" value={this.props.params.id}/>
-			      	<button type="submit">Submit</button>
 			      </tbody></table>
+			      
+			      <button type="submit">Submit</button>
+			      
+			      <input type="hidden" ref="id" value={this.props.params.id}/>
+			  	
 				</form>
 			    </div>
 			</div>

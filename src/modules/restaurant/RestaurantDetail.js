@@ -26,7 +26,6 @@ class RestaurantDetail extends Component{
 	setReview(key){
 		var review_temp_list = [];
 		var reviewKey_temp_list = [];
-		// console.log('in setReview snapshotKey_temp'+ key);
 		var that = this;
 		this.reviewListRef = firebase.database().ref('reviews');
 		this.reviewListRef.orderByChild('id').equalTo(key).on('child_added',function(snapshot) {
@@ -38,26 +37,21 @@ class RestaurantDetail extends Component{
 	}
 
 	sample(){
-		// console.log('yay');
 	}
 
 	componentWillMount(){
-        // console.log("Restaurant details mounting");
         this.restaurantRef = firebase.database().ref('business');
         var that = this;
         var snapshotKey_temp = "";
-        // console.log(this);
         this.restaurantRef.orderByChild('id').equalTo(this.props.params.id)
             .on('child_added', function(snapshot) {
-                // console.log(snapshot.val());
                 snapshotKey_temp = snapshot.key;
                 var val = snapshot.val();
                 var address = "";
                 for(var i = 0; i < val.location.display_address.length; i++){
                     address += val.location.display_address[i]+', ';
                 }
-                that.setState({snapshotKey: snapshotKey_temp}, (snapshotKey)=>{
-                    // console.log('in call back'+ snapshotKey_temp);
+                this.setState({snapshotKey: snapshotKey_temp}, (snapshotKey)=>{
                     that.setReview(snapshotKey_temp);
                 });
                 that.setState({
@@ -86,11 +80,6 @@ class RestaurantDetail extends Component{
         //     this.setState({reviewKeys: this.state.keys})
         // }.bind(this));
 
-
-
-        // this.setState({reviews: review_temp_list});
-        // this.setState({reviewKeys: reviewKey_temp_list});
-        // console.log('testing1', review_temp_list);
         this.setState({currentUser: firebase.auth().currentUser});
     }
 
@@ -102,11 +91,9 @@ class RestaurantDetail extends Component{
 
 
     imageUpload(){
-        // console.log("in image upload");
         var currentUser = firebase.auth().currentUser;
-        console.log(currentUser);
         if(currentUser!=null){
-            // console.log("upload");
+            console.log("upload");
             var firebaseStorage = firebase.storage();
 
             // File or Blob named mountains.jpg
@@ -150,7 +137,7 @@ class RestaurantDetail extends Component{
                     // Upload completed successfully, now we can get the download URL
                     var downloadURL = uploadTask.snapshot.downloadURL;
                     var images_temp_list = that.state.images;
-                    if(images_temp_list[0]==picURL)
+                    if(images_temp_list[0]===picURL)
                         images_temp_list[0] = downloadURL;
                     else images_temp_list.push(downloadURL);
                     that.setState({images: images_temp_list});
@@ -163,25 +150,21 @@ class RestaurantDetail extends Component{
     }
 
     render() {
-        // console.log('reviews', this.state.reviews);
-        // console.log('currentUser', this.state.currentUser);
-        // console.log('reviewKey', this.state.reviewKeys);
-
         var showDetail = (
 			<div>
 				<div>
 					<h1>{ this.state.name}</h1>
 					<li><img src={ this.state.avatar } width="100" height="100"/></li>
-					<li>Rating: {' '+ this.state.rating==0 ? 0 : this.state.rating }/5</li>
+					<li>Rating: {' '+ this.state.rating===null ? 0 : this.state.rating }/5</li>
 					<li>Address: {' '+ this.state.location}</li>
-					<li>Reviews: {' '+ this.state.numReview==0 ? 0 : this.state.numReview }</li>
+					<li>Reviews: {' '+ this.state.numReview===null ? 0 : this.state.numReview }</li>
 					<li>Categories: {' '+ this.state.categories }</li>
 					<li>Phone: {' '+ this.state.phone }</li>
 					<li>Price: { ' '+this.state.price }</li><br></br>
 				</div>
 				<div>
                     { this.state.images.map((image, index) =>(
-							<a key = {index} target="_blank" href = {image}>
+							<a key={index} target="_blank" href={image}>
 								<img src={image} width="220" height="160" />
 							</a>
                         )
@@ -198,7 +181,7 @@ class RestaurantDetail extends Component{
 					</tr>
 					<tr>
 						<td><input type="file" id="input"/></td>
-						<td><button type="button" onClick = {this.imageUpload}>Add</button></td>
+						<td><button type="button" onClick={this.imageUpload}>Add</button></td>
 					</tr>
 					</tbody></table>
 					<button type="button"><Link to={'/reviews/new/'+this.state.snapshotKey}>Write a review</Link></button>
@@ -248,7 +231,6 @@ class RestaurantDetail extends Component{
 				</Table>
 			</div>
         )
-        // console.log('business key', this.state.snapshotKey);
         return (
 			<div>
                 {showDetail}
