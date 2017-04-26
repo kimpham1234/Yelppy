@@ -38,11 +38,11 @@ class NewReview extends Component{
 			hashHistory.push(path);
 			this.updateReview(this.state.restaurantKey);
 		}
-		else if (currentUser==null)
+		else if (currentUser===null)
 		{
 			alert('Sorry. You are not logged in');
 		}
-		else if (this.refs.rating!=null || this.refs.review.value!=null)
+		else if (this.refs.rating!==null || this.refs.review.value!==null)
 		{
 			alert('Sorry. Inputs cannot be empty');
 		}
