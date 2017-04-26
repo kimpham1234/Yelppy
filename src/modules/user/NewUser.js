@@ -30,15 +30,15 @@ class NewUser extends Component{
 			newUser.set({
 				email: userEmail
 			});
-			
 			//that.context.router.push('/');
-			hashHistory.push('/');
 		});
+		hashHistory.push('/');
 	}
 
 	render(){
 		return (
 			<div>
+				{/* 
 				<form className="col-md-2" onSubmit={this.submit.bind(this) }>
 					<FormGroup>
 						<ControlLabel>Create A New Account</ControlLabel>
@@ -48,6 +48,13 @@ class NewUser extends Component{
 					</FormGroup>
 
 				</form>
+				*/}
+
+				<form onSubmit={this.submit.bind(this)}>
+			        <input type="text" ref="email" placeholder="Your email address"/><br></br>
+                    <input type="password" ref="password" placeholder="Your password"/><br></br>
+			        <button type="submit">Submit</button>
+			    </form>
 			</div>
 		);
 	}

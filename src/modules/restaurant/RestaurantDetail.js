@@ -9,38 +9,38 @@ import { LinkContainer } from 'react-router-bootstrap'
 const picURL = "https://firebasestorage.googleapis.com/v0/b/yelppy-80fb2.appspot.com/o/images%2FDefault%2FnoPictureYet.png?alt=media&token=d07db72a-0963-488e-b228-9ab020bd0d41";
 
 class RestaurantDetail extends Component{
-    constructor(){
-        super();
-        //this.state = {name: String, rating: String, numberOfReviews: Number, location: String, id: String, reviews: [], keys: [], images: [], links: [], currentUser: ""};
-        this.state = {name: String, rating:String, numReview: String, id: String,  price: String,
-            avatar: String, categories: String, coordinates: [], phone: String, location: String,
-            snapshotKey: String,
-            reviewKeys:[],
-            reviews: [],
-            images: []
-        }
-        this.imageUpload = this.imageUpload.bind(this);
-    }
+	constructor(){
+		super();
+		//this.state = {name: String, rating: String, numberOfReviews: Number, location: String, id: String, reviews: [], keys: [], images: [], links: [], currentUser: ""};
+		this.state = {name: String, rating:String, numReview: String, id: String,  price: String,
+					  avatar: String, categories: String, coordinates: [], phone: String, location: String,
+					  snapshotKey: String,
+					  reviewKeys:[],
+					  reviews: [],
+					  images: []
+					 }
+		this.imageUpload = this.imageUpload.bind(this);
+	}
 
-    setReview(key){
-        var review_temp_list = [];
-        var reviewKey_temp_list = [];
-        console.log('in setReview snapshotKey_temp'+ key);
-        var that = this;
-        this.reviewListRef = firebase.database().ref('reviews');
-        this.reviewListRef.orderByChild('id').equalTo(key).on('child_added',function(snapshot) {
-            review_temp_list.push(snapshot.val());
-            reviewKey_temp_list.push(snapshot.key);
-            that.setState({reviews: review_temp_list});
-            that.setState({reviewKeys: reviewKey_temp_list});
-        }.bind(this));
-    }
+	setReview(key){
+		var review_temp_list = [];
+		var reviewKey_temp_list = [];
+		console.log('in setReview snapshotKey_temp'+ key);
+		var that = this;
+		this.reviewListRef = firebase.database().ref('reviews');
+		this.reviewListRef.orderByChild('id').equalTo(key).on('child_added',function(snapshot) {
+			review_temp_list.push(snapshot.val());
+			reviewKey_temp_list.push(snapshot.key);
+			that.setState({reviews: review_temp_list});
+			that.setState({reviewKeys: reviewKey_temp_list});
+		}.bind(this));
+	}
 
-    sample(){
-        console.log('yay');
-    }
+	sample(){
+		console.log('yay');
+	}
 
-    componentWillMount(){
+	componentWillMount(){
         console.log("Restaurant details mounting");
         this.restaurantRef = firebase.database().ref('business');
         var that = this;
@@ -182,6 +182,7 @@ class RestaurantDetail extends Component{
                     )}
 				</div>
 
+
 				<div>
 					<br></br>
 					<table><tbody>
@@ -200,6 +201,7 @@ class RestaurantDetail extends Component{
         )
 
         var showReview = (
+
 			<div>
 				<Table striped condensed hover responsive>
 					<thead>
@@ -229,6 +231,7 @@ class RestaurantDetail extends Component{
 								<td>
 									<button type="button" ><Link to={'/reviews/edit/'+this.state.reviewKeys[index]}>Edit</Link></button>
 								</td>
+
 							</tr>
                         ))}
 					</tbody>
@@ -244,6 +247,7 @@ class RestaurantDetail extends Component{
         )
 
     }
+
 
 }
 
