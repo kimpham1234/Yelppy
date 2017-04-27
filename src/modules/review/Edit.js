@@ -41,7 +41,11 @@ class Edit extends Component{
 			var resPath = "";
 			var reviewRef = firebase.database().ref('reviews/' + this.props.params.id);
 			reviewRef.update({
+<<<<<<< HEAD
 				rating: this.state.rating,
+=======
+				rating: this.refs.rating.value,
+>>>>>>> 18d068567658e656b22faf7f6d5b2ee915b2fcc0
 				text: this.refs.review.value
 			});
 			hashHistory.push('/restaurants/'+this.state.resPathId);
@@ -62,7 +66,10 @@ class Edit extends Component{
 			var reviewRef = firebase.database().ref('reviews/' + this.props.params.id);
 			reviewRef.remove();
 			hashHistory.push('/restaurants/'+this.state.resPathId);
+<<<<<<< HEAD
 			this.updateReview(this.state.resId);
+=======
+>>>>>>> 18d068567658e656b22faf7f6d5b2ee915b2fcc0
 		}
 		else
 		{
@@ -91,10 +98,14 @@ class Edit extends Component{
 	round(number) {
     var value = (number * 2).toFixed() / 2;
     return value;
+<<<<<<< HEAD
 	}
 	onStarClick(nextValue, prevValue, name) {
         this.setState({rating: nextValue});
     }
+=======
+}
+>>>>>>> 18d068567658e656b22faf7f6d5b2ee915b2fcc0
 
 	render(){
 		var starRating = (
@@ -121,7 +132,11 @@ class Edit extends Component{
 			      <table><tbody>
 			      	<tr>
 			      		<td> Rating </td>
+<<<<<<< HEAD
 			      		<td>{starRating}</td>
+=======
+			      		<td>  <input type="text" ref="rating" defaultValue={this.state.rating}/> </td>
+>>>>>>> 18d068567658e656b22faf7f6d5b2ee915b2fcc0
 			      	</tr>
 
 			      	<tr>
