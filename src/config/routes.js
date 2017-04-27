@@ -32,7 +32,7 @@ let routes = (
             <Route path='/newUser' component={NewUser}/>
             <Route path='/profile' component={Profile}/>
             <Route path='/reviews/edit/:id' component={Edit}/>
-            <Route path='/reviews/new_review_flag/:id/:restId' component={ReviewFlag}/>
+            <Route path='/reviews/new_review_flag/:id' component={ReviewFlag}/>
             <Route path='/login' component={Login}/>
             <Route path='/google_login' component={GoogleLogin}/>
             <Route path='/logout' component={Logout}/>

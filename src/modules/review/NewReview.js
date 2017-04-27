@@ -27,7 +27,9 @@ class NewReview extends Component{
 			e.preventDefault();
 			var reviewListRef = firebase.database().ref('reviews');
 			var newReviewRef = reviewListRef.push();
+			var time = Date();
 			newReviewRef.set({
+				timestamp: time,
 			  author: currentUser.email,
 			  rating: this.refs.rating.value,
 			  text: this.refs.review.value,
