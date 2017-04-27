@@ -15,7 +15,8 @@ class Login extends Component{
 		//hard code for testing 
 		var email = "pghkim94@gmail.com"
 		var password = "123456"
-		
+		var provider = new firebase.auth.FacebookAuthProvider();
+
 		firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
 			// Handle Errors here.
 			var errorCode = error.code;
@@ -27,6 +28,14 @@ class Login extends Component{
 			}
 			console.log(error);
 		});
+
+		firebase.auth().signInWithPopup(provider).then(function(result) {
+		 // This gives you a Facebook Access Token.
+		 	var token = result.credential.accessToken;
+		 // The signed-in user info.
+		 	var user = result.user;
+		});
+
 		hashHistory.push('/');
 	}
 
@@ -39,6 +48,8 @@ class Login extends Component{
 						<FormControl label="E-mail address" type="text" ref="email" placeholder="Your email address" />
 						<FormControl label="Password" type="password" ref="password" />
 						<FormControl className="btn btn-primary" type="submit" />
+						Or Log In with 
+						<button type="submit">Facebook Login</button>
 					</FormGroup>
 				</form>
 			</div>
