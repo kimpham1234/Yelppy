@@ -4,9 +4,11 @@ import {hashHistory} from 'react-router'
 import "../../App.css";
 class ReviewFlag extends Component{
 
-	constructor(){
-		super();
+	constructor(props){
+		super(props);
 		this.state = {};
+		// console.log('this.props.params', this.props.params);
+		console.log(new Date());
 	}
 
 
@@ -16,12 +18,17 @@ class ReviewFlag extends Component{
 			e.preventDefault();
 			var reviewFlagListRef = firebase.database().ref('review_flag');
 			var newReviewFlagRef = reviewFlagListRef.push();
+
+			var time = Date();
 			newReviewFlagRef.set({
+				timestamp: time,
 				author: currentUser.email,
-				restaurant_id: "testing",
-				review_id: "testing",
-				flag_content: "testing"
+				restaurant_id: this.props.params.type,
+				review_id: this.props.params.id,
+				flag_content: this.refs.reviewFlag.value
 			});
+
+
 			var restaurantId = '';
 			var path = '/restaurants/'+ restaurantId;
 			hashHistory.push(path);

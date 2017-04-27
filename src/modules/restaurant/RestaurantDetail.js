@@ -220,11 +220,11 @@ class RestaurantDetail extends Component{
 								</td>
 
 								<td>
-									<button type="button" ><Link to={'/reviews/edit/'+this.state.reviewKeys[index]}>Edit</Link></button>
+                                    <button type="button" ><Link to={'/reviews/edit/'+this.state.reviewKeys[index]}>Edit</Link></button>
 								</td>
 
                                 <td>
-                                    <button type="button" ><Link to={'/reviews/new_review_flag/'+this.state.snapshotKey}>Flag this review</Link></button>
+                                    <button type="button" ><Link to={'/reviews/new_review_flag/'+this.state.reviewKeys[index]+'/'+this.state.snapshotKey}>Flag this review</Link></button>
                                 </td>
 							</tr>
                         ))}
@@ -232,6 +232,7 @@ class RestaurantDetail extends Component{
 				</Table>
 			</div>
         )
+        // console.log('time', new Date());
         return (
 			<div>
                 {showDetail}
