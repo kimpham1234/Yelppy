@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import * as firebase from 'firebase';
 import { Table, buttonsInstance } from 'react-bootstrap';
+import StarRatingComponent from 'react-star-rating-component';
 
 class Restaurants extends Component{
 
@@ -64,7 +65,17 @@ class Restaurants extends Component{
 				    				<Link to={'/restaurants/'+restaurant.id}>{restaurant.name}</Link>
 				    			</td>
 				    			<td>
-				    				{ (restaurant.rating == "") ? 0 : restaurant.rating }/5
+									<StarRatingComponent
+							           	name="star"
+							            editing = {false}
+							            starColor="#ffb400"
+							            emptyStarColor="#ffb400"
+							            value={parseFloat(restaurant.rating)}
+							            renderStarIcon={(index, value) => {
+							            	return <span className={index <= value ? 'fa fa-star' : (index == value+0.5 ?'fa fa-star-half-full' : 'fa fa-star-o')} />;
+						            		}	
+						            	}
+						          	/>
 				    			</td>
 				    			<td>
 				    				{ restaurant.location.display_address[0] + ', '+restaurant.location.display_address[1] }

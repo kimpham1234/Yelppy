@@ -3,6 +3,7 @@ import { Link, Router } from 'react-router'
 import * as firebase from 'firebase';
 import { Navbar, Nav, NavItem, Button, ButtonToolbar, Jumbotron, Table, buttonsInstance } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap'
+import StarRatingComponent from 'react-star-rating-component';
 
 
 
@@ -156,7 +157,19 @@ class RestaurantDetail extends Component{
 				<div>
 					<h1>{ this.state.name}</h1>
 					<li><img src={ this.state.avatar } width="100" height="100"/></li>
-					<li>Rating: {' '+ this.state.rating==0 ? 0 : this.state.rating }/5</li>
+					<li>Rating: {
+                        <StarRatingComponent
+                                        name="star"
+                                        editing = {false}
+                                        starColor="#ffb400"
+                                        emptyStarColor="#ffb400"
+                                        value={parseFloat(this.state.rating)}
+                                        renderStarIcon={(index, value) => {
+                                            return <span className={index <= value ? 'fa fa-star' : (index == value+0.5 ?'fa fa-star-half-full' : 'fa fa-star-o')} />;
+                                            }   
+                                        }
+                        />
+                    }</li>
 					<li>Address: {' '+ this.state.location}</li>
 					<li>Reviews: {' '+ this.state.numReview==0 ? 0 : this.state.numReview }</li>
 					<li>Categories: {' '+ this.state.categories }</li>
@@ -212,7 +225,17 @@ class RestaurantDetail extends Component{
 								</td>
 
 								<td>
-                                    { review.rating }
+                                    <StarRatingComponent
+                                        name="star"
+                                        editing = {false}
+                                        starColor="#ffb400"
+                                        emptyStarColor="#ffb400"
+                                        value={parseFloat(review.rating)}
+                                        renderStarIcon={(index, value) => {
+                                            return <span className={index <= value ? 'fa fa-star' : (index == value+0.5 ?'fa fa-star-half-full' : 'fa fa-star-o')} />;
+                                            }   
+                                        }
+                                    />
 								</td>
 
 								<td>

@@ -2,11 +2,12 @@ import React,{ Component } from 'react';
 import * as firebase from 'firebase';
 import {hashHistory} from 'react-router'
 import "../../App.css";
+import StarRatingComponent from 'react-star-rating-component';
 class NewReview extends Component{
 
 	constructor(){
 		super();
-		this.state = {restaurantName: String, restaurantId: String, restaurantKey: String};
+		this.state = {restaurantName: String, restaurantId: String, restaurantKey: String, rating: 3};
 	}
 
 	componentWillMount(){
@@ -29,7 +30,7 @@ class NewReview extends Component{
 			var newReviewRef = reviewListRef.push();
 			newReviewRef.set({
 			  author: currentUser.email,
-			  rating: this.refs.rating.value,
+			  rating: this.state.rating,
 			  text: this.refs.review.value,
 			  id: this.refs.id.value,
 			});
@@ -67,10 +68,29 @@ class NewReview extends Component{
 	round(number) {
     var value = (number * 2).toFixed() / 2;
     return value;
-}
+	}
+	onStarClick(nextValue, prevValue, name) {
+        this.setState({rating: nextValue});
+    }
 
 
 	render(){
+		var starRating = (
+			<div>
+		
+        		<StarRatingComponent 
+                    name="rate1" 
+                    starColor="#ffb400"
+					emptyStarColor="#ffb400"
+                    value={parseFloat(this.state.rating)}
+                    renderStarIcon={(index, value) => {
+		            	return <span className={index <= value ? 'fa fa-star' : 'fa fa-star-o'} />;
+		            }}
+                    onStarClick={this.onStarClick.bind(this)}
+                />
+
+			</div>
+		)
 		return(
 			<div>
 				<div>
@@ -79,7 +99,7 @@ class NewReview extends Component{
 			      <table><tbody>
 			      	<tr>
 			      		<td> Rating </td>
-			      		<td>  <input type="text" ref="rating" placeholder="Rating on scale of 5"/> </td>
+			      		<td>{starRating}</td>
 			      	</tr>
 
 			      	<tr>
