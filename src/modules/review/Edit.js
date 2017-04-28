@@ -29,7 +29,6 @@ class Edit extends Component{
 				}.bind(this));
 			});
 			that.setState({review_id: this.props.params.id});
-			
 		}.bind(this));
 		
 	}

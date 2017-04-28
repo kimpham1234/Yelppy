@@ -28,7 +28,9 @@ class NewReview extends Component{
 			e.preventDefault();
 			var reviewListRef = firebase.database().ref('reviews');
 			var newReviewRef = reviewListRef.push();
+			var time = Date();
 			newReviewRef.set({
+				timestamp: time,
 			  author: currentUser.email,
 			  rating: this.state.rating,
 			  text: this.refs.review.value,
@@ -72,6 +74,28 @@ class NewReview extends Component{
 	onStarClick(nextValue, prevValue, name) {
         this.setState({rating: nextValue});
     }
+
+
+	updateReview(e){
+		var reviewListRef = firebase.database().ref('reviews');
+		var total = 0;
+		var numberOfReviews = 0;
+
+		reviewListRef.orderByChild('id').equalTo(e).on('child_added',function(snapshot) {
+			total+=Number(snapshot.val().rating);
+			numberOfReviews ++;
+		}.bind(this));
+
+		var resRef = firebase.database().ref('business/'+e).update({
+				rating: this.round(Number(total / numberOfReviews)),
+				numReview: numberOfReviews
+			});
+
+	}
+	round(number) {
+    var value = (number * 2).toFixed() / 2;
+    return value;
+}
 
 
 	render(){

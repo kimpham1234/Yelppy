@@ -17,7 +17,9 @@ export function auth (email, password, first, last) {
 	return firebaseAuth.createUserWithEmailAndPassword(email, password)
 		.then(function(user) {
 			var newUser = ref.child('users').push();
+			var time = Date();
 			newUser.set({
+				timestamp: time,
 				email: email,
 				first: first,
 				last: last
