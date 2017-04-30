@@ -13,6 +13,7 @@ import Login from '../modules/user/Login.js';
 import GoogleLogin from '../modules/google-user/GoogleLogin.jsx';
 import Edit from '../modules/review/Edit.js';
 import ReviewFlag from '../modules/review/ReviewFlag.js';
+import EditProfile from '../modules/user/EditProfile.js';
 //end by Kim
 
 import Layout from '../modules/home/layout.js';
@@ -31,6 +32,7 @@ let routes = (
             <Route path="/restaurants/:id" component={RestaurantDetail}/>
             <Route path='/newUser' component={NewUser}/>
             <Route path='/profile' component={Profile}/>
+                <Route path='profile/edit/:id' component={EditProfile} />
             <Route path='/reviews/edit/:id' component={Edit}/>
             <Route path='/reviews/new_review_flag/:id' component={ReviewFlag}/>
             <Route path='/login' component={Login}/>
