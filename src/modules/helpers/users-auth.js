@@ -14,7 +14,7 @@ export function auth (email, password, first, last) {
 				last: last, //add new user attributes here - Kim
 				numReviews: '0',
 				pictures: [''],
-				reviewed: '',
+				reviewed: [''],
 				UID: newUser.key
 			});
 			alert('Your account is ready.');

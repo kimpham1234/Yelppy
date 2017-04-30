@@ -6,54 +6,59 @@ const picUrl = "https://firebasestorage.googleapis.com/v0/b/yelppy-80fb2.appspot
 export default class Profile extends Component {
 	constructor(props){
 		super(props);
-		this.state = {first: String, uid: String, last: String, numReviews: String, pictures: [], reviewed: [], timestamp: String};
+		//this.state = {first: String, uid: String, last: String, numReviews: String, pictures: [], reviewed: [], timestamp: String, reviewedRestaurant:[], reviewedContent: []};
+		this.state = {profile: {}, reviewed: [], resName: []};
 	}
 
 	componentWillMount() {
 		var userEmail=firebase.auth().currentUser.email;
 		this.userRef=firebase.database().ref('users');
 		var that=this;
-		this.userRef.orderByChild('email').equalTo(userEmail).once('child_added', function(snapshot){
-			console.log('email '+userEmail);
-			console.log('snapshot '+ snapshot.val().first);
-			var value = snapshot.val();
-			
-			if(value.pictures[0]==="")
-				that.setState({pictures: [picUrl]});
-			else that.setState({picutres: value.pictures});
-			
+		var tempReviewed = "";
+		var that = this;
+		this.userRef.orderByChild('email').equalTo(userEmail).on('child_added', function(snapshot){
 			that.setState({
-				first: value.first,
-				last: value.last,
-				numReviews: value.numReviews,
-				uid: value.UID		
-			})
+				profile: snapshot.val(),
+				reviewed: snapshot.val().reviewed
+			});
 		}.bind(this));
 	}
 
 	render() {
-		var showPictures = (
-			<div>
-			Pictures:<br></br>
-                { this.state.pictures.map((picture, index) =>(
-						<a key = {index} target="_blank" href = {picture}>
-							<img src={picture} width="220" height="160" />
-						</a>
-                    )
-                )}
-			</div>
-		)
+		var showReviewed = (
+				<div>
+					<h3>Your reviews:</h3>
+					{this.state.reviewed.map((item, index) =>(
+							<table>
+								<tr>
+									<td>
+										<tr><Link to={'business/'+item.split("/")[1]}>{item.split("/")[0]}</Link></tr>
+									</td>
+									<td>
+										<tr>Your rating: {item.split("/")[2]}/5 </tr>
+										<tr>Your comment: {item.split("/")[3]} </tr>
+									</td>
+								</tr>
+							</table>
+					))}
+				</div>
+			)
 
 		return (
 			<div>
-			    <li>First name: {this.state.first}</li>
-			    <li>Last name: {this.state.last}</li>
+			    <li>First name: {this.state.profile.first}</li>
+			    <li>Last name: {this.state.profile.last}</li>
 				<li>Email: {firebase.auth().currentUser.email}</li>
-				<li>Reviews: {this.state.numReviews}</li>
+				<li>Reviews: {this.state.profile.numReviews}</li>
 				<li><button type="button" ><Link to={'/profile/edit/'+this.state.uid}>Edit Profile</Link></button></li>
-				{showPictures}
+				<br></br>
+				<br></br>
+				{showReviewed}
 			</div>
+
 			
 		)
 	}
+	
+
 }

@@ -71,7 +71,9 @@ class NewReview extends Component{
 	//update number of review and reviewed restaurant in user profile
 	updateUserProfile(reviewKey){
 		var userUpdateRef = firebase.database().ref('users/'+this.state.uid);
-		this.state.reviewed.push(this.state.restaurantId+"/"+reviewKey);
+		if(this.state.reviewed[0]=="")
+			this.state.reviewed[0] = this.state.restaurantName+"/"+this.state.restaurantId+"/"+this.state.rating+"/"+this.refs.review.value;
+		else this.state.reviewed.push(this.state.restaurantName+"/"+this.state.restaurantId+"/"+this.state.rating+"/"+this.refs.review.value);
 		userUpdateRef.update({
 			numReviews: Number(this.state.userNumReview) + 1,
 			reviewed: this.state.reviewed
