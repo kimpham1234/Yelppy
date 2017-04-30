@@ -52,17 +52,18 @@ class Restaurants extends Component{
 				        <th></th>
 				        <th>Name</th>
 				        <th>Rating</th>
-				        <th>Address</th>
 				      </tr>
 				    </thead>
 				    <tbody>
 				    	{this.state.restaurants.map((restaurant, index) => (
 				    		<tr key={index}>
 				    			<td>
-				    				<img src={restaurant.avatar} alt={'Avatar for '+restaurant.name} height="32"></img>
+				    				<img src={restaurant.avatar} alt={'Avatar for '+restaurant.name} height="60"></img>
 				    			</td>
 				    			<td>
 				    				<Link to={'/restaurants/'+restaurant.id}>{restaurant.name}</Link>
+                                    <br></br>{restaurant.location.display_address[0]}
+                                    <br></br>{restaurant.location.display_address[1]}
 				    			</td>
 				    			<td>
 									<StarRatingComponent
@@ -73,12 +74,10 @@ class Restaurants extends Component{
 							            value={parseFloat(restaurant.rating)}
 							            renderStarIcon={(index, value) => {
 							            	return <span className={index <= value ? 'fa fa-star' : (index == value+0.5 ?'fa fa-star-half-full' : 'fa fa-star-o')} />;
-						            		}	
+						            		}
 						            	}
 						          	/>
-				    			</td>
-				    			<td>
-				    				{ restaurant.location.display_address[0] + ', '+restaurant.location.display_address[1] }
+                                    <br></br>{restaurant.numReview ? restaurant.numReview : '0'} reviews
 				    			</td>
 				    		</tr>
 

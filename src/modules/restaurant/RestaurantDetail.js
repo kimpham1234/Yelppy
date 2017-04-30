@@ -156,29 +156,33 @@ class RestaurantDetail extends Component{
 			<div>
 				<div>
 					<h1>{ this.state.name}</h1>
-					<li><img src={ this.state.avatar } width="100" height="100"/></li>
-					<li>Rating: {
-                        <StarRatingComponent
-                                        name="star"
-                                        editing = {false}
-                                        starColor="#ffb400"
-                                        emptyStarColor="#ffb400"
-                                        value={parseFloat(this.state.rating)}
-                                        renderStarIcon={(index, value) => {
-                                            return <span className={index <= value ? 'fa fa-star' : (index == value+0.5 ?'fa fa-star-half-full' : 'fa fa-star-o')} />;
-                                            }   
-                                        }
-                        />
-                    }</li>
-					<li>Address: {' '+ this.state.location}</li>
-					<li>Reviews: {' '+ this.state.numReview==0 ? 0 : this.state.numReview }</li>
-					<li>Categories: {' '+ this.state.categories }</li>
-					<li>Phone: {' '+ this.state.phone }</li>
-					<li>Price: { ' '+this.state.price }</li><br></br>
+                    <Table><tbody>
+                        <tr>
+                            <td width="128"><img src={this.state.avatar} width="128" height="128"/></td>
+                            <td>
+                            {<StarRatingComponent
+                                                name="star"
+                                                editing = {false}
+                                                starColor="#ffb400"
+                                                emptyStarColor="#ffb400"
+                                                value={parseFloat(this.state.rating)}
+                                                renderStarIcon={(index, value) => {
+                                                    return <span className={index <= value ? 'fa fa-star' : (index == value+0.5 ?'fa fa-star-half-full' : 'fa fa-star-o')} />;
+                                                    }
+                                                }
+                            />}
+                            <br></br>{this.state.rating ? this.state.rating : '0'}/5, {this.state.numReview ? this.state.numReview : '0'} reviews
+                            <br></br>{this.state.location.substring(0, this.state.location.length-2)}
+                            <br></br>Categories: {this.state.categories ? this.state.categories : 'none'}
+                            <br></br>Phone: {this.state.phone ? this.state.phone : 'unknown'}
+                            <br></br>Price: {(this.state.price === "$") ? 'unknown' : this.state.price}
+                            </td>
+                        </tr>
+                    </tbody></Table>
 				</div>
 				<div>
                     { this.state.images.map((image, index) =>(
-							<a key = {index} target="_blank" href = {image}>
+							<a key={index} target="_blank" href={image}>
 								<img src={image} width="220" height="160" />
 							</a>
                         )
@@ -195,7 +199,7 @@ class RestaurantDetail extends Component{
 					</tr>
 					<tr>
 						<td><input type="file" id="input"/></td>
-						<td><button type="button" onClick = {this.imageUpload}>Add</button></td>
+						<td><button type="button" onClick={this.imageUpload}>Add</button></td>
 					</tr>
 					</tbody></table>
 					<button type="button"><Link to={'/reviews/new/'+this.state.snapshotKey}>Write a review</Link></button>
@@ -227,13 +231,13 @@ class RestaurantDetail extends Component{
 								<td>
                                     <StarRatingComponent
                                         name="star"
-                                        editing = {false}
+                                        editing={false}
                                         starColor="#ffb400"
                                         emptyStarColor="#ffb400"
                                         value={parseFloat(review.rating)}
                                         renderStarIcon={(index, value) => {
-                                            return <span className={index <= value ? 'fa fa-star' : (index == value+0.5 ?'fa fa-star-half-full' : 'fa fa-star-o')} />;
-                                            }   
+                                            return <span className={index <= value ? 'fa fa-star' : (index === value+0.5 ?'fa fa-star-half-full' : 'fa fa-star-o')} />;
+                                            }
                                         }
                                     />
 								</td>
