@@ -10,6 +10,7 @@ class NewReview extends Component{
 		this.state = {restaurantName: String, restaurantId: String, restaurantKey: String, rating: 3, uid: String, userNumReview: String, reviewed: []};
 	}
 
+
 	componentWillMount(){
 		this.restaurantRef = firebase.database().ref('business');
 		var that = this;
@@ -22,22 +23,21 @@ class NewReview extends Component{
 
 		console.log('New review component wil mount');
 
+		//get user data to update later
 		var userEmail = firebase.auth().currentUser.email;
 		this.userRef = firebase.database().ref('users');
 		this.userRef.orderByChild('email').equalTo(userEmail).once('child_added', function(snapshot){
-			
-			console.log(snapshot.key);
 			that.setState({
 				uid: snapshot.key,
 				userNumReview: snapshot.val().numReviews,
 				reviewed: snapshot.val().reviewed
 			});
 		}.bind(this));
-		
 	}
 
 	submit(e){
 		var currentUser = firebase.auth().currentUser;
+
 		if(currentUser!==null && this.refs.rating!=="" && this.refs.review.value!==""){
 			e.preventDefault();
 			var reviewListRef = firebase.database().ref('reviews');
@@ -53,7 +53,6 @@ class NewReview extends Component{
 
 			var path = '/restaurants/'+this.state.restaurantId;
 
-			console.log('uid '+ this.state.uid);
 			this.updateUserProfile(this.state.uid);
 			hashHistory.push(path);
 			this.updateReview(this.state.restaurantKey);
@@ -69,9 +68,10 @@ class NewReview extends Component{
 		}
 	}
 
+	//update number of review and reviewed restaurant in user profile
 	updateUserProfile(reviewKey){
 		var userUpdateRef = firebase.database().ref('users/'+this.state.uid);
-		this.state.reviewed.push(this.state.restaurantId)+"/"+reviewKey;
+		this.state.reviewed.push(this.state.restaurantId+"/"+reviewKey);
 		userUpdateRef.update({
 			numReviews: Number(this.state.userNumReview) + 1,
 			reviewed: this.state.reviewed
