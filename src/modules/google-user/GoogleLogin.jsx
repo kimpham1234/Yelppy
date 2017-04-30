@@ -36,7 +36,7 @@ class GoogleLogin extends Component{
 						last: firstAndLast[firstAndLast.length-1], //add new user attributes here - Kim
 						numReviews: '0',
 						pictures: [''],
-						reviewed: '',
+						reviewed: [''],
 						UID: newUser.key
 					});
 				}

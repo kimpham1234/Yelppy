@@ -7,7 +7,7 @@ class NewReview extends Component{
 
 	constructor(){
 		super();
-		this.state = {restaurantName: String, restaurantId: String, restaurantKey: String, rating: 3};
+		this.state = {restaurantName: String, restaurantId: String, restaurantKey: String, rating: 3, uid: String, userNumReview: String, reviewed: []};
 	}
 
 	componentWillMount(){
@@ -18,6 +18,20 @@ class NewReview extends Component{
 			that.setState({restaurantId: snapshot.val().id});
 			that.setState({restaurantKey: snapshot.key});
 			this.updateReview(snapshot.key);
+		}.bind(this));
+
+		console.log('New review component wil mount');
+
+		var userEmail = firebase.auth().currentUser.email;
+		this.userRef = firebase.database().ref('users');
+		this.userRef.orderByChild('email').equalTo(userEmail).once('child_added', function(snapshot){
+			
+			console.log(snapshot.key);
+			that.setState({
+				uid: snapshot.key,
+				userNumReview: snapshot.val().numReviews,
+				reviewed: snapshot.val().reviewed
+			});
 		}.bind(this));
 		
 	}
@@ -30,7 +44,7 @@ class NewReview extends Component{
 			var newReviewRef = reviewListRef.push();
 			var time = Date();
 			newReviewRef.set({
-				timestamp: time,
+			  timestamp: time,
 			  author: currentUser.email,
 			  rating: this.state.rating,
 			  text: this.refs.review.value,
@@ -38,8 +52,12 @@ class NewReview extends Component{
 			});
 
 			var path = '/restaurants/'+this.state.restaurantId;
+
+			console.log('uid '+ this.state.uid);
+			this.updateUserProfile(this.state.uid);
 			hashHistory.push(path);
 			this.updateReview(this.state.restaurantKey);
+
 		}
 		else if (currentUser===null)
 		{
@@ -51,6 +69,15 @@ class NewReview extends Component{
 		}
 	}
 
+	updateUserProfile(reviewKey){
+		var userUpdateRef = firebase.database().ref('users/'+this.state.uid);
+		this.state.reviewed.push(this.state.restaurantId)+"/"+reviewKey;
+		userUpdateRef.update({
+			numReviews: Number(this.state.userNumReview) + 1,
+			reviewed: this.state.reviewed
+		});
+	}
+
 	updateReview(e){
 		var reviewListRef = firebase.database().ref('reviews');
 		var total = 0;
@@ -64,39 +91,17 @@ class NewReview extends Component{
 		var resRef = firebase.database().ref('business/'+e).update({
 				rating: this.round(Number(total / numberOfReviews)),
 				numReview: numberOfReviews
-			});
+		});
+	}
 
-	}
 	round(number) {
-    var value = (number * 2).toFixed() / 2;
-    return value;
+		var value = (number * 2).toFixed() / 2;
+		return value;
 	}
+	
 	onStarClick(nextValue, prevValue, name) {
-        this.setState({rating: nextValue});
+		 this.setState({rating: nextValue});
     }
-
-
-	updateReview(e){
-		var reviewListRef = firebase.database().ref('reviews');
-		var total = 0;
-		var numberOfReviews = 0;
-
-		reviewListRef.orderByChild('id').equalTo(e).on('child_added',function(snapshot) {
-			total+=Number(snapshot.val().rating);
-			numberOfReviews ++;
-		}.bind(this));
-
-		var resRef = firebase.database().ref('business/'+e).update({
-				rating: this.round(Number(total / numberOfReviews)),
-				numReview: numberOfReviews
-			});
-
-	}
-	round(number) {
-    var value = (number * 2).toFixed() / 2;
-    return value;
-}
-
 
 	render(){
 		var starRating = (
