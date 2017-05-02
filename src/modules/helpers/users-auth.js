@@ -1,26 +1,21 @@
 import * as firebase from 'firebase';
 import { ref, firebaseAuth } from '../../index';
 
-/*
-export function saveUser (user) {
-	console.log('i m in saveUser');
-	return ref.child('users')
-		.set({
-			email: user.email,
-			first: 'Kim',
-			last: 'Pham'
-		})
-		.then(() => user)
-}
-*/
+
 export function auth (email, password, first, last) {
 	return firebaseAuth.createUserWithEmailAndPassword(email, password)
 		.then(function(user) {
 			var newUser = ref.child('users').push();
+			var time = Date();
 			newUser.set({
+				timestamp: time,
 				email: email,
 				first: first,
-				last: last
+				last: last, //add new user attributes here - Kim
+				numReviews: '0',
+				pictures: [''],
+				reviewed: [''],
+				UID: newUser.key
 			});
 			alert('Your account is ready.');
 		}, function(error) {
