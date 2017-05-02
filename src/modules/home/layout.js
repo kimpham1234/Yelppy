@@ -138,23 +138,23 @@ let Layout = React.createClass({
         let newUser;
         let sign_in_out;
         let search;
-
+        let google_sign_in_out;
 
         if(this.state.isLoggedIn){
             //logged in navbar setup
             restaurants = <LinkContainer to="/restaurants"><NavItem eventKey={1}>Restaurants</NavItem></LinkContainer>;
             newUser = <LinkContainer to='/profile'><NavItem eventKey={2}>Profile</NavItem></LinkContainer>;
-            sign_in_out = <LinkContainer to='/logout'><NavItem eventKey={2}>Sign out</NavItem></LinkContainer>;
+            sign_in_out = <LinkContainer to='/logout'><NavItem eventKey={3}>Sign out</NavItem></LinkContainer>;
             search = <Search></Search>;
-
+            //sign_in_out = <Logout />;
         }
         else{
             //not logged in version of navbar
             restaurants = <LinkContainer to="/restaurants"><NavItem eventKey={1}>Restaurants</NavItem></LinkContainer>;
             newUser = <LinkContainer to='/newUser'><NavItem eventKey={2}>Create an account</NavItem></LinkContainer>;
-            sign_in_out = <LinkContainer to='/login'><NavItem eventKey={2}>Sign in</NavItem></LinkContainer>;
+            sign_in_out = <LinkContainer to='/login'><NavItem eventKey={3}>Sign in</NavItem></LinkContainer>;
             search = <Search></Search>;
-          
+            google_sign_in_out = <LinkContainer to='/google_login'><NavItem eventKey={4}>Google Sign in</NavItem></LinkContainer>;
         }
 
         return(
@@ -170,6 +170,7 @@ let Layout = React.createClass({
                         {restaurants}
                         {newUser}
                         {sign_in_out}
+                        {google_sign_in_out}
                     </Nav>
                     {search}
                 </Navbar>
