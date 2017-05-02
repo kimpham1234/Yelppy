@@ -49,7 +49,10 @@ class RestaurantDetail extends Component{
                 var val = snapshot.val();
                 var address = "";
                 for(var i = 0; i < val.location.display_address.length; i++){
-                    address += val.location.display_address[i]+', ';
+                    if(i!=val.location.display_address.length-1)
+                        address += val.location.display_address[i]+', ';
+                    else
+                        address += val.location.display_address[i];
                 }
                 that.setState({snapshotKey: snapshotKey_temp}, (snapshotKey)=>{
                     that.setReview(snapshotKey_temp);
@@ -171,11 +174,11 @@ class RestaurantDetail extends Component{
                                                     }
                                                 }
                             />}
-                            <br></br>{this.state.rating ? this.state.rating : '0'}/5, {this.state.numReview ? this.state.numReview : '0'} reviews
-                            <br></br>{this.state.location.substring(0, this.state.location.length-2)}
+                            <br></br>{this.state.numReview ? this.state.numReview : '0'} reviews
+                            <br></br>{this.state.location}
                             <br></br>Categories: {this.state.categories ? this.state.categories : 'none'}
                             <br></br>Phone: {this.state.phone ? this.state.phone : 'unknown'}
-                            <br></br>Price: {(this.state.price === "$") ? 'unknown' : this.state.price}
+                            <br></br>Price: {(this.state.price === '') ? 'unknown' : this.state.price}
                             </td>
                         </tr>
                     </tbody></Table>

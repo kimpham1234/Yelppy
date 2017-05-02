@@ -66,6 +66,7 @@ class Restaurants extends Component{
                                     <br></br>{restaurant.location.display_address[1]}
                                     <br></br>Phone: {restaurant.phone=="" ? 'Not available' : restaurant.phone}
                                     <br></br>Price: {restaurant.price}
+                                    <br></br>Categories: {restaurant.categories}
 				    			</td>
 				    			<td>
 									<StarRatingComponent
