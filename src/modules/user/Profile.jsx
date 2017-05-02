@@ -32,7 +32,7 @@ export default class Profile extends Component {
 							<table>
 								<tr>
 									<td>
-										<tr><Link to={'business/'+item.split("/")[1]}>{item.split("/")[0]}</Link></tr>
+										<tr><Link to={'/restaurants/'+item.split("/")[1]}>{item.split("/")[0]}</Link></tr>
 									</td>
 									<td>
 										<tr>Your rating: {item.split("/")[2]}/5 </tr>

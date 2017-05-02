@@ -6,39 +6,40 @@ import { LinkContainer } from 'react-router-bootstrap'
 import StarRatingComponent from 'react-star-rating-component';
 
 
+
 const picURL = "https://firebasestorage.googleapis.com/v0/b/yelppy-80fb2.appspot.com/o/images%2FDefault%2FnoPictureYet.png?alt=media&token=d07db72a-0963-488e-b228-9ab020bd0d41";
 
 class RestaurantDetail extends Component{
-	constructor(props){
+    constructor(props){
         super(props);
-		this.state = {name: String, rating:String, numReview: String, id: String,  price: String,
-					  avatar: String, categories: String, coordinates: [], phone: String, location: String,
-					  snapshotKey: String,
-					  reviewKeys:[],
-					  reviews: [],
-					  images: [],
+        this.state = {name: String, rating:String, numReview: String, id: String,  price: String,
+                      avatar: String, categories: String, coordinates: [], phone: String, location: String,
+                      snapshotKey: String,
+                      reviewKeys:[],
+                      reviews: [],
+                      images: [],
                       currentUser: {}
-					 }
-		this.imageUpload = this.imageUpload.bind(this);
-	}
+                     }
+        this.imageUpload = this.imageUpload.bind(this);
+    }
 
-	setReview(key){
-		var review_temp_list = [];
-		var reviewKey_temp_list = [];
-		var that = this;
-		this.reviewListRef = firebase.database().ref('reviews');
-		this.reviewListRef.orderByChild('id').equalTo(key).on('child_added',function(snapshot) {
-			review_temp_list.push(snapshot.val());
-			reviewKey_temp_list.push(snapshot.key);
-			that.setState({reviews: review_temp_list});
-			that.setState({reviewKeys: reviewKey_temp_list});
-		}.bind(this));
-	}
+    setReview(key){
+        var review_temp_list = [];
+        var reviewKey_temp_list = [];
+        var that = this;
+        this.reviewListRef = firebase.database().ref('reviews');
+        this.reviewListRef.orderByChild('id').equalTo(key).on('child_added',function(snapshot) {
+            review_temp_list.push(snapshot.val());
+            reviewKey_temp_list.push(snapshot.key);
+            that.setState({reviews: review_temp_list});
+            that.setState({reviewKeys: reviewKey_temp_list});
+        }.bind(this));
+    }
 
-	sample(){
-	}
+    sample(){
+    }
 
-	componentWillMount(){
+    componentWillMount(){
         this.restaurantRef = firebase.database().ref('business');
         var that = this;
         var snapshotKey_temp = "";
@@ -152,9 +153,9 @@ class RestaurantDetail extends Component{
 
     render() {
         var showDetail = (
-			<div>
-				<div>
-					<h1>{ this.state.name}</h1>
+            <div>
+                <div>
+                    <h1>{ this.state.name}</h1>
                     <Table><tbody>
                         <tr>
                             <td width="128"><img src={this.state.avatar} width="128" height="128"/></td>
@@ -178,56 +179,56 @@ class RestaurantDetail extends Component{
                             </td>
                         </tr>
                     </tbody></Table>
-				</div>
-				<div>
+                </div>
+                <div>
                     { this.state.images.map((image, index) =>(
-							<a key={index} target="_blank" href={image}>
-								<img src={image} width="220" height="160" />
-							</a>
+                            <a key={index} target="_blank" href={image}>
+                                <img src={image} width="220" height="160" />
+                            </a>
                         )
                     )}
-				</div>
+                </div>
 
-				<div>
-					<br></br>
-					<table><tbody>
-					<tr>
-						<td>Add a Photo:</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td><input type="file" id="input"/></td>
-						<td><button type="button" onClick={this.imageUpload}>Add</button></td>
-					</tr>
-					</tbody></table>
-					<button type="button"><Link to={'/reviews/new/'+this.state.snapshotKey}>Write a review</Link></button>
-				</div>
-			</div>
+
+                <div>
+                    <br></br>
+                    <table><tbody>
+                    <tr>
+                        <td>Add a Photo:</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><input type="file" id="input"/></td>
+                        <td><button type="button" onClick={this.imageUpload}>Add</button></td>
+                    </tr>
+                    </tbody></table>
+                    <button type="button"><Link to={'/reviews/new/'+this.state.snapshotKey}>Write a review</Link></button>
+                </div>
+            </div>
         )
-
 
         var showReview = (
 
-			<div>
-				<Table striped condensed hover responsive>
-					<thead>
-					<tr>
-						<th>Author</th>
-						<th>Rating</th>
-						<th>Review</th>
-						<th>Edit Button</th>
+            <div>
+                <Table striped condensed hover responsive>
+                    <thead>
+                    <tr>
+                        <th>Author</th>
+                        <th>Rating</th>
+                        <th>Review</th>
+                        <th>Edit Button</th>
                         <th>Flag Button</th>
-					</tr>
-					</thead>
-					<tbody>
+                    </tr>
+                    </thead>
+                    <tbody>
                     {
                         this.state.reviews.map((review, index) =>(
-							<tr key={index}>
-								<td>
+                            <tr key={index}>
+                                <td>
                                     { review.author }
-								</td>
+                                </td>
 
-								<td>
+                                <td>
                                     <StarRatingComponent
                                         name="star"
                                         editing={false}
@@ -239,32 +240,32 @@ class RestaurantDetail extends Component{
                                             }
                                         }
                                     />
-								</td>
+                                </td>
 
-								<td>
+                                <td>
                                     { review.text }
-								</td>
+                                </td>
 
-								<td>
+                                <td>
                                     <button type="button" ><Link to={'/reviews/edit/'+this.state.reviewKeys[index]}>Edit</Link></button>
-								</td>
+                                </td>
 
                                 <td>
                                     <button type="button" ><Link to={'/reviews/new_review_flag/'+this.state.reviewKeys[index]}>Flag this review</Link></button>
                                 </td>
-							</tr>
+                            </tr>
                         ))}
-					</tbody>
-				</Table>
-			</div>
+                    </tbody>
+                </Table>
+            </div>
         )
         // console.log('name', new Date());
         return (
-			<div>
+            <div>
                 {showDetail}
-				<h2> Reviews </h2>
+                <h2> Reviews </h2>
                 {showReview}
-			</div>
+            </div>
         )
     }
 }

@@ -20,17 +20,6 @@ class Edit extends Component{
 		this.reviewListRef = firebase.database();
 		this.reviewListRef.ref('reviews/'+this.props.params.id).once('value',function(snapshot) {
 			var value = snapshot.val();
-<<<<<<< HEAD
-			console.log("snapshot" + snapshot.val().text);
-		//	setState({this.state.review: value.text})
-
-
-			this.review = value.text;
-			this.rating = value.rating;
-			this.author = value.author;
-			this.resId = value.id;
-			this.review_id = this.props.params.id;
-=======
 			that.setState({review: value.text});
 			that.setState({rating: value.rating});
 			that.setState({author: value.author});
@@ -40,7 +29,6 @@ class Edit extends Component{
 				}.bind(this));
 			});
 			that.setState({review_id: this.props.params.id});
->>>>>>> b75fac72527827650ceecde318d5432d1529ea8d
 		}.bind(this));
 		
 	}
