@@ -13,6 +13,7 @@ class Login extends Component{
 		// var users = firebase.database().ref('users');
 		var email = this.refs.email.value;
 		var password = this.refs.password.value;
+		var provider = new firebase.auth.FacebookAuthProvider();
 		// console.log('email', email);
 		// console.log('password', password);
 
@@ -35,8 +36,40 @@ class Login extends Component{
 			}
 			console.log(error);
 		});
+*/
+		firebase.auth().signInWithPopup(provider).then(function(result) {
+		 // This gives you a Facebook Access Token.
+		 	var token = result.credential.accessToken;
+		 // The signed-in user info.
+		 	var user = result.user;
+			var userRef = firebase.database().ref('users');
+			var that = this;
+
+			//check if this is first sign in, if yes save new user to db
+			userRef.orderByChild('email').equalTo(user.email).once('value', function(snapshot){
+				var exist = (snapshot.val() !== null);
+
+				if(!exist){
+					var newUser = userRef.push();
+					var time = Date();
+					var firstAndLast = firebase.auth().currentUser.displayName.split(" ");
+
+					newUser.set({
+						timestamp: time,
+						email: user.email,
+						first: firstAndLast[0],
+						last: firstAndLast[firstAndLast.length-1], //add new user attributes here - Kim
+						numReviews: '0',
+						pictures: [''],
+						reviewed: [''],
+						UID: newUser.key
+					});
+				}
+			});
+		});
+
 		hashHistory.push('/');
-		*/
+		
 		
 		e.preventDefault();
 		login(email, password);
@@ -56,6 +89,7 @@ class Login extends Component{
 						<FormControl label="E-mail address" type="text" ref="email" placeholder="Your email address" />
 						<FormControl label="Password" type="password" ref="password" />
 						<FormControl className="btn btn-primary" type="submit" />
+						
 					</FormGroup>
 				</form>
 				*/}
@@ -64,6 +98,7 @@ class Login extends Component{
 			        <input type="text" ref="email" placeholder="Your email address"/><br></br>
                     <input type="password" ref="password" placeholder="Your password"/><br></br>
 			        <button type="submit">Submit</button>
+					<button class="loginBtn loginBtn--facebook">Login with Facebook</button>
 			    </form>
 			</div>
 			
