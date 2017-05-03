@@ -46,6 +46,7 @@ class NewReview extends Component{
 			newReviewRef.set({
 			  timestamp: time,
 			  author: currentUser.email,
+			  images: [""],
 			  rating: this.state.rating,
 			  text: this.refs.review.value,
 			  id: this.refs.id.value,
@@ -74,6 +75,7 @@ class NewReview extends Component{
 		if(this.state.reviewed[0]=="")
 			this.state.reviewed[0] = this.state.restaurantName+"/"+this.state.restaurantId+"/"+this.state.rating+"/"+this.refs.review.value;
 		else this.state.reviewed.push(this.state.restaurantName+"/"+this.state.restaurantId+"/"+this.state.rating+"/"+this.refs.review.value);
+		
 		userUpdateRef.update({
 			numReviews: Number(this.state.userNumReview) + 1,
 			reviewed: this.state.reviewed

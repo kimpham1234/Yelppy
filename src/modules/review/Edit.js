@@ -82,7 +82,7 @@ class Edit extends Component{
 		}.bind(this));
 
 		var resRef = firebase.database().ref('business/'+e).update({
-				rating: this.round(Number(total / numberOfReviews)),
+				rating: total == 0 ? 0 :this.round(Number(total / numberOfReviews)),
 				numReview: numberOfReviews
 			});
 

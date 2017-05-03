@@ -18,7 +18,10 @@ class RestaurantDetail extends Component{
                       reviewKeys:[],
                       reviews: [],
                       images: [],
-                      currentUser: {}
+                      currentUser: {},
+                      hasReviewed: false,
+                      userReview: "",
+                      userReviewKey: String
                      }
         this.imageUpload = this.imageUpload.bind(this);
     }
@@ -82,10 +85,27 @@ class RestaurantDetail extends Component{
         //     this.setState({reviews: this.state.reviews})
         //     this.setState({reviewKeys: this.state.keys})
         // }.bind(this));
-
-
-
         this.setState({currentUser: firebase.auth().currentUser});
+
+        this.userRef = firebase.database().ref('users');
+        this.userRef.orderByChild('email').equalTo(firebase.auth().currentUser.email).once('child_added',  function(snapshot) {
+            var reviewed = snapshot.val().reviewed;
+            for (var i in reviewed) {
+                if(reviewed[i].split("/")[1] == this.state.id){
+                        that.setState({hasReviewed : true})
+                }
+            }
+        }.bind(this));
+
+        this.reviewRef = firebase.database().ref('reviews');
+        this.reviewRef.orderByChild('author').equalTo(firebase.auth().currentUser.email).on('child_added',  function(snapshot) {
+            var resKey = snapshot.val().id;
+            console.log(resKey);
+            console.log(snapshotKey_temp);
+            if(resKey == snapshotKey_temp){
+                that.setState({userReview: snapshot.val(), userReviewKey: snapshot.key});
+            }
+        }.bind(this));
     }
 
 
@@ -149,12 +169,25 @@ class RestaurantDetail extends Component{
 
                     var resRef = firebase.database().ref('/business/'+that.state.snapshotKey);
                     resRef.update({images: images_temp_list});
+
+                    var reviewRef = firebase.database().ref('/reviews/'+that.state.userReviewKey);
+                    reviewRef.update({images: images_temp_list});
+
                 }.bind(this));
             //end image upload
         }
     }
 
+
     render() {
+        let writeReview;
+        let userReviewEmail;
+        if(!this.state.hasReviewed){
+            writeReview = <button type="button"><Link to={'/reviews/new/'+this.state.snapshotKey}>Write a review</Link></button>
+        }
+        else{
+            userReviewEmail = <p>sdfsdgdg{this.state.userReview.author}</p>
+        }
         var showDetail = (
             <div>
                 <div>
@@ -205,7 +238,7 @@ class RestaurantDetail extends Component{
                         <td><button type="button" onClick={this.imageUpload}>Add</button></td>
                     </tr>
                     </tbody></table>
-                    <button type="button"><Link to={'/reviews/new/'+this.state.snapshotKey}>Write a review</Link></button>
+                    {writeReview}
                 </div>
             </div>
         )
@@ -256,7 +289,19 @@ class RestaurantDetail extends Component{
                                 <td>
                                     <button type="button" ><Link to={'/reviews/new_review_flag/'+this.state.reviewKeys[index]}>Flag this review</Link></button>
                                 </td>
+                                <td>
+                                    <div>
+                                        { review.images.map((image, index) =>(image != "" ?
+                                                <a key={index} target="_blank" href={image}>
+                                                    <img src={image} width="220" height="160" />
+                                                </a>
+                                                : ""
+                                            ))
+                                        }
+                                    </div>
+                                </td>
                             </tr>
+
                         ))}
                     </tbody>
                 </Table>
@@ -265,6 +310,7 @@ class RestaurantDetail extends Component{
         // console.log('name', new Date());
         return (
             <div>
+                {userReviewEmail}
                 {showDetail}
                 <h2> Reviews </h2>
                 {showReview}
