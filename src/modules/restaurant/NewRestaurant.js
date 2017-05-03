@@ -12,7 +12,9 @@ class NewRestaurant extends Component{
 		e.preventDefault();
 		var restaurantListRef = firebase.database().ref('restaurants');
 		var newRestaurant = restaurantListRef.push();
+		var time = Date();
 		newRestaurant.set({
+			timestamp: time,
 		  name: this.refs.name.value,
           storenum: this.refs.storenum.value,
 		  rating: this.refs.rating.value,
