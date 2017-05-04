@@ -34,7 +34,7 @@ class RestaurantDetail extends Component{
             if(snapshot.val().author != firebase.auth().currentUser.email){
                 review_temp_list.push(snapshot.val());
                 reviewKey_temp_list.push(snapshot.key);
-                console.log(snapshot.val());     
+                //console.log(snapshot.val());     
             }
             that.setState({reviews: review_temp_list,reviewKeys: reviewKey_temp_list});
         }.bind(this));
