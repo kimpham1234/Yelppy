@@ -50,6 +50,7 @@ class NewReview extends Component{
 			  rating: this.state.rating,
 			  text: this.refs.review.value,
 			  id: this.refs.id.value,
+			  restaurant_author: this.refs.id.value +'/' + currentUser.email
 			});
 
 			var path = '/restaurants/'+this.state.restaurantId;

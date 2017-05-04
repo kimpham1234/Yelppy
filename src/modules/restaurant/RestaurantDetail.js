@@ -21,25 +21,65 @@ class RestaurantDetail extends Component{
                       currentUser: {},
                       hasReviewed: false,
                       userReview: "",
-                      userReviewKey: String
+                      userReviewKey: String,
+                      userImages: []
                      }
         this.imageUpload = this.imageUpload.bind(this);
     }
-
-    setReview(key){
-        var review_temp_list = [];
-        var reviewKey_temp_list = [];
+    setNormalReviews(key, review_temp_list, reviewKey_temp_list){
         var that = this;
         this.reviewListRef = firebase.database().ref('reviews');
         this.reviewListRef.orderByChild('id').equalTo(key).on('child_added',function(snapshot) {
-            review_temp_list.push(snapshot.val());
-            reviewKey_temp_list.push(snapshot.key);
-            that.setState({reviews: review_temp_list});
-            that.setState({reviewKeys: reviewKey_temp_list});
+            
+            if(snapshot.val().author != firebase.auth().currentUser.email){
+                review_temp_list.push(snapshot.val());
+                reviewKey_temp_list.push(snapshot.key);
+                console.log(snapshot.val());     
+            }
+            that.setState({reviews: review_temp_list,reviewKeys: reviewKey_temp_list});
+        }.bind(this));
+
+    }
+    setUserReview(key, review_temp_list, reviewKey_temp_list){
+        var userReview_temp = "";
+        var userReviewKey_temp = "";
+        var that = this;
+        this.reviewListRef = firebase.database().ref('reviews');
+        //restaurant key + user email
+        var res_au = key+"/" +firebase.auth().currentUser.email;
+        this.reviewListRef.orderByChild('restaurant_author').equalTo(res_au).once('child_added',  function(snapshot) {
+                    userReview_temp = snapshot.val();
+                    userReviewKey_temp = snapshot.key;
+
+                    review_temp_list.push(snapshot.val());
+                    reviewKey_temp_list.push(snapshot.key);
+
+                that.setState({userReview: userReview_temp, userReviewKey: userReviewKey_temp, userImages: userReview_temp.images},
+                    ()=>{
+            that.setNormalReviews(key, review_temp_list, reviewKey_temp_list, userReview_temp, userReviewKey_temp)
+            })
         }.bind(this));
     }
-
-    sample(){
+    checkReview(key, id){
+        var review_temp_list = [];
+        var reviewKey_temp_list = [];
+        var that = this;
+        this.userRef = firebase.database().ref('users');
+        this.userRef.orderByChild('email').equalTo(firebase.auth().currentUser.email).once('child_added',  function(snapshot) {
+            var reviewed = snapshot.val().reviewed;
+            var bool = false;
+            for (var i in reviewed) {
+                if(reviewed[i].split("/")[1] == id){
+                       bool = true; 
+                }
+            }
+            console.log(bool);
+            that.setState({hasReviewed : bool}, ()=>{this.state.hasReviewed ?
+            that.setUserReview(key, review_temp_list, reviewKey_temp_list)
+            : that.setNormalReviews(key, review_temp_list, reviewKey_temp_list)
+        })
+            
+        }.bind(this));
     }
 
     componentWillMount(){
@@ -58,7 +98,7 @@ class RestaurantDetail extends Component{
                         address += val.location.display_address[i];
                 }
                 that.setState({snapshotKey: snapshotKey_temp}, (snapshotKey)=>{
-                    that.setReview(snapshotKey_temp);
+                    that.checkReview(snapshotKey_temp, val.id);
                 });
                 that.setState({
                     name: val.name,
@@ -86,26 +126,6 @@ class RestaurantDetail extends Component{
         //     this.setState({reviewKeys: this.state.keys})
         // }.bind(this));
         this.setState({currentUser: firebase.auth().currentUser});
-
-        this.userRef = firebase.database().ref('users');
-        this.userRef.orderByChild('email').equalTo(firebase.auth().currentUser.email).once('child_added',  function(snapshot) {
-            var reviewed = snapshot.val().reviewed;
-            for (var i in reviewed) {
-                if(reviewed[i].split("/")[1] == this.state.id){
-                        that.setState({hasReviewed : true})
-                }
-            }
-        }.bind(this));
-
-        this.reviewRef = firebase.database().ref('reviews');
-        this.reviewRef.orderByChild('author').equalTo(firebase.auth().currentUser.email).on('child_added',  function(snapshot) {
-            var resKey = snapshot.val().id;
-            console.log(resKey);
-            console.log(snapshotKey_temp);
-            if(resKey == snapshotKey_temp){
-                that.setState({userReview: snapshot.val(), userReviewKey: snapshot.key});
-            }
-        }.bind(this));
     }
 
 
@@ -162,32 +182,62 @@ class RestaurantDetail extends Component{
                     // Upload completed successfully, now we can get the download URL
                     var downloadURL = uploadTask.snapshot.downloadURL;
                     var images_temp_list = that.state.images;
+                    var user_images_list = that.state.userImages;
+
                     if(images_temp_list[0]==picURL)
                         images_temp_list[0] = downloadURL;
                     else images_temp_list.push(downloadURL);
                     that.setState({images: images_temp_list});
 
+                    if(user_images_list[0]=="")
+                        user_images_list[0] = downloadURL;
+                    else user_images_list.push(downloadURL);
+                    that.setState({userImages: user_images_list});
                     var resRef = firebase.database().ref('/business/'+that.state.snapshotKey);
                     resRef.update({images: images_temp_list});
 
                     var reviewRef = firebase.database().ref('/reviews/'+that.state.userReviewKey);
-                    reviewRef.update({images: images_temp_list});
-
+                    reviewRef.update({images: user_images_list});
                 }.bind(this));
             //end image upload
         }
     }
-
-
-    render() {
-        let writeReview;
-        let userReviewEmail;
+    showWriteReview(){
         if(!this.state.hasReviewed){
-            writeReview = <button type="button"><Link to={'/reviews/new/'+this.state.snapshotKey}>Write a review</Link></button>
+            return <button type="button"><Link to={'/reviews/new/'+this.state.snapshotKey}>Write a review</Link></button>
+        }
+    }
+    showEditButton(review, index){
+        if(this.state.hasReviewed && review.author == this.state.userReview.author){
+            return <button type="button" ><Link to={'/reviews/edit/'+this.state.reviewKeys[index]}>Edit</Link></button>
+        }
+    }
+    showFlagButton(review, index){
+        if(!this.state.hasReviewed||review.author != this.state.userReview.author){
+            return <button type="button" ><Link to={'/reviews/new_review_flag/'+this.state.reviewKeys[index]}>Flag this review</Link></button>
+        }
+    }
+    showReviewImages(review, index){
+        var imageList = ""
+        if(this.state.hasReviewed && review.author == this.state.userReview.author){
+            imageList = this.state.userImages;
         }
         else{
-            userReviewEmail = <p>sdfsdgdg{this.state.userReview.author}</p>
+            imageList = review.images   
         }
+        return  <div>
+                        { 
+                            imageList.map((image, index) =>(
+                                image != "" ?
+                                    <a key={index} target="_blank" href={image}>
+                                        <img src={image} width="220" height="160" />
+                                    </a>
+                                : ""
+                            ))
+                        }
+                    </div>  
+    }
+    render() {
         var showDetail = (
             <div>
                 <div>
@@ -238,7 +288,7 @@ class RestaurantDetail extends Component{
                         <td><button type="button" onClick={this.imageUpload}>Add</button></td>
                     </tr>
                     </tbody></table>
-                    {writeReview}
+                    {this.showWriteReview()}
                 </div>
             </div>
         )
@@ -283,26 +333,19 @@ class RestaurantDetail extends Component{
                                 </td>
 
                                 <td>
-                                    <button type="button" ><Link to={'/reviews/edit/'+this.state.reviewKeys[index]}>Edit</Link></button>
+                                    {this.showEditButton(review, index)}
                                 </td>
 
                                 <td>
-                                    <button type="button" ><Link to={'/reviews/new_review_flag/'+this.state.reviewKeys[index]}>Flag this review</Link></button>
+                                    {this.showFlagButton(review, index)}
                                 </td>
                                 <td>
-                                    <div>
-                                        { review.images.map((image, index) =>(image != "" ?
-                                                <a key={index} target="_blank" href={image}>
-                                                    <img src={image} width="220" height="160" />
-                                                </a>
-                                                : ""
-                                            ))
-                                        }
-                                    </div>
+                                    {this.showReviewImages(review, index)}
                                 </td>
                             </tr>
 
-                        ))}
+                        ))
+                    }
                     </tbody>
                 </Table>
             </div>
@@ -310,7 +353,6 @@ class RestaurantDetail extends Component{
         // console.log('name', new Date());
         return (
             <div>
-                {userReviewEmail}
                 {showDetail}
                 <h2> Reviews </h2>
                 {showReview}
