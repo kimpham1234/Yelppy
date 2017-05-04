@@ -26,6 +26,7 @@ class RestaurantDetail extends Component{
                      }
         this.imageUpload = this.imageUpload.bind(this);
     }
+
     setNormalReviews(key, review_temp_list, reviewKey_temp_list){
         var that = this;
         this.reviewListRef = firebase.database().ref('reviews');
@@ -40,6 +41,7 @@ class RestaurantDetail extends Component{
         }.bind(this));
 
     }
+
     setUserReview(key, review_temp_list, reviewKey_temp_list){
         var userReview_temp = "";
         var userReviewKey_temp = "";
@@ -60,6 +62,7 @@ class RestaurantDetail extends Component{
             })
         }.bind(this));
     }
+    
     checkReview(key, id){
         var review_temp_list = [];
         var reviewKey_temp_list = [];

@@ -16,7 +16,7 @@ export function auth (email, password, first, last) {
 				numReviews: '0',
 				pictures: [''],
 				reviewed: [''],
-				AuthID: firebase.auth().currentUser.uid
+				AuthID: authId
 			});
 			alert('Your account is ready.');
 		}, function(error) {
