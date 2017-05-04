@@ -154,6 +154,11 @@ class RestaurantDetail extends Component{
         }
     }
 
+    writeReview(){
+        console.log(this);
+    }
+
+
     render() {
         var showDetail = (
             <div>
@@ -205,7 +210,7 @@ class RestaurantDetail extends Component{
                         <td><button type="button" onClick={this.imageUpload}>Add</button></td>
                     </tr>
                     </tbody></table>
-                    <button type="button"><Link to={'/reviews/new/'+this.state.snapshotKey}>Write a review</Link></button>
+                    <button type="button" onClick={this.writeReview}>Write a review</button>
                 </div>
             </div>
         )
