@@ -10,7 +10,7 @@ class Edit extends Component{
 
 	constructor(){
 		super();
-		this.state = {resPathId: String, review: String, rating: String, review_id: String, author: String, resId: String};
+		this.state = {userNumReview: String, reviewedList:[], resPathId: String, review: String, rating: String, review_id: String, author: String, resId: String};
 
 
 	}
@@ -29,6 +29,16 @@ class Edit extends Component{
 				}.bind(this));
 			});
 			that.setState({review_id: this.props.params.id});
+		}.bind(this));
+
+		var authid = firebase.auth().currentUser.uid;
+		this.userRef = firebase.database()
+		this.userRef.ref('users').orderByKey().equalTo(authid).on('child_added',function(snapshot){
+			that.setState({reviewedList: snapshot.val().reviewed});
+			that.setState({userNumReview: snapshot.val().numReviews});
+			console.log(snapshot.val().numReviews);
+			console.log("set state "+that.state.reviewedList);
+			console.log("userNumReview "+that.state.userNumReview);
 		}.bind(this));
 		
 	}
@@ -60,6 +70,23 @@ class Edit extends Component{
 			var resPath = "";
 			var reviewRef = firebase.database().ref('reviews/' + this.props.params.id);
 			reviewRef.remove();
+			this.state.reviewedList;
+			for(var i = 0; i < this.state.reviewedList.length; i++){
+				if(this.state.reviewedList[i].split("/")[1]===this.state.resPathId){
+					this.state.reviewedList.splice(i, 1);
+					console.log(this.state.reviewedList[i].split("/")[1]+", "+this.state.resPathId);
+				}
+				console.log(this.state.reviewedList[i].split("/")[1]+", "+this.state.resPathId);
+			}
+			var reviewNum = Number(this.state.userNumReview) - 1;
+			console.log("delete " + this.state.reviewedList);
+			console.log("delete " + reviewNum);
+			var userRef = firebase.database().ref('users');
+			userRef.child(currentUser.uid).update({
+				reviewed: this.state.reviewedList,
+				numReviews: reviewNum
+			});
+
 			hashHistory.push('/restaurants/'+this.state.resPathId);
 			this.updateReview(this.state.resId);
 		}
@@ -84,7 +111,7 @@ class Edit extends Component{
 		var resRef = firebase.database().ref('business/'+e).update({
 				rating: total == 0 ? 0 :this.round(Number(total / numberOfReviews)),
 				numReview: numberOfReviews
-			});
+		});
 
 	}
 	round(number) {

@@ -5,7 +5,8 @@ import { ref, firebaseAuth } from '../../index';
 export function auth (email, password, first, last) {
 	return firebaseAuth.createUserWithEmailAndPassword(email, password)
 		.then(function(user) {
-			var newUser = ref.child('users').push();
+			var authId = firebase.auth().currentUser.uid;
+			var newUser = ref.child('users').child(authId);
 			var time = Date();
 			newUser.set({
 				timestamp: time,
@@ -15,7 +16,6 @@ export function auth (email, password, first, last) {
 				numReviews: '0',
 				pictures: [''],
 				reviewed: [''],
-				UID: newUser.key,
 				AuthID: firebase.auth().currentUser.uid
 			});
 			alert('Your account is ready.');
