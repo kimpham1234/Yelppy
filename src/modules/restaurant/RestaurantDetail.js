@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Link, Router } from 'react-router'
 import * as firebase from 'firebase';
-import { Navbar, Nav, NavItem, Button, ButtonToolbar, Jumbotron, Table, buttonsInstance } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap'
+import { Navbar, Nav, NavItem, Button, Badge, ListGroup, ListGroupItem, ButtonToolbar, Jumbotron, Table, buttonsInstance } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 import StarRatingComponent from 'react-star-rating-component';
+import './DishRating.css';
 
 
 
@@ -100,7 +101,8 @@ class RestaurantDetail extends Component{
             //    that.setState({dishRated: tempdish});
             });
             tempdish.sort(that.compare);
-            that.setState({dishRated: tempdish});
+            tempdish = tempdish.slice(0,5);
+            that.setState({topDishes: tempdish});
             console.log(tempdish);
 
         });
@@ -270,6 +272,17 @@ class RestaurantDetail extends Component{
     }
 
     render() {
+        var showDishRating = (
+            <div className="dishRating">
+            <h3><strong>Top Dishes</strong></h3>
+                <ListGroup>
+                    {this.state.topDishes.map((dish, index)=>
+                    <ListGroupItem>{dish.name}<Badge>{dish.vote}</Badge></ListGroupItem>
+                )}
+                </ListGroup>
+            </div>
+        )
+
         var showDetail = (
             <div>
                 <div>
@@ -386,6 +399,7 @@ class RestaurantDetail extends Component{
         return (
             <div>
                 {showDetail}
+                {showDishRating}
                 <h2> Reviews </h2>
                 {showReview}
             </div>
