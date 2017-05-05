@@ -2,21 +2,27 @@ import React,{ Component } from 'react';
 import * as firebase from 'firebase';
 import {hashHistory} from 'react-router'
 import "../../App.css";
+import { Table, buttonsInstance } from 'react-bootstrap';
 import StarRatingComponent from 'react-star-rating-component';
 class NewReview extends Component{
 
 	constructor(){
 		super();
-		this.state = {restaurantName: String, restaurantId: String, restaurantKey: String, rating: 3, uid: String, userNumReview: String, reviewed: []};
+		this.state = {restaurantName: String, restaurantId: String, restaurantKey: String,
+					  rating: 3, uid: String, userNumReview: String, reviewed: [],
+					  dishRated:[], dishRatedKey:[], hasDishRating: false};
 	}
-
 
 	componentWillMount(){
 		this.restaurantRef = firebase.database().ref('business');
 		var that = this;
+		var tempResId="";
 		this.restaurantRef.orderByKey().equalTo(this.props.params.id).once('child_added',  function(snapshot) {
+			tempResId = snapshot.val().id;
 			that.setState({restaurantName: snapshot.val().name});
-			that.setState({restaurantId: snapshot.val().id});
+			that.setState({restaurantId: tempResId}, ()=>{
+				that.getDishRating(tempResId);
+			});
 			that.setState({restaurantKey: snapshot.key});
 			this.updateReview(snapshot.key);
 		}.bind(this));
@@ -33,6 +39,47 @@ class NewReview extends Component{
 				reviewed: snapshot.val().reviewed
 			});
 		}.bind(this));
+
+
+		//console.log("component will mount " + tempResId);
+		//this.getDishRating(tempResId);
+		
+	}
+
+	getDishRating(restaurantId){
+		console.log("get dish rating");
+		console.log(restaurantId);
+		var dishRatingRef = firebase.database().ref('dishRating');
+		var tempdish = [];
+		var tempkey = [];
+		var that = this;
+		dishRatingRef.orderByKey().equalTo(restaurantId).on('child_added', function(snapshot){
+			snapshot.forEach(function(childSnapShot){
+				var value = childSnapShot.val();
+				console.log(value);
+				tempdish.push(childSnapShot.val());
+				tempkey.push(childSnapShot.key);
+				that.setState({dishRated: tempdish});
+				that.setState({dishRatedKey: tempkey});
+			//	console.log("ello " + that.state.dishRated[0].name);
+			//	console.log("ello " + that.state.dishRatedKey);
+			});
+		});
+		dishRatingRef.orderByKey().equalTo(restaurantId).on('child_changed', function(snapshot){
+			tempdish = [];
+			tempkey = [];
+			snapshot.forEach(function(childSnapShot){
+				var value = childSnapShot.val();
+				console.log(value);
+				tempdish.push(childSnapShot.val());
+				tempkey.push(childSnapShot.key);
+				that.setState({dishRated: tempdish});
+				that.setState({dishRatedKey: tempkey});
+				that.setState({hasDishRating: true});
+			//	console.log("ello " + that.state.dishRated[0].name);
+			//	console.log("ello " + that.state.dishRatedKey);
+			});
+		});
 	}
 
 	submit(e){
@@ -108,6 +155,37 @@ class NewReview extends Component{
 		 this.setState({rating: nextValue});
     }
 
+    upvote(index){
+    	console.log("upvote " + index);
+    	var votedUser = this.state.dishRated[index].users;
+    	var oldVote = Number(this.state.dishRated[index].vote);
+    	var i = votedUser.indexOf(firebase.auth().currentUser.uid);
+    	if(i===-1){
+    		console.log("not yet voted");
+    		oldVote++;
+    		votedUser.push(firebase.auth().currentUser.uid);
+    		var votedDishRef = firebase.database().ref('dishRating').child(this.state.restaurantId).child(this.state.dishRatedKey[index]);
+    		votedDishRef.update({
+    			vote: oldVote,
+    			users: votedUser
+    		});
+    	}else{
+    		alert("You already voted for this dish");
+    	}
+    }
+
+    addDish(e){
+    	e.preventDefault();
+    	console.log("add dish " + this.state.restaurantId);
+    	var newDishRef = firebase.database().ref('dishRating').child(this.state.restaurantId).push();
+    	newDishRef.set({
+    		name: this.refs.name.value,
+    		vote: 1,
+    		users: [firebase.auth().currentUser.uid]
+    	})
+
+    }
+
 	render(){
 		var starRating = (
 			<div>
@@ -141,11 +219,54 @@ class NewReview extends Component{
 			      		<td>  <textArea cols="50" type="text" ref="review" placeholder="Share your thoughts..."/></td>
 			      	</tr>
 			      	
-			      </tbody></table>
-			      <button type="submit">Submit</button>
-				</form>
-				<input type="hidden" ref="id" value={this.props.params.id}/>
-			    </div>
+			       </tbody></table>
+			       <button type="submit">Submit</button>
+				   </form>
+				   <input type="hidden" ref="id" value={this.props.params.id}/>
+				</div>
+				<br></br>
+				<br></br>
+				<br></br>
+				<br></br>
+				<br></br>
+				<br></br>
+				<br></br>
+				<br></br>
+				<br></br>
+
+				Rate your dish, upvote for the ones here or add your own<br></br>
+					Or add your own dish<button type="button" onClick={this.addDish.bind(this)}>Add</button>
+					<input type="text" ref="name" placeholder="Your dish"></input>
+					<Table striped condensed hover responsive>
+					<thead>
+				      <tr>
+				        <th>Dishes</th>
+				        <th>Votes</th>
+				        <th></th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				    	{this.state.dishRated.map((dish, index) => (
+				    		<tr key={index}>
+				    			<td>
+				    				{dish.name}
+				    			</td>
+				    			<td>
+				    				{dish.vote}
+				    			</td>
+				    			<td>
+									<button type="button" onClick={()=>this.upvote(index)}>Upvote</button>
+				    			</td>
+				    		</tr>
+
+				    	))}
+				    </tbody>
+				</Table>
+					
+			    
+
+			    
+			    
 			</div>
 		)
 	}

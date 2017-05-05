@@ -22,10 +22,12 @@ class RestaurantDetail extends Component{
                       hasReviewed: false,
                       userReview: "",
                       userReviewKey: String,
-                      userImages: []
+                      userImages: [],
+                      topDishes: []
                      }
         this.imageUpload = this.imageUpload.bind(this);
     }
+
     setNormalReviews(key, review_temp_list, reviewKey_temp_list){
         var that = this;
         this.reviewListRef = firebase.database().ref('reviews');
@@ -40,6 +42,7 @@ class RestaurantDetail extends Component{
         }.bind(this));
 
     }
+
     setUserReview(key, review_temp_list, reviewKey_temp_list){
         var userReview_temp = "";
         var userReviewKey_temp = "";
@@ -60,6 +63,7 @@ class RestaurantDetail extends Component{
             })
         }.bind(this));
     }
+    
     checkReview(key, id){
         var review_temp_list = [];
         var reviewKey_temp_list = [];
@@ -81,6 +85,31 @@ class RestaurantDetail extends Component{
             
         }.bind(this));
     }
+
+    getTopDish(resId){
+        var dishRatingRef = firebase.database().ref('dishRating');
+        var tempdish = [];
+        var that = this;
+        dishRatingRef.orderByKey().equalTo(resId).on('child_added', function(snapshot){
+            snapshot.forEach(function(childSnapShot){
+                var value = childSnapShot.val();
+                console.log(value);
+                tempdish.push(childSnapShot.val());
+            //    tempdish.sort(that.compare);
+            //    console.log(tempdish);
+            //    that.setState({dishRated: tempdish});
+            });
+            tempdish.sort(that.compare);
+            that.setState({dishRated: tempdish});
+            console.log(tempdish);
+
+        });
+    }
+
+    compare(a, b){
+        return -(a.vote - b.vote);
+    }
+
 
     componentWillMount(){
         this.restaurantRef = firebase.database().ref('business');
@@ -126,6 +155,7 @@ class RestaurantDetail extends Component{
         //     this.setState({reviewKeys: this.state.keys})
         // }.bind(this));
         this.setState({currentUser: firebase.auth().currentUser});
+        this.getTopDish(this.props.params.id);
     }
 
 
@@ -202,6 +232,7 @@ class RestaurantDetail extends Component{
             //end image upload
         }
     }
+
     showWriteReview(){
         if(!this.state.hasReviewed){
             return <button type="button"><Link to={'/reviews/new/'+this.state.snapshotKey}>Write a review</Link></button>
@@ -237,6 +268,7 @@ class RestaurantDetail extends Component{
                         }
                     </div>  
     }
+
     render() {
         var showDetail = (
             <div>
