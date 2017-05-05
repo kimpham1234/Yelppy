@@ -61,7 +61,6 @@ class NewReview extends Component{
 				tempkey.push(childSnapShot.key);
 				that.setState({dishRated: tempdish});
 				that.setState({dishRatedKey: tempkey});
-				that.setState({hasDishRating: true});
 			//	console.log("ello " + that.state.dishRated[0].name);
 			//	console.log("ello " + that.state.dishRatedKey);
 			});
