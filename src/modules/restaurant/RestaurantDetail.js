@@ -66,25 +66,27 @@ class RestaurantDetail extends Component{
     }
     
     checkReview(key, id){
-        var review_temp_list = [];
-        var reviewKey_temp_list = [];
-        var that = this;
-        this.userRef = firebase.database().ref('users');
-        this.userRef.orderByChild('email').equalTo(firebase.auth().currentUser.email).once('child_added',  function(snapshot) {
-            var reviewed = snapshot.val().reviewed;
-            var bool = false;
-            for (var i in reviewed) {
-                if(reviewed[i].split("/")[1] == id){
-                       bool = true; 
+        if(firebase.auth().currentUser!=null){
+            var review_temp_list = [];
+            var reviewKey_temp_list = [];
+            var that = this;
+            this.userRef = firebase.database().ref('users');
+            this.userRef.orderByChild('email').equalTo(firebase.auth().currentUser.email).once('child_added',  function(snapshot) {
+                var reviewed = snapshot.val().reviewed;
+                var bool = false;
+                for (var i in reviewed) {
+                    if(reviewed[i].split("/")[1] == id){
+                           bool = true; 
+                    }
                 }
-            }
-            console.log(bool);
-            that.setState({hasReviewed : bool}, ()=>{this.state.hasReviewed ?
-            that.setUserReview(key, review_temp_list, reviewKey_temp_list)
-            : that.setNormalReviews(key, review_temp_list, reviewKey_temp_list)
-        })
-            
-        }.bind(this));
+                console.log(bool);
+                that.setState({hasReviewed : bool}, ()=>{this.state.hasReviewed ?
+                that.setUserReview(key, review_temp_list, reviewKey_temp_list)
+                : that.setNormalReviews(key, review_temp_list, reviewKey_temp_list)
+            })
+                
+            }.bind(this));
+        }
     }
 
     getTopDish(resId){
