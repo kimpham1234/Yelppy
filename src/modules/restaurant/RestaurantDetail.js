@@ -69,8 +69,6 @@ class RestaurantDetail extends Component{
                            bool = true; 
                     }
                 }
-                that.setState({hasReviewed : bool}, ()=>{that.setNormalReviews(key, review_temp_list, reviewKey_temp_list)
-                    })
                 that.setState({hasReviewed : bool}, ()=>{this.state.hasReviewed ?
                 that.setUserReview(key, review_temp_list, reviewKey_temp_list)
                 : that.setNormalReviews(key, review_temp_list, reviewKey_temp_list)

@@ -165,10 +165,10 @@ class Edit extends Component{
 					    </FormGroup>
 					    <Button id="submit" type="submit"> Submit</Button><br></br>
 				    </Form>
-				{/*
+				{
 					// delete function is not working properly
 				    <button type="delete" onClick={this.delete.bind(this)}>Delete</button>
-				    */}
+				    }
 			    </div>
 			</div>
 		)
