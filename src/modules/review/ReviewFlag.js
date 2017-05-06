@@ -2,6 +2,7 @@ import React,{ Component } from 'react';
 import * as firebase from 'firebase';
 import {hashHistory} from 'react-router'
 import "../../App.css";
+import { FormGroup, ControlLabel, FormControl, HelpBlock, Button, Form } from 'react-bootstrap';
 class ReviewFlag extends Component{
 
 	constructor(props){
@@ -35,7 +36,7 @@ class ReviewFlag extends Component{
 				author: currentUser.email,
 				restaurant_id: this.state.restaurant_id,
 				review_id: this.state.review_id,
-				flag_content: this.refs.flag_content.value
+				flag_content: this.flag_content.value
 			});
 			var restaurantId = this.state.restaurant_id;
 			var path = '/restaurants/'+ restaurantId;
@@ -44,22 +45,16 @@ class ReviewFlag extends Component{
 	}
 
 	render(){
-		// console.log('review_id', this.state.review_id);
-		// console.log('rest_id', this.state.restaurant_id);
 		return(
 			<div>
-				<h1> Write a review flag for this comment </h1>
-				<form onSubmit={this.submit.bind(this)}>
-			    	<table>
-				      	<tbody>
-					      	<tr>
-					      		<td> Reason for this flag</td>
-					      		<td>  <input type="text" ref="flag_content" placeholder="Please tell us why"/> </td>
-					      	</tr>
-				      	</tbody>
-			    	</table>
-			    	<button type="submit">Submit</button>
-			    </form>
+				<Form onSubmit={this.submit.bind(this) }>
+					<h4><strong> Write a review flag for this comment </strong></h4>
+						<FormGroup controlId="formControlsText" label="ReviewFlag" placeholder="Edit your review">
+							<ControlLabel>Reason for this flag</ControlLabel>
+						    <FormControl type="text" ref="flag_content" placeholder="Please tell us why ..." inputRef={ref => { this.flag_content = ref; }} />
+						</FormGroup>
+			    	<Button id="submit" type="submit"> Submit</Button><br></br><br></br>
+			    </Form>
 			</div>
 		)
 	}

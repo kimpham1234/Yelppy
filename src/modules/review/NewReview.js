@@ -3,6 +3,7 @@ import * as firebase from 'firebase';
 import {hashHistory} from 'react-router'
 import "../../App.css";
 import { Table, buttonsInstance } from 'react-bootstrap';
+import { FormGroup, ControlLabel, FormControl, HelpBlock, Button, Form } from 'react-bootstrap';
 import StarRatingComponent from 'react-star-rating-component';
 class NewReview extends Component{
 
@@ -26,9 +27,6 @@ class NewReview extends Component{
 			that.setState({restaurantKey: snapshot.key});
 			this.updateReview(snapshot.key);
 		}.bind(this));
-
-		console.log('New review component wil mount');
-
 		//get user data to update later
 		var userEmail = firebase.auth().currentUser.email;
 		this.userRef = firebase.database().ref('users');
@@ -39,16 +37,8 @@ class NewReview extends Component{
 				reviewed: snapshot.val().reviewed
 			});
 		}.bind(this));
-
-
-		//console.log("component will mount " + tempResId);
-		//this.getDishRating(tempResId);
-		
 	}
-
 	getDishRating(restaurantId){
-		console.log("get dish rating");
-		console.log(restaurantId);
 		var dishRatingRef = firebase.database().ref('dishRating');
 		var tempdish = [];
 		var tempkey = [];
@@ -56,13 +46,10 @@ class NewReview extends Component{
 		dishRatingRef.orderByKey().equalTo(restaurantId).on('child_added', function(snapshot){
 			snapshot.forEach(function(childSnapShot){
 				var value = childSnapShot.val();
-				console.log(value);
 				tempdish.push(childSnapShot.val());
 				tempkey.push(childSnapShot.key);
 				that.setState({dishRated: tempdish});
 				that.setState({dishRatedKey: tempkey});
-			//	console.log("ello " + that.state.dishRated[0].name);
-			//	console.log("ello " + that.state.dishRatedKey);
 			});
 		});
 		dishRatingRef.orderByKey().equalTo(restaurantId).on('child_changed', function(snapshot){
@@ -70,22 +57,17 @@ class NewReview extends Component{
 			tempkey = [];
 			snapshot.forEach(function(childSnapShot){
 				var value = childSnapShot.val();
-				console.log(value);
 				tempdish.push(childSnapShot.val());
 				tempkey.push(childSnapShot.key);
 				that.setState({dishRated: tempdish});
 				that.setState({dishRatedKey: tempkey});
 				that.setState({hasDishRating: true});
-			//	console.log("ello " + that.state.dishRated[0].name);
-			//	console.log("ello " + that.state.dishRatedKey);
 			});
 		});
 	}
-
 	submit(e){
 		var currentUser = firebase.auth().currentUser;
-
-		if(currentUser!==null && this.refs.rating!=="" && this.refs.review.value!==""){
+		if(currentUser!==null && this.state.rating!=="" && this.review.value!==""){
 			e.preventDefault();
 			var reviewListRef = firebase.database().ref('reviews');
 			var newReviewRef = reviewListRef.push();
@@ -95,41 +77,45 @@ class NewReview extends Component{
 			  author: currentUser.email,
 			  images: [""],
 			  rating: this.state.rating,
-			  text: this.refs.review.value,
+			  text: this.review.value,
 			  id: this.refs.id.value,
 			  restaurant_author: this.refs.id.value +'/' + currentUser.email
 			});
-
 			var path = '/restaurants/'+this.state.restaurantId;
-
-			this.updateUserProfile(this.state.uid);
 			hashHistory.push(path);
+			this.updateUserProfile(this.state.uid);
 			this.updateReview(this.state.restaurantKey);
-
 		}
 		else if (currentUser===null)
 		{
 			alert('Sorry. You are not logged in');
+			var path = '/restaurants/'+this.state.restaurantId;
+			hashHistory.push(path);
 		}
-		else if (this.refs.rating!==null || this.refs.review.value!==null)
+		else if (this.state.rating===null || this.review.value==="")
 		{
 			alert('Sorry. Inputs cannot be empty');
+			var path = '/restaurants/'+this.state.restaurantId;
+			hashHistory.push(path);
+		}
+		else
+		{
+			alert('Sorry. Error with input');
+			var path = '/restaurants/'+this.state.restaurantId;
+			hashHistory.push(path);
 		}
 	}
-
 	//update number of review and reviewed restaurant in user profile
 	updateUserProfile(reviewKey){
 		var userUpdateRef = firebase.database().ref('users/'+this.state.uid);
 		if(this.state.reviewed[0]=="")
-			this.state.reviewed[0] = this.state.restaurantName+"/"+this.state.restaurantId+"/"+this.state.rating+"/"+this.refs.review.value;
-		else this.state.reviewed.push(this.state.restaurantName+"/"+this.state.restaurantId+"/"+this.state.rating+"/"+this.refs.review.value);
-		
+			this.state.reviewed[0] = this.state.restaurantName+"/"+this.state.restaurantId+"/"+this.state.rating+"/"+this.review.value;
+		else this.state.reviewed.push(this.state.restaurantName+"/"+this.state.restaurantId+"/"+this.state.rating+"/"+this.review.value);
 		userUpdateRef.update({
 			numReviews: Number(this.state.userNumReview) + 1,
 			reviewed: this.state.reviewed
 		});
 	}
-
 	updateReview(e){
 		var reviewListRef = firebase.database().ref('reviews');
 		var total = 0;
@@ -206,24 +192,18 @@ class NewReview extends Component{
 		return(
 			<div>
 				<div>
-			      <form className="col-md-2" onSubmit={this.submit.bind(this) }>
-			      <h4> Write a review for {this.state.restaurant} </h4>
-			      <table><tbody>
-			      	<tr>
-			      		<td> Rating </td>
-			      		<td>{starRating}</td>
-			      	</tr>
-
-			      	<tr>
-			      		<td> Review </td>
-			      		<td>  <textArea cols="50" type="text" ref="review" placeholder="Share your thoughts..."/></td>
-			      	</tr>
-			      	
-			       </tbody></table>
-			       <button type="submit">Submit</button>
-				   </form>
-				   <input type="hidden" ref="id" value={this.props.params.id}/>
+				    <Form onSubmit={this.submit.bind(this)}>
+					    <h4><strong> Write a review for {this.state.restaurantName} </strong></h4>
+					    <strong> Rating {starRating}</strong>
+						<FormGroup controlId="formControlsTextarea" label="Review" placeholder="Edit your review">
+							<ControlLabel>Review</ControlLabel>
+						    <FormControl componentClass="textarea" ref="review" placeholder="Share your thoughts..." inputRef={ref => { this.review = ref; }} />
+						</FormGroup>
+						<Button id="submit" type="submit"> Submit</Button><br></br>
+				    </Form>
+				    <input type="hidden" ref="id" value={this.props.params.id}/>
 				</div>
+
 				<br></br>
 				<br></br>
 				<br></br>
@@ -258,18 +238,11 @@ class NewReview extends Component{
 									<button type="button" onClick={()=>this.upvote(index)}>Upvote</button>
 				    			</td>
 				    		</tr>
-
 				    	))}
 				    </tbody>
 				</Table>
-					
-			    
-
-			    
-			    
 			</div>
 		)
 	}
 }
-
 export default NewReview;

@@ -138,23 +138,20 @@ let Layout = React.createClass({
         let newUser;
         let sign_in_out;
         let search;
-        let google_sign_in_out;
 
         if(this.state.isLoggedIn){
             //logged in navbar setup
             restaurants = <LinkContainer to="/restaurants"><NavItem eventKey={1}>Restaurants</NavItem></LinkContainer>;
             newUser = <LinkContainer to='/profile'><NavItem eventKey={2}>Profile</NavItem></LinkContainer>;
             sign_in_out = <LinkContainer to='/logout'><NavItem eventKey={3}>Sign out</NavItem></LinkContainer>;
-            search = <Search></Search>;
-            //sign_in_out = <Logout />;
+            search = <Search />;
         }
         else{
             //not logged in version of navbar
             restaurants = <LinkContainer to="/restaurants"><NavItem eventKey={1}>Restaurants</NavItem></LinkContainer>;
             newUser = <LinkContainer to='/newUser'><NavItem eventKey={2}>Create an account</NavItem></LinkContainer>;
             sign_in_out = <LinkContainer to='/login'><NavItem eventKey={3}>Sign in</NavItem></LinkContainer>;
-            search = <Search></Search>;
-            google_sign_in_out = <LinkContainer to='/google_login'><NavItem eventKey={4}>Google Sign in</NavItem></LinkContainer>;
+            search = <Search />;
         }
 
         return(
@@ -170,7 +167,6 @@ let Layout = React.createClass({
                         {restaurants}
                         {newUser}
                         {sign_in_out}
-                        {google_sign_in_out}
                     </Nav>
                     {search}
                 </Navbar>
@@ -184,15 +180,6 @@ let Layout = React.createClass({
                             Come here to find and review yummy places!</i></strong><br></br>
                             <Link to='/restaurants'>View Restaurants</Link>
                         </p>
-                        {/* 
-                            <p> Home<br></br>
-                        Note: some routes has not been put up but can be access:<br></br>
-                        1/ Login: root+/login<br></br>
-                        2/ Reviews: root+/review<br></br>
-                        Will put these up later
-                        </p>
-                         */}
-                        
                     </div>
                 </div>
 

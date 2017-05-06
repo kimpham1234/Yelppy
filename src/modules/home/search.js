@@ -25,7 +25,7 @@ class Search extends Component{
         this.handleSearch = this.handleSearch.bind(this);
         this.typeChange = this.typeChange.bind(this);
         this.typeComponents = businessTypes.map((type, index) =>(
-            <MenuItem eventKey={index} onSelect={() => this.typeChange(event, type)}>
+            <MenuItem key={index} onSelect={() => this.typeChange(event, type)}>
                 {type.split('_').join(' ')}
             </MenuItem>
         ));
