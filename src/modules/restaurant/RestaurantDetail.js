@@ -259,7 +259,7 @@ class RestaurantDetail extends Component{
                             <br></br>{this.state.location}
                             <br></br>Categories: {this.state.categories ? this.state.categories : 'none'}
                             <br></br>Phone: {this.state.phone ? this.state.phone : 'unknown'}
-                            <br></br>Price: {(this.state.price === '') ? 'unknown' : this.state.price}
+                            <br></br>Price: {this.state.price ? this.state.price : 'unknown'}
                             </td>
                         </tr>
                     </tbody></table>
@@ -291,7 +291,7 @@ class RestaurantDetail extends Component{
         )
         var showReview = (
             <div>
-                <Table className='table' valign='top'>
+                <Table className='rtable' valign='top'>
                     <Thead>
                         <Th column='author' width={200}>Author</Th>
                         <Th column='rating' width={90}>Rating</Th>
