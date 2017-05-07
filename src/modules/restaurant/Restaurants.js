@@ -15,15 +15,24 @@ class Restaurants extends Component{
 	componentWillMount(){
 		this.restaurantListRef = firebase.database().ref('business');
 		var that = this;
+		console.log(this);
 
 		var list = [];
 
 		//listen for the value of restaurant once when first load
 		this.restaurantListRef.once('value', function(snapshot) {
 		  snapshot.forEach(function(childSnapshot) {
+		  	console.log(that.props);
 		    //that.state.restaurants.push(childSnapshot.val());
 		    //that.setState({restaurants: that.state.restaurants})
-		    list.push(childSnapshot.val());
+			if( that.props.idArray ){
+				if( that.props.idArray.indexOf(childSnapshot.val().id) !== -1 ){
+					list.push(childSnapshot.val())
+				}
+			}else{
+                list.push(childSnapshot.val());
+			}
+
 		  });
 		  that.setState({restaurants: list});
 		});

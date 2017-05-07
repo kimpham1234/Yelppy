@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { withGoogleMap, GoogleMapLoader, GoogleMap, Marker, InfoWindow } from 'react-google-maps';
 import { Link } from 'react-router';
 import * as firebase from 'firebase';
+import Restaurants from './Restaurants.js';
 
 
 const GettingStartedGoogleMap = withGoogleMap(props => (
@@ -87,9 +88,9 @@ export default class SearchResults extends Component{
     searchCallback(results, status){
         if(status == google.maps.places.PlacesServiceStatus.OK){
             //console.log(results);
-            let tempArr = [];
+            let markerArr = [];
+            let idArr = [];
             //console.log(results);
-
 
             let localRef = "";
             let tempBounds = new google.maps.LatLngBounds();
@@ -97,15 +98,21 @@ export default class SearchResults extends Component{
                 //console.log(results[i]);
                 let tempID = "";
                 let newBusiness = "";
+                let restaurantThumbnail = results[i].photos[0].getUrl({maxWidth: 50});
+
                 let that = this;
                 tempID = results[i].place_id;
+                idArr.push(tempID);
                 //console.log("tempID after assignment" + tempID);
                 console.log("tempID in if statement: " + tempID);
                 that.businessRef.orderByChild('id').equalTo(tempID).on('value', function (snapshot) {
                     console.log("tempID in query callback: " + tempID);
+                    // We don't have this entry in our db, so lets insert it
                     if (snapshot.val() == null) {
+                        // First we need to hit google for the details
                         that.searchService.getDetails({placeId: tempID}, function (place, status) {
-                            console.log("tempID inside google callback: " + tempID);
+                            //console.log("tempID inside google callback: " + tempID);
+                            // now we can insert it
                             if (status == google.maps.places.PlacesServiceStatus.OK) {
                                 let placeArr = place.formatted_address.split(',');
                                 newBusiness = that.businessRef.push();
@@ -137,35 +144,25 @@ export default class SearchResults extends Component{
 
                         });
                     }
+                    // if we DO have it in the DB, lets set some values for the infowindows
+                    else{
+
+                    }
                 });
 
-                tempArr.push({
+                markerArr.push({
                     position: {
                         lat: results[i].geometry.location.lat(),
                         lng: results[i].geometry.location.lng()
                     },
                     showInfo: true,
-                    infoContent: <svg
-                        id="Layer_1"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="160"
-                        height="40"
-                        viewBox="0 0 100 50"
-                    >
-                        <text fill="#000000"
-                              fontFamily="Verdana"
-                              fontSize="10"
-                              x="50"
-                              y="10"
-                              textAnchor="middle">
-                            <tspan x="50%" y="15%">{results[i].name}</tspan>
-                            <tspan x="50%" y="40%">{results[i].vicinity.split(',')[0]}</tspan>
-                            <tspan x="50%" y="60%">{results[i].vicinity.split(',')[1].trim()}</tspan>
-                            <tspan x="50%" y="88%">
-                                <Link to={'/restaurants/'+results[i].place_id}>Review this restaurant</Link>
-                            </tspan>
-                        </text>
-                    </svg>
+                    infoContent: <div>
+                        <p><img src={restaurantThumbnail} ></img></p>
+                        <p>{results[i].name}</p>
+                        <p>{results[i].vicinity.split(',')[0]}</p>
+                        <p>{results[i].vicinity.split(',')[1].trim()}</p>
+                        <p><Link to={'/restaurants/'+results[i].place_id}>Review this restaurant</Link></p>
+                    </div>
 
                 });
                 tempBounds.extend({
@@ -177,7 +174,7 @@ export default class SearchResults extends Component{
             if(this.googleMap){
                 this.googleMap.fitBounds(tempBounds);
             }
-            this.setState({ markers: tempArr, bounds: tempBounds });
+            this.setState({ markers: markerArr, bounds: tempBounds, idArr: idArr });
         }
     }
 
@@ -226,23 +223,26 @@ export default class SearchResults extends Component{
     render(){
 
         return(
-            <GettingStartedGoogleMap
-                containerElement={
-                    <div style={{ height: "100%", width: "100%" }} />
-                }
-                mapElement={
-                    <div id="map" style={{ height: "700px", width: "700px" }} />
-                }
-                centerLocation={this.state.center}
-                onMapMounted={this.handleMapLoaded}
-                onBoundsChanged={this.handleBoundsChanged}
-                onMapLoad={_.noop}
-                onMapClick={_.noop}
-                bounds={this.state.bounds}
-                markers={this.state.markers}
-                onMarkerRightClick={_.noop}
-                onMarkerClick={this.onMarkerClick}
-            />
+            <div>
+                <GettingStartedGoogleMap
+                    containerElement={
+                        <div style={{ height: "100%", width: "100%" }} />
+                    }
+                    mapElement={
+                        <div id="map" className="map-element" style={{ height: "700px", width: "600px" }} />
+                    }
+                    centerLocation={this.state.center}
+                    onMapMounted={this.handleMapLoaded}
+                    onBoundsChanged={this.handleBoundsChanged}
+                    onMapLoad={_.noop}
+                    onMapClick={_.noop}
+                    bounds={this.state.bounds}
+                    markers={this.state.markers}
+                    onMarkerRightClick={_.noop}
+                    onMarkerClick={this.onMarkerClick}
+                />
+                <Restaurants idArray={this.state.idArr} ></Restaurants>
+            </div>
         );
 
     }
