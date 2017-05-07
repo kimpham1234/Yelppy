@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import { Link, Router } from 'react-router'
 import { ListGroupItem, ListGroup, Table, Well } from 'react-bootstrap';
+import ResetPassword from './ResetPassword.js';
 const picURL = "https://firebasestorage.googleapis.com/v0/b/yelppy-80fb2.appspot.com/o/images%2FDefault%2FnoPictureYet.png?alt=media&token=d07db72a-0963-488e-b228-9ab020bd0d41";
 export default class Profile extends Component {
 	constructor(props){
@@ -76,9 +77,6 @@ export default class Profile extends Component {
 		}
 	}
 	componentWillUnmount() {
-		console.log('key', this.state.key);
-		console.log('images', this.state.images);
-		console.log('this.state.reviewed', this.state.reviewed[0]!=="");
 	}
 	render() {
 		var showReviewed = (
@@ -96,7 +94,6 @@ export default class Profile extends Component {
 		  		}
 	  		</div>
 			);
-
 		var profileInfo = (
 			<div>
 				<ListGroup>
@@ -108,8 +105,9 @@ export default class Profile extends Component {
 					<ListGroupItem header="First name">{this.state.profile.first}</ListGroupItem>
 				    <ListGroupItem header="Last name">{this.state.profile.last}</ListGroupItem>
 				    <ListGroupItem header="Number of your reviews">{this.state.profile.numReviews}</ListGroupItem>
-				    <ListGroupItem header="Edit your profile" bsStyle="danger"><button type="button" ><Link to={'/profile/edit/'+this.state.uid}>Edit Profile</Link></button></ListGroupItem>
 				    <ListGroupItem header="Your Email" bsStyle="info">{firebase.auth().currentUser.email}</ListGroupItem>
+				    <ListGroupItem header="Edit your profile" bsStyle="danger"><Link to={'/profile/edit/'+this.state.uid}>Edit profile</Link></ListGroupItem>
+				    <ListGroupItem header="Reset your password" bsStyle="danger"><Link to={'/resetPassword/'}>Reset password</Link></ListGroupItem>
 				</ListGroup>
         	</div>
 		);

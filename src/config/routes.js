@@ -15,14 +15,13 @@ import Edit from '../modules/review/Edit.js';
 import ReviewFlag from '../modules/review/ReviewFlag.js';
 import EditProfile from '../modules/user/EditProfile.js';
 //end by Kim
-
 import Layout from '../modules/home/layout.js';
 import Homepage from '../modules/home/homepage.js';
 import RestaurantDetail from '../modules/restaurant/RestaurantDetail.js';
 import * as requireAuth from './requireAuth.js';
 import Profile from '../modules/user/Profile.jsx';
 import Logout from '../modules/user/Logout.jsx';
-
+import ResetPassword from '../modules/user/ResetPassword.js';
 let routes = (
     <Router history={hashHistory}>
         <Route path="/" component={Layout}>
@@ -41,7 +40,7 @@ let routes = (
             <Route path='/reviews' component={Reviews}/>
             <Route path='/reviews/new/:id' component={NewReview}/>
             <Route path='/results(/:searchString)(/:location)' component={SearchResults} />
-
+            <Route path='/resetPassword' component={ResetPassword}/>
         </Route>
     </Router>
 );
