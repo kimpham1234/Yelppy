@@ -218,7 +218,7 @@ class RestaurantDetail extends Component{
                             imageList.map((image, index) =>(
                                 image != "" ?
                                     <a key={index} target="_blank" href={image}>
-                                        <img src={image} width="220" height="160" />
+                                        <img src={image} width="220" height="160" alt={'image '+index}/>
                                     </a>
                                 : ""
                             ))
