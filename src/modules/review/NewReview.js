@@ -165,7 +165,7 @@ class NewReview extends Component{
     	console.log("add dish " + this.state.restaurantId);
     	var newDishRef = firebase.database().ref('dishRating').child(this.state.restaurantId).push();
     	newDishRef.set({
-    		name: this.refs.name.value,
+    		name: this.dishName.value,
     		vote: 1,
     		users: [firebase.auth().currentUser.uid]
     	})
@@ -207,17 +207,16 @@ class NewReview extends Component{
 				<br></br>
 				<br></br>
 				<br></br>
-				<br></br>
-				<br></br>
-				<br></br>
-				<br></br>
-				<br></br>
-				<br></br>
 
-				Rate your dish, upvote for the ones here or add your own<br></br>
-					Or add your own dish<button type="button" onClick={this.addDish.bind(this)}>Add</button>
-					<input type="text" ref="name" placeholder="Your dish"></input>
-					<Table striped condensed hover responsive>
+				<Form onSubmit={this.addDish.bind(this)}>
+					<FormGroup controlId="formValidationNull" validationState={null}>
+				        <ControlLabel>Add your own dish</ControlLabel>
+				        <FormControl type="text" ref="dishName" placeholder="Your dish" inputRef={ref => { this.dishName = ref; }}/>
+				        <HelpBlock>Rate your dish, upvote for the ones here or add your own</HelpBlock>
+				    </FormGroup>
+				    <Button id="submit" type="submit">Add</Button><br></br>
+			    </Form>
+			    <Table striped condensed hover responsive>
 					<thead>
 				      <tr>
 				        <th>Dishes</th>
@@ -235,7 +234,7 @@ class NewReview extends Component{
 				    				{dish.vote}
 				    			</td>
 				    			<td>
-									<button type="button" onClick={()=>this.upvote(index)}>Upvote</button>
+									<Button type="button" onClick={()=>this.upvote(index)}>Upvote</Button>
 				    			</td>
 				    		</tr>
 				    	))}

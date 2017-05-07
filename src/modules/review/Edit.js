@@ -137,27 +137,6 @@ class Edit extends Component{
 		}
 		return(
 			<div>
-				{/*
-				<div>
-			      <form onSubmit={this.submit.bind(this) }>
-			      <h4><strong> Edit your review</strong></h4>
-			      <table><tbody>
-			      	<tr>
-			      		<td> Rating </td>
-			      		<td>{starRating}</td>
-			      	</tr>
-
-			      	<tr>
-			      		<td> Review </td>
-			      		<td>  <textArea cols="50" type="text" ref="review" defaultValue={this.state.review} /></td>
-			      	</tr>
-			      </tbody></table>
-			      <button id="submit" type="submit">Submit</button><br></br>
-				</form>
-				<button type="delete" onClick={this.delete.bind(this)}>Delete</button>
-			    </div>
-			  	 */}
-			    
 			    <div>
 				    <Form onSubmit={this.submit.bind(this)}>
 				    	<h4><strong> Edit your review </strong></h4>
@@ -170,7 +149,7 @@ class Edit extends Component{
 				    </Form>
 				{
 					// delete function is not working properly
-				    <button type="delete" onClick={this.delete.bind(this)}>Delete</button>
+				    <Button type="delete" onClick={this.delete.bind(this)}>Delete</Button>
 				    }
 			    </div>
 			</div>

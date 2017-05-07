@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import "../../App.css";
 import {hashHistory} from 'react-router';
-
+import { Form, FormGroup, Col, Button } from 'react-bootstrap';
 class GoogleLogin extends Component{
 	submit(e){
 		// Using a popup.
@@ -50,9 +50,13 @@ class GoogleLogin extends Component{
 	render() {
 		return (
 			<div>
-				<form onSubmit={this.submit.bind(this)}>
-			        <button type="submit">Google Login</button>
-			    </form>
+				<Form horizontal onSubmit={this.submit.bind(this)}>
+					<FormGroup>
+						<Col smOffset={2} sm={10}>
+				        	<Button type="submit">Google Login</Button>
+				        </Col>
+				    </FormGroup>
+			    </Form>
 			</div>
 		);
 	}

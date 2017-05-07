@@ -78,20 +78,22 @@ export default class Profile extends Component {
 	componentWillUnmount() {
 		console.log('key', this.state.key);
 		console.log('images', this.state.images);
-		console.log('this.state.reviewed', this.state.reviewed);
+		console.log('this.state.reviewed', this.state.reviewed[0]!=="");
 	}
 	render() {
 		var showReviewed = (
 	  		<div>
-				<h1>Your reviews</h1>
-				{
-					this.state.reviewed.map((review, index) =>(
-						<ListGroup key={index}>
-							<ListGroupItem><Link to={'/restaurants/'+review.split("/")[1]}>{review.split("/")[0]}</Link></ListGroupItem><br></br>
-							<p className="text-right">Rating: {review.split("/")[2]}/5</p>
-							<p className="text-right">Review: {review.split("/")[3]}</p>
-				  		</ListGroup>
-		  		))}
+	  			{ this.state.reviewed[0]!=="" &&
+					<p className="App-intro"><strong>Your reviews</strong></p> }
+				{ this.state.reviewed[0]!=="" &&
+						this.state.reviewed.map((review, index) =>(
+							<ListGroup key={index}>
+								<ListGroupItem><Link to={'/restaurants/'+review.split("/")[1]}>{review.split("/")[0]}</Link></ListGroupItem><br></br>
+								<p className="text-right">Rating: {review.split("/")[2]}/5</p>
+								<p className="text-right">Review: {review.split("/")[3]}</p>
+					  		</ListGroup>
+		  			))
+		  		}
 	  		</div>
 			);
 
