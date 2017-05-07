@@ -5,12 +5,12 @@ import { resetPassword } from '../helpers/users-auth';
 import { Link } from 'react-router';
 import { FormGroup, ControlLabel, FormControl, Form, Col, Button} from 'react-bootstrap';
 class ResetPassword extends Component {
-submit(e)
-{
-	e.preventDefault();
-	resetPassword(firebase.auth().currentUser.email);
-	hashHistory.push('/');
-}
+	submit(e)
+	{
+		e.preventDefault();
+		resetPassword(firebase.auth().currentUser.email);
+		hashHistory.push('/');
+	}
 	render(){
 		return (
 			<div>
