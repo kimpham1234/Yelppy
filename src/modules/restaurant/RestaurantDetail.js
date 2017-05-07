@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router'
 import * as firebase from 'firebase';
-import { Badge, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Badge, ListGroup, ListGroupItem, Button } from 'react-bootstrap';
 import { Table, Thead, Th, Tr, Td } from 'reactable';
 import StarRatingComponent from 'react-star-rating-component';
 import './DishRating.css';
@@ -32,7 +32,7 @@ class RestaurantDetail extends Component{
         var that = this;
         this.reviewListRef = firebase.database().ref('reviews');
         this.reviewListRef.orderByChild('id').equalTo(key).on('child_added',function(snapshot) {
-            if(snapshot.val().author != firebase.auth().currentUser.email){
+            if(snapshot.val().author !== firebase.auth().currentUser.email){
                 review_temp_list.push(snapshot.val());
                 reviewKey_temp_list.push(snapshot.key);
             }
@@ -45,7 +45,7 @@ class RestaurantDetail extends Component{
         var that = this;
         this.reviewListRef = firebase.database().ref('reviews');
         var res_au = key+"/" +firebase.auth().currentUser.email;
-        this.reviewListRef.orderByChild('restaurant_author').equalTo(res_au).once('child_added',  function(snapshot) {
+        this.reviewListRef.orderByChild('restaurant_author').equalTo(res_au).once('child_added', function(snapshot) {
                     userReview_temp = snapshot.val();
                     userReviewKey_temp = snapshot.key;
                     review_temp_list.push(snapshot.val());
@@ -66,7 +66,7 @@ class RestaurantDetail extends Component{
                 var reviewed = snapshot.val().reviewed;
                 var bool = false;
                 for (var i in reviewed) {
-                    if(reviewed[i].split("/")[1] == id){
+                    if(reviewed[i].split("/")[1] === id){
                            bool = true;
                     }
                 }
@@ -92,7 +92,7 @@ class RestaurantDetail extends Component{
         });
     }
     compare(a, b){
-        return -(a.vote - b.vote);
+        return b.vote - a.vote;
     }
     componentWillMount(){
         this.restaurantRef = firebase.database().ref('business');
@@ -196,18 +196,18 @@ class RestaurantDetail extends Component{
         }
     }
     showEditButton(review, index){
-        if(this.state.hasReviewed && review.author == this.state.userReview.author){
-            return <button type="button" ><Link to={'/reviews/edit/'+this.state.reviewKeys[index]}>Edit</Link></button>
+        if(this.state.hasReviewed && review.author === this.state.userReview.author){
+            return <Button type="button" ><Link to={'/reviews/edit/'+this.state.reviewKeys[index]}>Edit</Link></Button>
         }
     }
     showFlagButton(review, index){
-        if(!this.state.hasReviewed||review.author != this.state.userReview.author){
-            return <button type="button" ><Link to={'/reviews/new_review_flag/'+this.state.reviewKeys[index]}>Flag this review</Link></button>
+        if(!this.state.hasReviewed||review.author !== this.state.userReview.author){
+            return <Button type="button" ><Link to={'/reviews/new_review_flag/'+this.state.reviewKeys[index]}>Flag this review</Link></Button>
         }
     }
     showReviewImages(review, index){
         var imageList = ""
-        if(this.state.hasReviewed && review.author == this.state.userReview.author){
+        if(this.state.hasReviewed && review.author === this.state.userReview.author){
             imageList = this.state.userImages;
         }
         else{
@@ -216,7 +216,7 @@ class RestaurantDetail extends Component{
         return  <div>
                         {
                             imageList.map((image, index) =>(
-                                image != "" ?
+                                image !== "" ?
                                     <a key={index} target="_blank" href={image}>
                                         <img src={image} width="220" height="160" alt={'image '+index}/>
                                     </a>
@@ -291,43 +291,56 @@ class RestaurantDetail extends Component{
         )
         var showReview = (
             <div>
-                <Table className='rtable' valign='top'>
+                Filter by author, rating, or review text.
+                <Table className='rtable' filterable={['author', 'rating', 'review']} itemsPerPage={30} pageButtonLimit={15} previousPageLabel="Previous " nextPageLabel=" Next">
                     <Thead>
                         <Th column='author' width={200}>Author</Th>
                         <Th column='rating' width={90}>Rating</Th>
                         <Th column='review'>Review</Th>
-                        <Th column='buttons' width={100}> </Th>
+                        <Th column='buttons' width={150}> </Th>
                     </Thead>
                     { this.state.reviews.map((review, index) =>(
                             <Tr key={index}>
-                                <Td column='author' value={review.author} data={review.author}/>
+                                <Td height='100%' column='author' value={review.author} data={
+                                    <table height='100%'><tbody>
+                                        <tr><td>{review.author}</td></tr>
+                                        <tr height='100%'/>
+                                    </tbody></table>
+                                }/>
 
                                 <Td column='rating' value={parseFloat(review.rating)} data={
-                                    <StarRatingComponent
-                                        name="star"
-                                        editing={false}
-                                        starColor="#ffb400"
-                                        emptyStarColor="#ffb400"
-                                        value={parseFloat(review.rating)}
-                                        renderStarIcon={(index, value) => {
-                                            return <span className={index <= value ? 'fa fa-star' : (index === value+0.5 ?'fa fa-star-half-full' : 'fa fa-star-o')} />;
-                                            }
-                                        }
-                                    />
+                                    <table height='100%'><tbody>
+                                        <tr><td>
+                                            <StarRatingComponent
+                                                name="star"
+                                                editing={false}
+                                                starColor="#ffb400"
+                                                emptyStarColor="#ffb400"
+                                                value={parseFloat(review.rating)}
+                                                renderStarIcon={(index, value) => {
+                                                    return <span className={index <= value ? 'fa fa-star' : (index === value+0.5 ?'fa fa-star-half-full' : 'fa fa-star-o')} />;
+                                                    }
+                                                }
+                                            />
+                                        </td></tr>
+                                        <tr height='100%'/>
+                                    </tbody></table>
                                 }/>
 
                                 <Td column='review' value={review.text} data={
-                                    <table><tbody>
+                                    <table height='100%'><tbody>
                                         <tr><td>{review.text}</td></tr>
                                         <tr><td>{this.showReviewImages(review, index)}</td></tr>
+                                        <tr height='100%'/>
                                     </tbody></table>
                                 }/>
 
                                 <Td column='buttons' data={
-                                    <table><tbody><tr>
+                                    <table height='100%'><tbody><tr>
                                         <td>{this.showEditButton(review, index)}</td>
                                         <td>{this.showFlagButton(review, index)}</td>
-                                    </tr></tbody></table>
+                                    </tr>
+                                    <tr height='100%'/></tbody></table>
                                 }/>
                             </Tr>
                         ))
