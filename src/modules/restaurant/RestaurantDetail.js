@@ -247,11 +247,11 @@ class RestaurantDetail extends Component{
         var showDishRating = (
             <div className="dishRating">
             <h3><strong>Top Dishes</strong></h3>
-            {this.state.topDishes.map((dish, index)=>
-                <ListGroup key={index}>
+                <ListGroup>
+                    {this.state.topDishes.map((dish, index)=>
                     <ListGroupItem>{dish.name}<Badge>{dish.vote}</Badge></ListGroupItem>
-                </ListGroup>
                 )}
+                </ListGroup>
             </div>
         )
         var showDetail = (

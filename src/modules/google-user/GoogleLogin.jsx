@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import "../../App.css";
 import {hashHistory} from 'react-router';
-import { Form, FormGroup, Col, Button } from 'react-bootstrap';
+
 class GoogleLogin extends Component{
 	submit(e){
 		// Using a popup.
@@ -25,7 +25,8 @@ class GoogleLogin extends Component{
 				var exist = (snapshot.val() !== null);
 
 				if(!exist){
-					var newUser = userRef.push();
+					var authId = firebase.auth().currentUser.uid;
+					var newUser = userRef.child(authId);
 					var time = Date();
 					var firstAndLast = firebase.auth().currentUser.displayName.split(" ");
 
@@ -37,7 +38,7 @@ class GoogleLogin extends Component{
 						numReviews: '0',
 						pictures: [''],
 						reviewed: [''],
-						UID: newUser.key
+						AuthId: authId
 					});
 				}
 			});
@@ -49,13 +50,9 @@ class GoogleLogin extends Component{
 	render() {
 		return (
 			<div>
-				<Form horizontal onSubmit={this.submit.bind(this)}>
-					<FormGroup>
-						<Col smOffset={2} sm={10}>
-				        	<Button type="submit">Google Login</Button>
-				        </Col>
-				    </FormGroup>
-			    </Form>
+				<form onSubmit={this.submit.bind(this)}>
+			        <button type="submit">Google Login</button>
+			    </form>
 			</div>
 		);
 	}
@@ -63,5 +60,3 @@ class GoogleLogin extends Component{
 }
 
 export default GoogleLogin;
-
-
