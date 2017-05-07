@@ -106,7 +106,7 @@ export default class Profile extends Component {
 				    <ListGroupItem header="Last name">{this.state.profile.last}</ListGroupItem>
 				    <ListGroupItem header="Number of your reviews">{this.state.profile.numReviews}</ListGroupItem>
 				    <ListGroupItem header="Your Email" bsStyle="info">{firebase.auth().currentUser.email}</ListGroupItem>
-				    <ListGroupItem header="Edit your profile" bsStyle="danger"><Link to={'/profile/edit/'+this.state.uid}>Edit profile</Link></ListGroupItem>
+				    <ListGroupItem header="Edit your profile" bsStyle="danger"><Link to={'/profile/edit/'+this.state.key}>Edit profile</Link></ListGroupItem>
 				    <ListGroupItem header="Reset your password" bsStyle="danger"><Link to={'/resetPassword/'}>Reset password</Link></ListGroupItem>
 				</ListGroup>
         	</div>
