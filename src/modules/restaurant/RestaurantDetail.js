@@ -255,7 +255,7 @@ class RestaurantDetail extends Component{
                                                     }
                                                 }
                             />}
-                            <br></br>{this.state.numReview ? this.state.numReview : '0'} reviews
+                            <br></br>{this.state.numReview ? this.state.numReview : '0'} review{this.state.numReview && Math.round(parseFloat(this.state.numReview)) === 1 ? '' : 's'}
                             <br></br>{this.state.location}
                             <br></br>Categories: {this.state.categories ? this.state.categories : 'none'}
                             <br></br>Phone: {this.state.phone ? this.state.phone : 'unknown'}

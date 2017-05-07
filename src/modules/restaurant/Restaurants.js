@@ -82,7 +82,7 @@ class Restaurants extends Component{
                                             }
                                         />
                                     </td></tr>
-                                    <tr><td>{restaurant.numReview ? restaurant.numReview : '0'} reviews</td></tr>
+                                    <tr><td>{restaurant.numReview ? restaurant.numReview : '0'} review{restaurant.numReview && Math.round(parseFloat(restaurant.numReview)) === 1 ? '' : 's'}</td></tr>
                                 </tbody></table>
                             }/>
                         </Tr>
