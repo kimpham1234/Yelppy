@@ -197,7 +197,7 @@ class NewReview extends Component{
 					    <strong> Rating {starRating}</strong>
 						<FormGroup controlId="formControlsTextarea" label="Review" placeholder="Edit your review">
 							<ControlLabel>Review</ControlLabel>
-						    <FormControl componentClass="textarea" ref="review" placeholder="Share your thoughts..." inputRef={ref => { this.review = ref; }} />
+						    <FormControl componentClass="textarea" ref="review" placeholder="Share your thoughts ..." inputRef={ref => { this.review = ref; }} />
 						</FormGroup>
 						<Button id="submit" type="submit"> Submit</Button><br></br>
 				    </Form>
@@ -209,10 +209,11 @@ class NewReview extends Component{
 				<br></br>
 
 				<Form onSubmit={this.addDish.bind(this)}>
-					<FormGroup controlId="formValidationNull" validationState={null}>
+					<FormGroup controlId="formValidationSuccess2" validationState="success">
 				        <ControlLabel>Add your own dish</ControlLabel>
 				        <FormControl type="text" ref="dishName" placeholder="Your dish" inputRef={ref => { this.dishName = ref; }}/>
-				        <HelpBlock>Rate your dish, upvote for the ones here or add your own</HelpBlock>
+				        <FormControl.Feedback />
+				        <HelpBlock>Rate your dish, upvote for the ones here or add your own dish</HelpBlock>
 				    </FormGroup>
 				    <Button id="submit" type="submit">Add</Button><br></br>
 			    </Form>
