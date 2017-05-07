@@ -31,7 +31,7 @@ class RestaurantDetail extends Component{
         var that = this;
         this.reviewListRef = firebase.database().ref('reviews');
         this.reviewListRef.orderByChild('id').equalTo(key).on('child_added',function(snapshot) {
-            if(snapshot.val().author != firebase.auth().currentUser.email){
+            if(firebase.auth().currentUser==null || snapshot.val().author != firebase.auth().currentUser.email){
                 review_temp_list.push(snapshot.val());
                 reviewKey_temp_list.push(snapshot.key);
             }
@@ -56,10 +56,10 @@ class RestaurantDetail extends Component{
         }.bind(this));
     }
     checkReview(key, id){
+        var review_temp_list = [];
+        var reviewKey_temp_list = [];
+        var that = this;
         if(firebase.auth().currentUser!=null){
-            var review_temp_list = [];
-            var reviewKey_temp_list = [];
-            var that = this;
             this.userRef = firebase.database().ref('users');
             this.userRef.orderByChild('email').equalTo(firebase.auth().currentUser.email).once('child_added',  function(snapshot) {
                 var reviewed = snapshot.val().reviewed;
@@ -75,6 +75,7 @@ class RestaurantDetail extends Component{
             })
             }.bind(this));
         }
+        else that.setNormalReviews(key, review_temp_list, reviewKey_temp_list);
     }
     getTopDish(resId){
         var dishRatingRef = firebase.database().ref('dishRating');
@@ -190,18 +191,34 @@ class RestaurantDetail extends Component{
         }
     }
     showWriteReview(){
-        if(!this.state.hasReviewed){
+        if(firebase.auth().currentUser!=null&&!this.state.hasReviewed){
             return <button type="button"><Link to={'/reviews/new/'+this.state.snapshotKey}>Write a review</Link></button>
         }
     }
     showEditButton(review, index){
-        if(this.state.hasReviewed && review.author == this.state.userReview.author){
+        if(firebase.auth().currentUser!=null&&(this.state.hasReviewed && review.author == this.state.userReview.author)){
             return <button type="button" ><Link to={'/reviews/edit/'+this.state.reviewKeys[index]}>Edit</Link></button>
         }
     }
     showFlagButton(review, index){
-        if(!this.state.hasReviewed||review.author != this.state.userReview.author){
+        if(firebase.auth().currentUser!=null&&(!this.state.hasReviewed||review.author != this.state.userReview.author)){
             return <button type="button" ><Link to={'/reviews/new_review_flag/'+this.state.reviewKeys[index]}>Flag this review</Link></button>
+        }
+    }
+    showImageUploading(){
+        if(firebase.auth().currentUser!=null){
+            return      <table>
+                            <tbody>
+                                <tr>
+                                    <td>Add a Photo:</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="file" id="input"/></td>
+                                    <td><button type="button" onClick={this.imageUpload}>Add</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
         }
     }
     showReviewImages(review, index){
@@ -275,16 +292,7 @@ class RestaurantDetail extends Component{
                 </div>
                 <div>
                     <br></br>
-                    <table><tbody>
-                    <tr>
-                        <td>Add a Photo:</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td><input type="file" id="input"/></td>
-                        <td><button type="button" onClick={this.imageUpload}>Add</button></td>
-                    </tr>
-                    </tbody></table>
+                    {this.showImageUploading()}
                     {this.showWriteReview()}
                 </div>
             </div>

@@ -68,6 +68,9 @@ class Edit extends Component{
 					this.state.reviewedList.splice(i, 1);
 				}
 			}
+			if(this.state.reviewedList.length == 0){
+				this.state.reviewedList.push("");
+			}
 			var reviewNum = Number(this.state.userNumReview) - 1;
 			var userRef = firebase.database().ref('users');
 			console.log(currentUser.uid);
