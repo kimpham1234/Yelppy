@@ -57,7 +57,7 @@ class RestaurantDetail extends Component{
         }.bind(this));
     }
     checkReview(key, id){
-        if(firebase.auth().currentUser!=null){
+        if(firebase.auth().currentUser!==null){
             var review_temp_list = [];
             var reviewKey_temp_list = [];
             var that = this;
@@ -104,7 +104,7 @@ class RestaurantDetail extends Component{
                 var val = snapshot.val();
                 var address = "";
                 for(var i = 0; i < val.location.display_address.length; i++){
-                    if(i!=val.location.display_address.length-1)
+                    if(i!==val.location.display_address.length-1)
                         address += val.location.display_address[i]+', ';
                     else
                         address += val.location.display_address[i];
@@ -255,11 +255,11 @@ class RestaurantDetail extends Component{
                                                     }
                                                 }
                             />}
-                            <br></br>{this.state.numReview ? this.state.numReview : '0'} review{this.state.numReview && Math.round(parseFloat(this.state.numReview)) === 1 ? '' : 's'}
-                            <br></br>{this.state.location}
-                            <br></br>Categories: {this.state.categories ? this.state.categories : 'none'}
-                            <br></br>Phone: {this.state.phone ? this.state.phone : 'unknown'}
-                            <br></br>Price: {this.state.price ? this.state.price : 'unknown'}
+                            <br/>{this.state.numReview ? this.state.numReview : '0'} review{this.state.numReview && Math.round(parseFloat(this.state.numReview)) === 1 ? '' : 's'}
+                            <br/>{this.state.location}
+                            <br/>Categories: {this.state.categories ? this.state.categories : 'none'}
+                            <br/>Phone: {this.state.phone ? this.state.phone : 'unknown'}
+                            <br/>Price: {this.state.price ? this.state.price : 'unknown'}
                             </td>
                         </tr>
                     </tbody></table>
@@ -274,7 +274,7 @@ class RestaurantDetail extends Component{
                     )}
                 </div>
                 <div>
-                    <br></br>
+                    <br/>
                     <table><tbody>
                     <tr>
                         <td>Add a Photo:</td>
@@ -291,8 +291,7 @@ class RestaurantDetail extends Component{
         )
         var showReview = (
             <div>
-                Filter by author, rating, or review text.
-                <Table className='rtable' filterable={['author', 'rating', 'review']} itemsPerPage={30} pageButtonLimit={15} previousPageLabel="Previous " nextPageLabel=" Next">
+                <Table className='rtable' filterable={['author', 'rating', 'review']} itemsPerPage={30} pageButtonLimit={15} previousPageLabel="Previous " nextPageLabel=" Next" filterPlaceholder="Filter by author, rating, or review text">
                     <Thead>
                         <Th column='author' width={200}>Author</Th>
                         <Th column='rating' width={90}>Rating</Th>
