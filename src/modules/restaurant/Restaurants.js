@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import * as firebase from 'firebase';
+import { buttonsInstance, Button } from 'react-bootstrap';
 import StarRatingComponent from 'react-star-rating-component';
 import { Table, Thead, Th, Tr, Td } from 'reactable';
 
@@ -43,8 +44,8 @@ class Restaurants extends Component{
     render(){
 		return(
 			<div>
-				<h1>List of restaurants</h1>
-				<Link to='restaurants/new'>New</Link>
+				<Button><Link to='restaurants/new'>Create a new restaurant</Link></Button>
+				<p className="App-intro"><strong>List of restaurants</strong></p>
 				<Table className="rtable" id="table" sortable={true} defaultSort={{column:"rating", direction:"desc"}} itemsPerPage={20} pageButtonLimit={15} previousPageLabel="Previous " nextPageLabel=" Next" filterable={['info']} filterPlaceholder="Filter by name or category">
 					<Thead>
                         <Th column="avatar">Avatar</Th>
@@ -90,7 +91,7 @@ class Restaurants extends Component{
                             }/>
                         </Tr>
                     ))}
-				</Table>
+				    </Table>
 		    </div>
 	)}
 }

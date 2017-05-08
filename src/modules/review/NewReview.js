@@ -142,12 +142,10 @@ class NewReview extends Component{
     }
 
     upvote(index){
-    	console.log("upvote " + index);
     	var votedUser = this.state.dishRated[index].users;
     	var oldVote = Number(this.state.dishRated[index].vote);
     	var i = votedUser.indexOf(firebase.auth().currentUser.uid);
     	if(i===-1){
-    		console.log("not yet voted");
     		oldVote++;
     		votedUser.push(firebase.auth().currentUser.uid);
     		var votedDishRef = firebase.database().ref('dishRating').child(this.state.restaurantId).child(this.state.dishRatedKey[index]);
@@ -162,10 +160,9 @@ class NewReview extends Component{
 
     addDish(e){
     	e.preventDefault();
-    	console.log("add dish " + this.state.restaurantId);
     	var newDishRef = firebase.database().ref('dishRating').child(this.state.restaurantId).push();
     	newDishRef.set({
-    		name: this.refs.name.value,
+    		name: this.dishName.value,
     		vote: 1,
     		users: [firebase.auth().currentUser.uid]
     	})
@@ -197,7 +194,7 @@ class NewReview extends Component{
 					    <strong> Rating {starRating}</strong>
 						<FormGroup controlId="formControlsTextarea" label="Review" placeholder="Edit your review">
 							<ControlLabel>Review</ControlLabel>
-						    <FormControl componentClass="textarea" ref="review" placeholder="Share your thoughts..." inputRef={ref => { this.review = ref; }} />
+						    <FormControl componentClass="textarea" ref="review" placeholder="Share your thoughts ..." inputRef={ref => { this.review = ref; }} />
 						</FormGroup>
 						<Button id="submit" type="submit"> Submit</Button><br></br>
 				    </Form>
@@ -207,17 +204,17 @@ class NewReview extends Component{
 				<br></br>
 				<br></br>
 				<br></br>
-				<br></br>
-				<br></br>
-				<br></br>
-				<br></br>
-				<br></br>
-				<br></br>
 
-				Rate your dish, upvote for the ones here or add your own<br></br>
-					Or add your own dish<button type="button" onClick={this.addDish.bind(this)}>Add</button>
-					<input type="text" ref="name" placeholder="Your dish"></input>
-					<Table striped condensed hover responsive>
+				<Form onSubmit={this.addDish.bind(this)}>
+					<FormGroup controlId="formValidationSuccess2" validationState="success">
+				        <ControlLabel>Add your own dish</ControlLabel>
+				        <FormControl type="text" ref="dishName" placeholder="Your dish" inputRef={ref => { this.dishName = ref; }}/>
+				        <FormControl.Feedback />
+				        <HelpBlock>Rate your dish, upvote for the ones here or add your own dish</HelpBlock>
+				    </FormGroup>
+				    <Button id="submit" type="submit">Add</Button><br></br>
+			    </Form>
+			    <Table striped condensed hover responsive>
 					<thead>
 				      <tr>
 				        <th>Dishes</th>
@@ -235,7 +232,7 @@ class NewReview extends Component{
 				    				{dish.vote}
 				    			</td>
 				    			<td>
-									<button type="button" onClick={()=>this.upvote(index)}>Upvote</button>
+									<Button type="button" onClick={()=>this.upvote(index)}>Upvote</Button>
 				    			</td>
 				    		</tr>
 				    	))}

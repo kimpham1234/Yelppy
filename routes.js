@@ -13,8 +13,8 @@ import Login from '../modules/user/Login.js';
 import GoogleLogin from '../modules/google-user/GoogleLogin.jsx';
 import Edit from '../modules/review/Edit.js';
 import ReviewFlag from '../modules/review/ReviewFlag.js';
-import EditProfile from '../modules/user/EditProfile.js';
 //end by Kim
+
 import Layout from '../modules/home/layout.js';
 import Homepage from '../modules/home/homepage.js';
 import RestaurantDetail from '../modules/restaurant/RestaurantDetail.js';
@@ -22,6 +22,7 @@ import * as requireAuth from './requireAuth.js';
 import Profile from '../modules/user/Profile.jsx';
 import Logout from '../modules/user/Logout.jsx';
 import ResetPassword from '../modules/user/ResetPassword.js';
+
 let routes = (
     <Router history={hashHistory}>
         <Route path="/" component={Layout}>
@@ -31,7 +32,6 @@ let routes = (
             <Route path="/restaurants/:id" component={RestaurantDetail}/>
             <Route path='/newUser' component={NewUser}/>
             <Route path='/profile' component={Profile}/>
-            <Route path='profile/edit/:id' component={EditProfile} />
             <Route path='/reviews/edit/:id' component={Edit}/>
             <Route path='/reviews/new_review_flag/:id' component={ReviewFlag}/>
             <Route path='/login' component={Login}/>
@@ -41,6 +41,7 @@ let routes = (
             <Route path='/reviews/new/:id' component={NewReview}/>
             <Route path='/results(/:searchString)(/:location)' component={SearchResults} />
             <Route path='/resetPassword' component={ResetPassword}/>
+ 
         </Route>
     </Router>
 );

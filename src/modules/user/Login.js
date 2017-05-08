@@ -5,7 +5,7 @@ import "../../App.css";
 import { login, resetPassword } from '../helpers/users-auth';
 import {hashHistory} from 'react-router';
 import { FormGroup, ControlLabel, FormControl, Form, Col, Button, Checkbox} from 'react-bootstrap';
-import GoogleLogin from '../google-user/GoogleLogin.jsx'
+import GoogleLogin from '../google-user/GoogleLogin.jsx';
 class Login extends Component{
 	submit(e){
 		var email = this.email.value;

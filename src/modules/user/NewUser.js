@@ -19,12 +19,11 @@ class NewUser extends Component{
 		var that = this;
 		if(first!=="" && last!=="" && password1!=="" && password2!=="" && userEmail!=="")
 		{
-			if(password1===password2){
+			if(password1===password2) {
 				auth(userEmail, password1, first, last);
 				hashHistory.push('/');
 			}
-			else
-			{
+			else {
 				alert('Error! Your password is not confirmed corrrectly. Please try again');
 			}
 		}

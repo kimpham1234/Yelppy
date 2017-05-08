@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router'
 import * as firebase from 'firebase';
-import { Badge, ListGroup, ListGroupItem, Button } from 'react-bootstrap';
 import { Table, Thead, Th, Tr, Td } from 'reactable';
+import { renderList } from './Restaurants.js';
+import { Badge, ListGroup, ListGroupItem, Table, Grid, Col, Thumbnail, Row, Image, Button } from 'react-bootstrap';
 import StarRatingComponent from 'react-star-rating-component';
 import './DishRating.css';
-import { renderList } from './Restaurants.js';
+import "../../App.css";
 const picURL = "https://firebasestorage.googleapis.com/v0/b/yelppy-80fb2.appspot.com/o/images%2FDefault%2FnoPictureYet.png?alt=media&token=d07db72a-0963-488e-b228-9ab020bd0d41";
 
 class RestaurantDetail extends Component{
@@ -27,13 +28,13 @@ class RestaurantDetail extends Component{
         this.imageUpload = this.imageUpload.bind(this);
     }
     componentWillUnmount(){
-        // this.restaurantRef.off();
+        this.restaurantRef.off();
     }
     setNormalReviews(key, review_temp_list, reviewKey_temp_list){
         var that = this;
         this.reviewListRef = firebase.database().ref('reviews');
         this.reviewListRef.orderByChild('id').equalTo(key).on('child_added',function(snapshot) {
-            if(snapshot.val().author !== firebase.auth().currentUser.email){
+            if(firebase.auth().currentUser==null || snapshot.val().author != firebase.auth().currentUser.email){
                 review_temp_list.push(snapshot.val());
                 reviewKey_temp_list.push(snapshot.key);
             }
@@ -58,10 +59,10 @@ class RestaurantDetail extends Component{
         }.bind(this));
     }
     checkReview(key, id){
+        var review_temp_list = [];
+        var reviewKey_temp_list = [];
+        var that = this;
         if(firebase.auth().currentUser!==null){
-            var review_temp_list = [];
-            var reviewKey_temp_list = [];
-            var that = this;
             this.userRef = firebase.database().ref('users');
             this.userRef.orderByChild('email').equalTo(firebase.auth().currentUser.email).once('child_added',  function(snapshot) {
                 var reviewed = snapshot.val().reviewed;
@@ -77,6 +78,7 @@ class RestaurantDetail extends Component{
             })
             }.bind(this));
         }
+        else that.setNormalReviews(key, review_temp_list, reviewKey_temp_list);
     }
     getTopDish(resId){
         var dishRatingRef = firebase.database().ref('dishRating');
@@ -192,18 +194,33 @@ class RestaurantDetail extends Component{
         }
     }
     showWriteReview(){
-        if(!this.state.hasReviewed){
-            return <button type="button"><Link to={'/reviews/new/'+this.state.snapshotKey}>Write a review</Link></button>
+        if(firebase.auth().currentUser!=null&&!this.state.hasReviewed){
+            return <Button type="button"><Link to={'/reviews/new/'+this.state.snapshotKey}>Write a review</Link></Button>
         }
     }
     showEditButton(review, index){
-        if(this.state.hasReviewed && review.author === this.state.userReview.author){
+        if(firebase.auth().currentUser!==null&&(this.state.hasReviewed && review.author === this.state.userReview.author)){
             return <Button type="button" ><Link to={'/reviews/edit/'+this.state.reviewKeys[index]}>Edit</Link></Button>
         }
     }
     showFlagButton(review, index){
-        if(!this.state.hasReviewed||review.author !== this.state.userReview.author){
+        if(firebase.auth().currentUser!=null&&(!this.state.hasReviewed||review.author != this.state.userReview.author)){
             return <Button type="button" ><Link to={'/reviews/new_review_flag/'+this.state.reviewKeys[index]}>Flag this review</Link></Button>
+        }
+    }
+    showImageUploading(){
+        if(firebase.auth().currentUser!=null){
+            return      <table>
+                            <tbody>
+                                <tr>
+                                    <td><p className="App-intro"><strong>Add a Photo</strong></p></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="file" id="input"/></td>
+                                    <td><Button bsStyle="success" type="button" onClick={this.imageUpload}>Add</Button></td>
+                                </tr>
+                            </tbody>
+                        </table>
         }
     }
     showReviewImages(review, index){
@@ -215,25 +232,28 @@ class RestaurantDetail extends Component{
             imageList = review.images
         }
         return  <div>
-                        {
+                        { 
                             imageList.map((image, index) =>(
-                                image !== "" ?
-                                    <a key={index} target="_blank" href={image}>
-                                        <img src={image} width="220" height="160" alt={'image '+index}/>
+                                image != "" ?
+                                    <a key={index} target="_blank" href={image} >
+                                        <Col xs={6} md={5}>
+                                            <Image className="review-photo" src={image} thumbnail/>
+                                        </Col>
                                     </a>
+                                
                                 : ""
                             ))
                         }
-                    </div>
+                    </div>  
     }
     render() {
         var showDishRating = (
             <div className="dishRating">
             <h3><strong>Top Dishes</strong></h3>
-            {this.state.topDishes.map((dish, index)=>
-                <ListGroup key={index}>
-                    <ListGroupItem>{dish.name}<Badge>{dish.vote}</Badge></ListGroupItem>
-                </ListGroup>
+                    {this.state.topDishes.map((dish, index)=>
+                    <ListGroup key={index}>
+                        <ListGroupItem>{dish.name}<Badge>{dish.vote}</Badge></ListGroupItem>
+                    </ListGroup>
                 )}
             </div>
         )
@@ -269,23 +289,13 @@ class RestaurantDetail extends Component{
                 <div>
                     { this.state.images.map((image, index) =>(
                             <a key={index} target="_blank" href={image}>
-                                <img src={image} width="220" height="160" alt={'image '+index}/>
+                                <Image className="review-photo" src={image} thumbnail/>
                             </a>
                         )
                     )}
                 </div>
                 <div>
-                    <br/>
-                    <table><tbody>
-                    <tr>
-                        <td>Add a Photo:</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td><input type="file" id="input"/></td>
-                        <td><button type="button" onClick={this.imageUpload}>Add</button></td>
-                    </tr>
-                    </tbody></table>
+                    {this.showImageUploading()}
                     {this.showWriteReview()}
                 </div>
             </div>

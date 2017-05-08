@@ -25,7 +25,8 @@ class GoogleLogin extends Component{
 				var exist = (snapshot.val() !== null);
 
 				if(!exist){
-					var newUser = userRef.push();
+					var authId = firebase.auth().currentUser.uid;
+					var newUser = userRef.child(authId);
 					var time = Date();
 					var firstAndLast = firebase.auth().currentUser.displayName.split(" ");
 
@@ -37,7 +38,7 @@ class GoogleLogin extends Component{
 						numReviews: '0',
 						pictures: [''],
 						reviewed: [''],
-						UID: newUser.key
+						AuthId: authId
 					});
 				}
 			});
@@ -63,5 +64,3 @@ class GoogleLogin extends Component{
 }
 
 export default GoogleLogin;
-
-
