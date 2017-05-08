@@ -45,7 +45,7 @@ class Restaurants extends Component{
 			<div>
 				<h1>List of restaurants</h1>
 				<Link to='restaurants/new'>New</Link>
-				<Table className="rtable" id="table" sortable={true} defaultSort={{column:"rating", direction:"desc"}} itemsPerPage={20} pageButtonLimit={15} previousPageLabel="Previous " nextPageLabel=" Next" filterable={['info']} filterPlaceholder="Filter by name">
+				<Table className="rtable" id="table" sortable={true} defaultSort={{column:"rating", direction:"desc"}} itemsPerPage={20} pageButtonLimit={15} previousPageLabel="Previous " nextPageLabel=" Next" filterable={['info']} filterPlaceholder="Filter by name or category">
 					<Thead>
                         <Th column="avatar">Avatar</Th>
                         <Th column="info">Info</Th>
@@ -56,7 +56,7 @@ class Restaurants extends Component{
                             <Td column="avatar" value={restaurant.avatar} width='205px' height='205px'>
                                 <img src={restaurant.avatar} alt={'Avatar for '+restaurant.name} height="200" width="200"></img>
                             </Td>
-                            <Td column="info" value={restaurant.name} width='100%' data={
+                            <Td column="info" value={restaurant.name+' '+renderList(restaurant.categories, ' ')} width='100%' data={
                                 <table height='100%'><tbody>
                                     <tr><td><Link to={'/restaurants/'+restaurant.id}>{restaurant.name}</Link></td></tr>
                                     <tr><td>{restaurant.location.display_address[0]}</td></tr>
@@ -64,7 +64,7 @@ class Restaurants extends Component{
                                     <tr><td>Phone: {restaurant.phone ? restaurant.phone : "not available"}</td></tr>
                                     <tr><td>Price: {restaurant.price ? restaurant.price : "not available"}</td></tr>
                                     <tr><td>
-                                        Categories: {commaList(restaurant.categories)}
+                                        Categories: {renderList(restaurant.categories, ', ')}
                                     </td></tr>
                                     <tr height='100%'/>
                                 </tbody></table>
@@ -95,7 +95,7 @@ class Restaurants extends Component{
 	)}
 }
 
-export function commaList(input) {
+export function renderList(input, spacing) {
     if (!input) {
         return 'none';
     } else if (typeof(input) === 'string') {
@@ -103,7 +103,7 @@ export function commaList(input) {
     } else {
         var text = '';
         for (var index = 0; index < input.length; index ++)
-            text += (index ? ', ' : '')+input[index];
+            text += (index ? spacing : '')+input[index];
         return text;
     }
 }
