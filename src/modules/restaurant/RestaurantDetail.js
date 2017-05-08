@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router'
 import * as firebase from 'firebase';
-import { Badge, ListGroup, ListGroupItem, Table } from 'react-bootstrap';
+import { Badge, ListGroup, ListGroupItem, Table, Grid, Col, Thumbnail, Row, Image } from 'react-bootstrap';
 import StarRatingComponent from 'react-star-rating-component';
 import './DishRating.css';
+import "../../App.css";
 const picURL = "https://firebasestorage.googleapis.com/v0/b/yelppy-80fb2.appspot.com/o/images%2FDefault%2FnoPictureYet.png?alt=media&token=d07db72a-0963-488e-b228-9ab020bd0d41";
 
 class RestaurantDetail extends Component{
@@ -230,28 +231,29 @@ class RestaurantDetail extends Component{
             imageList = review.images   
         }
         return  <div>
-                    {/*
                         { 
                             imageList.map((image, index) =>(
                                 image != "" ?
-                                    <a key={index} target="_blank" href={image}>
-                                        <img src={image} width="220" height="160" />
+                                    <a key={index} target="_blank" href={image} >
+                                        <Col xs={6} md={5}>
+                                            <Image className="review-photo" src={image} thumbnail/>
+                                        </Col>
                                     </a>
+                                
                                 : ""
                             ))
                         }
-                    */}
                     </div>  
     }
     render() {
         var showDishRating = (
             <div className="dishRating">
             <h3><strong>Top Dishes</strong></h3>
-                <ListGroup>
                     {this.state.topDishes.map((dish, index)=>
-                    <ListGroupItem>{dish.name}<Badge>{dish.vote}</Badge></ListGroupItem>
+                    <ListGroup key={index}>
+                        <ListGroupItem>{dish.name}<Badge>{dish.vote}</Badge></ListGroupItem>
+                    </ListGroup>
                 )}
-                </ListGroup>
             </div>
         )
         var showDetail = (
@@ -285,7 +287,7 @@ class RestaurantDetail extends Component{
                 <div>
                     { this.state.images.map((image, index) =>(
                             <a key={index} target="_blank" href={image}>
-                                <img src={image} width="220" height="160" />
+                                <Image className="review-photo" src={image} thumbnail/>
                             </a>
                         )
                     )}
@@ -333,6 +335,7 @@ class RestaurantDetail extends Component{
 
                                 <td>
                                     { review.text }
+                                    {this.showReviewImages(review, index)}
                                 </td>
 
                                 <td>
@@ -341,9 +344,6 @@ class RestaurantDetail extends Component{
 
                                 <td>
                                     {this.showFlagButton(review, index)}
-                                </td>
-                                <td>
-                                    {this.showReviewImages(review, index)}
                                 </td>
                             </tr>
                         ))
