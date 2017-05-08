@@ -103,7 +103,7 @@ export function renderList(input, spacing) {
     } else {
         var text = '';
         for (var index = 0; index < input.length; index ++)
-            text += (index ? spacing : '')+input[index];
+            text += (index ? spacing : '')+renderList(input[index], spacing);
         return text;
     }
 }
