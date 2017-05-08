@@ -11,13 +11,13 @@ class Login extends Component{
 		var email = this.email.value;
 		var password = this.password.value;
 		e.preventDefault();
-		login(email, password);
-		hashHistory.push('/');
-	}
+        login(email, password);
+        document.getElementById('loginForm').reset();
+    }
 	render(){
 		return (
 			<div>
-				<Form horizontal onSubmit={this.submit.bind(this)}>
+				<Form id='loginForm' horizontal onSubmit={this.submit.bind(this)}>
 				    <FormGroup controlId="formHorizontalEmail">
 				      <Col componentClass={ControlLabel} sm={2}>
 				        Email
