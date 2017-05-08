@@ -34,7 +34,7 @@ class RestaurantDetail extends Component{
         var that = this;
         this.reviewListRef = firebase.database().ref('reviews');
         this.reviewListRef.orderByChild('id').equalTo(key).on('child_added',function(snapshot) {
-            if(firebase.auth().currentUser==null || snapshot.val().author != firebase.auth().currentUser.email){
+            if(!firebase.auth().currentUser || snapshot.val().author !== firebase.auth().currentUser.email){
                 review_temp_list.push(snapshot.val());
                 reviewKey_temp_list.push(snapshot.key);
             }
@@ -194,18 +194,18 @@ class RestaurantDetail extends Component{
         }
     }
     showWriteReview(){
-        if(firebase.auth().currentUser!=null&&!this.state.hasReviewed){
+        if(firebase.auth().currentUser&&!this.state.hasReviewed){
             return <Button type="button"><Link to={'/reviews/new/'+this.state.snapshotKey}>Write a review</Link></Button>
         }
     }
     showEditButton(review, index){
-        if(firebase.auth().currentUser!==null&&(this.state.hasReviewed && review.author === this.state.userReview.author)){
-            return <Button type="button" ><Link to={'/reviews/edit/'+this.state.reviewKeys[index]}>Edit</Link></Button>
+        if(firebase.auth().currentUser&&(this.state.hasReviewed && review.author === this.state.userReview.author)){
+            return <Button type="button"><Link to={'/reviews/edit/'+this.state.reviewKeys[index]}>Edit</Link></Button>
         }
     }
     showFlagButton(review, index){
-        if(firebase.auth().currentUser!=null&&(!this.state.hasReviewed||review.author != this.state.userReview.author)){
-            return <Button type="button" ><Link to={'/reviews/new_review_flag/'+this.state.reviewKeys[index]}>Flag this review</Link></Button>
+        if(firebase.auth().currentUser&&(!this.state.hasReviewed||review.author !== this.state.userReview.author)){
+            return <Button type="button"><Link to={'/reviews/new_review_flag/'+this.state.reviewKeys[index]}>Flag this review</Link></Button>
         }
     }
     showImageUploading(){
