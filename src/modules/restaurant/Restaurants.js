@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import * as firebase from 'firebase';
-import { Table, buttonsInstance } from 'react-bootstrap';
+import { Table, buttonsInstance, Button } from 'react-bootstrap';
 import StarRatingComponent from 'react-star-rating-component';
 
 class Restaurants extends Component{
@@ -44,8 +44,8 @@ class Restaurants extends Component{
 		var counter = 1;
 		return(
 			<div>
-				<h1>List of restaurants</h1>
-				<Link to='restaurants/new'>New</Link>
+				<Button><Link to='restaurants/new'>Create a new restaurant</Link></Button>
+				<p className="App-intro"><strong>List of restaurants</strong></p>
 				<Table striped condensed hover responsive>
 					<thead>
 				      <tr>

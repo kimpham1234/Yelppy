@@ -142,12 +142,10 @@ class NewReview extends Component{
     }
 
     upvote(index){
-    	console.log("upvote " + index);
     	var votedUser = this.state.dishRated[index].users;
     	var oldVote = Number(this.state.dishRated[index].vote);
     	var i = votedUser.indexOf(firebase.auth().currentUser.uid);
     	if(i===-1){
-    		console.log("not yet voted");
     		oldVote++;
     		votedUser.push(firebase.auth().currentUser.uid);
     		var votedDishRef = firebase.database().ref('dishRating').child(this.state.restaurantId).child(this.state.dishRatedKey[index]);
@@ -162,7 +160,6 @@ class NewReview extends Component{
 
     addDish(e){
     	e.preventDefault();
-    	console.log("add dish " + this.state.restaurantId);
     	var newDishRef = firebase.database().ref('dishRating').child(this.state.restaurantId).push();
     	newDishRef.set({
     		name: this.dishName.value,

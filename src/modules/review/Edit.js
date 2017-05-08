@@ -29,7 +29,6 @@ class Edit extends Component{
 		this.userRef = firebase.database()
 		this.userRef.ref('users').orderByKey().equalTo(authid).on('child_added',function(snapshot){
 			that.setState({reviewedList: snapshot.val().reviewed});
-			console.log('snapshot.val().reviewed', snapshot.val().reviewed);
 			that.setState({userNumReview: snapshot.val().numReviews});
 		}.bind(this));
 	}
@@ -56,7 +55,6 @@ class Edit extends Component{
 	componentWillUnmount(){
     }
 	delete(){
-		console.log('testing');
 		var currentUser = firebase.auth().currentUser;
 		if(currentUser!=null && currentUser.email===this.state.author){
 			var resPath = "";
@@ -73,7 +71,6 @@ class Edit extends Component{
 			}
 			var reviewNum = Number(this.state.userNumReview) - 1;
 			var userRef = firebase.database().ref('users');
-			console.log(currentUser.uid);
 			userRef.child(currentUser.uid).update({
 				reviewed: this.state.reviewedList,
 				numReviews: reviewNum
@@ -145,11 +142,10 @@ class Edit extends Component{
 					      <ControlLabel>Review</ControlLabel>
 					      <FormControl componentClass="textarea" ref="review" defaultValue={this.state.review} inputRef={ref => { this.input = ref; }} />
 					    </FormGroup>
-					    <Button id="submit" type="submit"> Submit</Button><br></br>
+					    <Button bsStyle="success" id="submit" type="submit"> Submit</Button><br></br>
 				    </Form>
 				{
-					// delete function is not working properly
-				    <Button type="delete" onClick={this.delete.bind(this)}>Delete</Button>
+				    <Button bsStyle="danger" onClick={this.delete.bind(this)}>Delete</Button>
 				    }
 			    </div>
 			</div>

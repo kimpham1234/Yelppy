@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router'
 import * as firebase from 'firebase';
-import { Badge, ListGroup, ListGroupItem, Table, Grid, Col, Thumbnail, Row, Image } from 'react-bootstrap';
+import { Badge, ListGroup, ListGroupItem, Table, Grid, Col, Thumbnail, Row, Image, Button } from 'react-bootstrap';
 import StarRatingComponent from 'react-star-rating-component';
 import './DishRating.css';
 import "../../App.css";
@@ -26,7 +26,7 @@ class RestaurantDetail extends Component{
         this.imageUpload = this.imageUpload.bind(this);
     }
     componentWillUnmount(){
-        // this.restaurantRef.off();
+        this.restaurantRef.off();
     }
     setNormalReviews(key, review_temp_list, reviewKey_temp_list){
         var that = this;
@@ -193,17 +193,17 @@ class RestaurantDetail extends Component{
     }
     showWriteReview(){
         if(firebase.auth().currentUser!=null&&!this.state.hasReviewed){
-            return <button type="button"><Link to={'/reviews/new/'+this.state.snapshotKey}>Write a review</Link></button>
+            return <Button type="button"><Link to={'/reviews/new/'+this.state.snapshotKey}>Write a review</Link></Button>
         }
     }
     showEditButton(review, index){
         if(firebase.auth().currentUser!=null&&(this.state.hasReviewed && review.author == this.state.userReview.author)){
-            return <button type="button" ><Link to={'/reviews/edit/'+this.state.reviewKeys[index]}>Edit</Link></button>
+            return <Button type="button" ><Link to={'/reviews/edit/'+this.state.reviewKeys[index]}>Edit</Link></Button>
         }
     }
     showFlagButton(review, index){
         if(firebase.auth().currentUser!=null&&(!this.state.hasReviewed||review.author != this.state.userReview.author)){
-            return <button type="button" ><Link to={'/reviews/new_review_flag/'+this.state.reviewKeys[index]}>Flag this review</Link></button>
+            return <Button type="button" ><Link to={'/reviews/new_review_flag/'+this.state.reviewKeys[index]}>Flag this review</Link></Button>
         }
     }
     showImageUploading(){
@@ -211,12 +211,11 @@ class RestaurantDetail extends Component{
             return      <table>
                             <tbody>
                                 <tr>
-                                    <td>Add a Photo:</td>
-                                    <td></td>
+                                    <td><p className="App-intro"><strong>Add a Photo</strong></p></td>
                                 </tr>
                                 <tr>
                                     <td><input type="file" id="input"/></td>
-                                    <td><button type="button" onClick={this.imageUpload}>Add</button></td>
+                                    <td><Button bsStyle="success" type="button" onClick={this.imageUpload}>Add</Button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -318,8 +317,7 @@ class RestaurantDetail extends Component{
                                 <td>
                                     { review.author }
                                 </td>
-
-                                <td>
+                                <td  width="12%">
                                     <StarRatingComponent
                                         name="star"
                                         editing={false}
@@ -330,18 +328,16 @@ class RestaurantDetail extends Component{
                                             return <span className={index <= value ? 'fa fa-star' : (index === value+0.5 ?'fa fa-star-half-full' : 'fa fa-star-o')} />;
                                             }
                                         }
+                                        testing
                                     />
                                 </td>
-
                                 <td>
-                                    { review.text }
+                                    { review.text }<br></br><br></br>
                                     {this.showReviewImages(review, index)}
                                 </td>
-
                                 <td>
                                     {this.showEditButton(review, index)}
                                 </td>
-
                                 <td>
                                     {this.showFlagButton(review, index)}
                                 </td>
