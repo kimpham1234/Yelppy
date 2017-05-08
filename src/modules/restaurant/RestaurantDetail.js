@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import * as firebase from 'firebase';
 import { Table, Thead, Th, Tr, Td } from 'reactable';
 import { renderList } from './Restaurants.js';
-import { Badge, ListGroup, ListGroupItem, Table, Grid, Col, Thumbnail, Row, Image, Button } from 'react-bootstrap';
+import { Badge, ListGroup, ListGroupItem, Grid, Col, Thumbnail, Row, Image, Button } from 'react-bootstrap';
 import StarRatingComponent from 'react-star-rating-component';
 import './DishRating.css';
 import "../../App.css";
@@ -232,7 +232,7 @@ class RestaurantDetail extends Component{
             imageList = review.images
         }
         return  <div>
-                        { 
+                        {
                             imageList.map((image, index) =>(
                                 image != "" ?
                                     <a key={index} target="_blank" href={image} >
@@ -240,11 +240,11 @@ class RestaurantDetail extends Component{
                                             <Image className="review-photo" src={image} thumbnail/>
                                         </Col>
                                     </a>
-                                
+
                                 : ""
                             ))
                         }
-                    </div>  
+                    </div>
     }
     render() {
         var showDishRating = (
