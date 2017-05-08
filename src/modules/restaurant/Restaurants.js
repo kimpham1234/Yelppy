@@ -63,7 +63,9 @@ class Restaurants extends Component{
                                     <tr><td>{restaurant.location.display_address[1]}</td></tr>
                                     <tr><td>Phone: {restaurant.phone ? restaurant.phone : "not available"}</td></tr>
                                     <tr><td>Price: {restaurant.price ? restaurant.price : "not available"}</td></tr>
-                                    <tr><td>Categories: {restaurant.categories}</td></tr>
+                                    <tr><td>
+                                        Categories: {commaList(restaurant.categories)}
+                                    </td></tr>
                                     <tr height='100%'/>
                                 </tbody></table>
                             }/>
@@ -91,6 +93,19 @@ class Restaurants extends Component{
 				</Table>
 		    </div>
 	)}
+}
+
+export function commaList(input) {
+    if (!input) {
+        return 'none';
+    } else if (typeof(input) === 'string') {
+        return input;
+    } else {
+        var text = '';
+        for (var index = 0; index < input.length; index ++)
+            text += (index ? ', ' : '')+input[index];
+        return text;
+    }
 }
 
 export default Restaurants;

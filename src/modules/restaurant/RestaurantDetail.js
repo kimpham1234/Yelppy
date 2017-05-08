@@ -5,6 +5,7 @@ import { Badge, ListGroup, ListGroupItem, Button } from 'react-bootstrap';
 import { Table, Thead, Th, Tr, Td } from 'reactable';
 import StarRatingComponent from 'react-star-rating-component';
 import './DishRating.css';
+import { commaList } from './Restaurants.js';
 const picURL = "https://firebasestorage.googleapis.com/v0/b/yelppy-80fb2.appspot.com/o/images%2FDefault%2FnoPictureYet.png?alt=media&token=d07db72a-0963-488e-b228-9ab020bd0d41";
 
 class RestaurantDetail extends Component{
@@ -257,7 +258,7 @@ class RestaurantDetail extends Component{
                             />}
                             <br/>{this.state.numReview ? this.state.numReview : '0'} review{this.state.numReview && Math.round(parseFloat(this.state.numReview)) === 1 ? '' : 's'}
                             <br/>{this.state.location}
-                            <br/>Categories: {this.state.categories ? this.state.categories : 'none'}
+                            <br/>Categories: {commaList(this.state.categories)}
                             <br/>Phone: {this.state.phone ? this.state.phone : 'unknown'}
                             <br/>Price: {this.state.price ? this.state.price : 'unknown'}
                             </td>
