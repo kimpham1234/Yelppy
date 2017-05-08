@@ -45,7 +45,7 @@ class Restaurants extends Component{
 			<div>
 				<h1>List of restaurants</h1>
 				<Link to='restaurants/new'>New</Link>
-				<Table className="rtable" id="table" sortable={true} defaultSort={{column:"rating", direction:"desc"}} itemsPerPage={20} pageButtonLimit={15} previousPageLabel="Previous " nextPageLabel=" Next" filterable={['info']} filterPlaceholder="Filter by info text">
+				<Table className="rtable" id="table" sortable={true} defaultSort={{column:"rating", direction:"desc"}} itemsPerPage={20} pageButtonLimit={15} previousPageLabel="Previous " nextPageLabel=" Next" filterable={['info']} filterPlaceholder="Filter by name">
 					<Thead>
                         <Th column="avatar">Avatar</Th>
                         <Th column="info">Info</Th>
