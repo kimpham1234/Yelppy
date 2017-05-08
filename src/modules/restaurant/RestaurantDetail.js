@@ -326,7 +326,7 @@ class RestaurantDetail extends Component{
                                     </tbody></table>
                                 }/>
 
-                                <Td column='review' value={review.text} data={
+                                <Td column='review' width='100%' value={review.text} data={
                                     <table height='100%'><tbody>
                                         <tr><td>{review.text}</td></tr>
                                         <tr><td>{this.showReviewImages(review, index)}</td></tr>

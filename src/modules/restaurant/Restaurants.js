@@ -56,7 +56,7 @@ class Restaurants extends Component{
                             <Td column="avatar" value={restaurant.avatar} width='205px' height='205px'>
                                 <img src={restaurant.avatar} alt={'Avatar for '+restaurant.name} height="200" width="200"></img>
                             </Td>
-                            <Td column="info" value={restaurant.name} data={
+                            <Td column="info" value={restaurant.name} width='100%' data={
                                 <table height='100%'><tbody>
                                     <tr><td><Link to={'/restaurants/'+restaurant.id}>{restaurant.name}</Link></td></tr>
                                     <tr><td>{restaurant.location.display_address[0]}</td></tr>
