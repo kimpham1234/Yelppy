@@ -83,7 +83,7 @@ class RestaurantDetail extends Component{
         var that = this;
         dishRatingRef.orderByKey().equalTo(resId).on('child_added', function(snapshot){
             snapshot.forEach(function(childSnapShot){
-                var value = childSnapShot.val();
+                //var value = childSnapShot.val();
                 tempdish.push(childSnapShot.val());
             });
             tempdish.sort(that.compare);
@@ -293,22 +293,22 @@ class RestaurantDetail extends Component{
             <div>
                 <Table className='rtable' filterable={['author', 'rating', 'review']} itemsPerPage={30} pageButtonLimit={15} previousPageLabel="Previous " nextPageLabel=" Next" filterPlaceholder="Filter by author, rating, or review text">
                     <Thead>
-                        <Th column='author' width={200}>Author</Th>
-                        <Th column='rating' width={90}>Rating</Th>
+                        <Th column='author'>Author</Th>
+                        <Th column='rating'>Rating</Th>
                         <Th column='review'>Review</Th>
-                        <Th column='buttons' width={150}> </Th>
+                        <Th column='buttons'> </Th>
                     </Thead>
                     { this.state.reviews.map((review, index) =>(
                             <Tr key={index}>
                                 <Td height='100%' column='author' value={review.author} data={
-                                    <table height='100%'><tbody>
+                                    <table height='100%' width='200px'><tbody>
                                         <tr><td>{review.author}</td></tr>
                                         <tr height='100%'/>
                                     </tbody></table>
                                 }/>
 
                                 <Td column='rating' value={parseFloat(review.rating)} data={
-                                    <table height='100%'><tbody>
+                                    <table height='100%' width='90px'><tbody>
                                         <tr><td>
                                             <StarRatingComponent
                                                 name="star"

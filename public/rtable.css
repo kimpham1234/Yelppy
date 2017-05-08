@@ -25,6 +25,11 @@
   cursor: default;
 }
 
+td {
+  padding-right: 5px;
+  
+}
+
 tr.reactable-filterer {
   width: 100%;
 }

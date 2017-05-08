@@ -47,13 +47,13 @@ class Restaurants extends Component{
 				<Link to='restaurants/new'>New</Link>
 				<Table className="rtable" id="table" sortable={true} defaultSort={{column:"rating", direction:"desc"}} itemsPerPage={20} pageButtonLimit={15} previousPageLabel="Previous " nextPageLabel=" Next" filterable={['info']} filterPlaceholder="Filter by info text">
 					<Thead>
-                        <Th column="avatar" width={205}>Avatar</Th>
+                        <Th column="avatar">Avatar</Th>
                         <Th column="info">Info</Th>
-                        <Th column="rating" width={90}>Rating</Th>
+                        <Th column="rating">Rating</Th>
 				    </Thead>
 			    	{this.state.restaurants.map((restaurant, index) => (
-                        <Tr key={index} height={205}>
-                            <Td column="avatar" width={205} value={restaurant.avatar}>
+                        <Tr key={index}>
+                            <Td column="avatar" value={restaurant.avatar} width='205px' height='205px'>
                                 <img src={restaurant.avatar} alt={'Avatar for '+restaurant.name} height="200" width="200"></img>
                             </Td>
                             <Td column="info" value={restaurant.name} data={
@@ -67,8 +67,8 @@ class Restaurants extends Component{
                                     <tr height='100%'/>
                                 </tbody></table>
                             }/>
-                            <Td column="rating" width={90} value={parseFloat(restaurant.rating)} data={
-                                <table height='100%'><tbody>
+                            <Td column="rating" value={parseFloat(restaurant.rating)} data={
+                                <table height='100%' width='90px'><tbody>
                                     <tr><td>
                                         <StarRatingComponent
                                             name="star"
