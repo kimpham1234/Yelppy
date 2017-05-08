@@ -234,9 +234,9 @@ class RestaurantDetail extends Component{
         return  <div>
                         {
                             imageList.map((image, index) =>(
-                                image != "" ?
+                                image !== "" ?
                                     <a key={index} target="_blank" href={image} >
-                                        <Col xs={6} md={5}>
+                                        <Col xs={6} md={6}>
                                             <Image className="review-photo" src={image} thumbnail/>
                                         </Col>
                                     </a>
