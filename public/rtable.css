@@ -1,0 +1,52 @@
+.reactable-page-button {
+  margin-left: 1px;
+  margin-right: 1px;
+  margin-bottom: 5px;
+  margin-top: 2px;
+  padding: 3px;
+  width: 30px;
+  float: left;
+  cursor: pointer;
+  color: #000;
+  border: 1px solid #AAA;
+  background-color: #EEE;
+  text-align: center;
+  border-radius: 2px;
+}
+
+.reactable-page-button:hover {
+  text-decoration: none;
+  color: #333;
+  background-color: #DDD;
+}
+
+.reactable-current-page {
+  background-color: #DDD;
+  cursor: default;
+}
+
+td {
+  padding-right: 5px;
+  min-width: 85px;
+}
+
+tr {
+  width: 100%;
+}
+
+tr.reactable-filterer {
+  width: 100%;
+}
+
+tr.reactable-filterer td {
+  width: 100%;
+}
+
+.reactable-filter-input {
+  width: 95%;
+  margin-left: 10px;
+  margin-top: 7px;
+  margin-bottom: 7px;
+  margin-right: 10px;
+  padding: 5px;
+}
