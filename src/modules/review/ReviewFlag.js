@@ -24,7 +24,7 @@ class ReviewFlag extends Component{
 
 	submit(e){
 		var currentUser = firebase.auth().currentUser;
-		if(currentUser!=null){
+		if(currentUser){
 			e.preventDefault();
 
 			var reviewFlagListRef = firebase.database().ref('review_flag');

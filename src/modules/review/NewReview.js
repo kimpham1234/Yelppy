@@ -136,7 +136,7 @@ class NewReview extends Component{
 		var value = (number * 2).toFixed() / 2;
 		return value;
 	}
-	
+
 	onStarClick(nextValue, prevValue, name) {
 		 this.setState({rating: nextValue});
     }
@@ -172,9 +172,9 @@ class NewReview extends Component{
 	render(){
 		var starRating = (
 			<div>
-		
-        		<StarRatingComponent 
-                    name="rate1" 
+
+        		<StarRatingComponent
+                    name="rate1"
                     starColor="#ffb400"
 					emptyStarColor="#ffb400"
                     value={parseFloat(this.state.rating)}
