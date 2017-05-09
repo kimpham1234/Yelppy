@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import * as firebase from 'firebase';
-import { buttonsInstance, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import StarRatingComponent from 'react-star-rating-component';
 import { Table, Thead, Th, Tr, Td } from 'reactable';
 
@@ -17,7 +17,7 @@ class Restaurants extends Component{
         this.restaurantListRef = firebase.database().ref('business');
 		let that = this;
 		let list = [];
-		if( this.props != nextProps ) {
+		if( this.props !== nextProps ) {
 			setTimeout(function() {
                 that.setState({restaurants: []}, function () {
                     //listen for the value of restaurant once when first load

@@ -1,7 +1,6 @@
 import React,{ Component } from 'react';
 import * as firebase from 'firebase';
 import {hashHistory} from 'react-router';
-import { Link } from 'react-router';
 import StarRatingComponent from 'react-star-rating-component';
 import "../../App.css";
 import { FormGroup, ControlLabel, FormControl, HelpBlock, Button, Form } from 'react-bootstrap';
@@ -47,7 +46,7 @@ class Edit extends Component{
 		}
 		else
 		{
-			alert('Sorry. You cannot edit this review.' 
+			alert('Sorry. You cannot edit this review.'
 				+' Only its own user can edit this review');
 			hashHistory.push('/restaurants/'+this.state.resPathId);
 		}
@@ -80,7 +79,7 @@ class Edit extends Component{
 		}
 		else
 		{
-			alert('Sorry. You cannot delete this review.' 
+			alert('Sorry. You cannot delete this review.'
 				+' Only its own user can delete this review');
 			hashHistory.push('/restaurants/'+this.state.resPathId);
 		}
@@ -109,9 +108,9 @@ class Edit extends Component{
 	render(){
 		var starRating = (
 			<div>
-		
-        		<StarRatingComponent 
-                    name="rate1" 
+
+        		<StarRatingComponent
+                    name="rate1"
                     starColor="#ffb400"
 					emptyStarColor="#ffb400"
                     value={parseFloat(this.state.rating)}
