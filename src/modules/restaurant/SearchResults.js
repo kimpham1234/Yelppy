@@ -121,7 +121,7 @@ export default class SearchResults extends Component{
                                     categories: place.types,
                                     id: place.place_id,
                                     coordinates: {
-                                        latitutde: place.geometry.location.lat(),
+                                        latitude: place.geometry.location.lat(),
                                         longitude: place.geometry.location.lng()
                                     },
                                     images: ["https://firebasestorage.googleapis.com/v0/b/yelppy-80fb2.appspot.com/o/images%2FDefault%2FnoPictureYet.png?alt=media&token=d07db72a-0963-488e-b228-9ab020bd0d41"],
