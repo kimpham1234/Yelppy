@@ -18,25 +18,27 @@ class Restaurants extends Component{
 		let that = this;
 		let list = [];
 		if( this.props != nextProps ) {
-            this.setState({restaurants: []}, function () {
-                //listen for the value of restaurant once when first load
-                this.restaurantListRef.once('value', function (snapshot) {
-                    snapshot.forEach(function (childSnapshot) {
-                        //console.log(that.props);
-                        //that.state.restaurants.push(childSnapshot.val());
-                        //that.setState({restaurants: that.state.restaurants})
-                        if (nextProps.idArray) {
-                            if (nextProps.idArray.indexOf(childSnapshot.val().id) !== -1) {
-                                list.push(childSnapshot.val())
+			setTimeout(function() {
+                that.setState({restaurants: []}, function () {
+                    //listen for the value of restaurant once when first load
+                    this.restaurantListRef.once('value', function (snapshot) {
+                        snapshot.forEach(function (childSnapshot) {
+                            //console.log(that.props);
+                            //that.state.restaurants.push(childSnapshot.val());
+                            //that.setState({restaurants: that.state.restaurants})
+                            if (nextProps.idArray) {
+                                if (nextProps.idArray.indexOf(childSnapshot.val().id) !== -1) {
+                                    list.push(childSnapshot.val())
+                                }
+                            } else {
+                                list.push(childSnapshot.val());
                             }
-                        } else {
-                            list.push(childSnapshot.val());
-                        }
 
+                        });
+                        that.setState({restaurants: list});
                     });
-                    that.setState({restaurants: list});
                 });
-            });
+            }, 2000);
         }
 
     }

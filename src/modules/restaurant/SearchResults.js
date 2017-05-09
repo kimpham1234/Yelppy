@@ -136,7 +136,7 @@ export default class SearchResults extends Component{
                                         display_address: [placeArr[0].trim(), (placeArr[1].trim() + ', ' + placeArr[2].trim().split(' ')[0].trim())]
                                     },
                                     numReview: 0,
-                                    phone: place.formatted_phone_number,
+                                    phone: place.formatted_phone_number ? place.formatted_phone_number : '',
                                     price: "",
                                     rating: 0
                                 });
