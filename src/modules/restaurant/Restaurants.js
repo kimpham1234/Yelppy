@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import * as firebase from 'firebase';
-import { Table, buttonsInstance } from 'react-bootstrap';
+import { buttonsInstance, Button } from 'react-bootstrap';
 import StarRatingComponent from 'react-star-rating-component';
+import { Table, Thead, Th, Tr, Td } from 'reactable';
 
 class Restaurants extends Component{
 
@@ -49,55 +50,72 @@ class Restaurants extends Component{
 		this.restaurantListRef.off();
 	}
 
-	render(){
-		var counter = 1;
+    render(){
 		return(
 			<div>
-				<h1>List of restaurants</h1>
-				<Link to='restaurants/new'>New</Link>
-				<Table striped condensed hover responsive>
-					<thead>
-				      <tr>
-				        <th></th>
-				        <th>Info</th>
-				        <th>Rating</th>
-				      </tr>
-				    </thead>
-				    <tbody>
-				    	{this.state.restaurants.map((restaurant, index) => (
-				    		<tr key={index}>
-				    			<td>
-				    				<img src={restaurant.avatar} alt={'Avatar for '+restaurant.name} height="200" width ="200"></img>
-				    			</td>
-				    			<td>
-				    				<Link to={'/restaurants/'+restaurant.id}>{restaurant.name}</Link>
-                                    <br></br>{restaurant.location.display_address[0]}
-                                    <br></br>{restaurant.location.display_address[1]}
-                                    <br></br>Phone: {restaurant.phone=="" ? 'Not available' : restaurant.phone}
-                                    <br></br>Price: {restaurant.price}
-                                    <br></br>Categories: {restaurant.categories}
-				    			</td>
-				    			<td>
-									<StarRatingComponent
-							           	name="star"
-							            editing = {false}
-							            starColor="#ffb400"
-							            emptyStarColor="#ffb400"
-							            value={parseFloat(restaurant.rating)}
-							            renderStarIcon={(index, value) => {
-							            	return <span className={index <= value ? 'fa fa-star' : (index == value+0.5 ?'fa fa-star-half-full' : 'fa fa-star-o')} />;
-						            		}
-						            	}
-						          	/>
-                                    <br></br>{restaurant.numReview ? restaurant.numReview : '0'} reviews
-				    			</td>
-				    		</tr>
-
-				    	))}
-				    </tbody>
-				</Table>
+				<Button><Link to='restaurants/new'>Create a new restaurant</Link></Button>
+				<p className="App-intro"><strong>List of restaurants</strong></p>
+				<Table className="rtable" id="table" sortable={true} defaultSort={{column:"rating", direction:"desc"}} itemsPerPage={20} pageButtonLimit={15} previousPageLabel="Previous " nextPageLabel=" Next" filterable={['info']} filterPlaceholder="Filter by name or category">
+					<Thead>
+                        <Th column="avatar">Avatar</Th>
+                        <Th column="info">Info</Th>
+                        <Th column="rating">Rating</Th>
+				    </Thead>
+			    	{this.state.restaurants.map((restaurant, index) => (
+                        <Tr key={index}>
+                            <Td column="avatar" value={restaurant.avatar} width='205px' height='205px'>
+                                <img src={restaurant.avatar} alt={'Avatar for '+restaurant.name} height="200" width="200"></img>
+                            </Td>
+                            <Td column="info" value={restaurant.name+' '+renderList(restaurant.categories, ' ')} width='100%' data={
+                                <table height='100%'><tbody>
+                                    <tr><td><Link to={'/restaurants/'+restaurant.id}>{restaurant.name}</Link></td></tr>
+                                    <tr><td>{restaurant.location.display_address[0]}</td></tr>
+                                    <tr><td>{restaurant.location.display_address[1]}</td></tr>
+                                    <tr><td>Phone: {restaurant.phone ? restaurant.phone : "not available"}</td></tr>
+                                    <tr><td>Price: {restaurant.price ? restaurant.price : "not available"}</td></tr>
+                                    <tr><td>
+                                        Categories: {renderList(restaurant.categories, ', ')}
+                                    </td></tr>
+                                    <tr height='100%'/>
+                                </tbody></table>
+                            }/>
+                            <Td column="rating" value={parseFloat(restaurant.rating)} data={
+                                <table height='100%' width='90px'><tbody>
+                                    <tr><td>
+                                        <StarRatingComponent
+                                            name="star"
+                                            editing={false}
+                                            starColor="#ffb400"
+                                            emptyStarColor="#ffb400"
+                                            value={parseFloat(restaurant.rating)}
+                                            renderStarIcon={(index, value) => {
+                                                return <span className={index <= value ? 'fa fa-star' : (index === value+0.5 ?'fa fa-star-half-full' : 'fa fa-star-o')} />;
+                                                }
+                                            }
+                                        />
+                                    </td></tr>
+                                    <tr><td>{restaurant.numReview ? restaurant.numReview : '0'} review{restaurant.numReview && Math.round(parseFloat(restaurant.numReview)) === 1 ? '' : 's'}</td></tr>
+                                    <tr height='100%'/>
+                                </tbody></table>
+                            }/>
+                        </Tr>
+                    ))}
+				    </Table>
 		    </div>
 	)}
+}
+
+export function renderList(input, spacing) {
+    if (!input) {
+        return 'none';
+    } else if (typeof(input) === 'string') {
+        return input;
+    } else {
+        var text = '';
+        for (var index = 0; index < input.length; index ++)
+            text += (index ? spacing : '')+renderList(input[index], spacing);
+        return text;
+    }
 }
 
 export default Restaurants;

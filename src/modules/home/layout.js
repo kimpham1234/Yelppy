@@ -196,8 +196,6 @@ let Layout = React.createClass({
                       team.react-js@gmail.com</a>.</p>
                     </div>
                 </div>
-                
-
             </div>
         )
     }

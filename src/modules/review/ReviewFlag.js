@@ -24,7 +24,7 @@ class ReviewFlag extends Component{
 
 	submit(e){
 		var currentUser = firebase.auth().currentUser;
-		if(currentUser!=null){
+		if(currentUser){
 			e.preventDefault();
 
 			var reviewFlagListRef = firebase.database().ref('review_flag');
@@ -53,7 +53,7 @@ class ReviewFlag extends Component{
 							<ControlLabel>Reason for this flag</ControlLabel>
 						    <FormControl type="text" ref="flag_content" placeholder="Please tell us why ..." inputRef={ref => { this.flag_content = ref; }} />
 						</FormGroup>
-			    	<Button id="submit" type="submit"> Submit</Button><br></br><br></br>
+			    	<Button bsStyle="success" id="submit" type="submit"> Submit</Button><br></br><br></br>
 			    </Form>
 			</div>
 		)

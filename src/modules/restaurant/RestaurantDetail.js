@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router'
 import * as firebase from 'firebase';
-import { Badge, ListGroup, ListGroupItem, Table } from 'react-bootstrap';
+import { Table, Thead, Th, Tr, Td } from 'reactable';
+import { renderList } from './Restaurants.js';
+import { Badge, ListGroup, ListGroupItem, Grid, Col, Thumbnail, Row, Image, Button } from 'react-bootstrap';
 import StarRatingComponent from 'react-star-rating-component';
 import './DishRating.css';
+import "../../App.css";
 const picURL = "https://firebasestorage.googleapis.com/v0/b/yelppy-80fb2.appspot.com/o/images%2FDefault%2FnoPictureYet.png?alt=media&token=d07db72a-0963-488e-b228-9ab020bd0d41";
 
 class RestaurantDetail extends Component{
@@ -25,13 +28,13 @@ class RestaurantDetail extends Component{
         this.imageUpload = this.imageUpload.bind(this);
     }
     componentWillUnmount(){
-        // this.restaurantRef.off();
+        this.restaurantRef.off();
     }
     setNormalReviews(key, review_temp_list, reviewKey_temp_list){
         var that = this;
         this.reviewListRef = firebase.database().ref('reviews');
         this.reviewListRef.orderByChild('id').equalTo(key).on('child_added',function(snapshot) {
-            if(firebase.auth().currentUser==null || snapshot.val().author != firebase.auth().currentUser.email){
+            if(!firebase.auth().currentUser || snapshot.val().author !== firebase.auth().currentUser.email){
                 review_temp_list.push(snapshot.val());
                 reviewKey_temp_list.push(snapshot.key);
             }
@@ -44,7 +47,7 @@ class RestaurantDetail extends Component{
         var that = this;
         this.reviewListRef = firebase.database().ref('reviews');
         var res_au = key+"/" +firebase.auth().currentUser.email;
-        this.reviewListRef.orderByChild('restaurant_author').equalTo(res_au).once('child_added',  function(snapshot) {
+        this.reviewListRef.orderByChild('restaurant_author').equalTo(res_au).once('child_added', function(snapshot) {
                     userReview_temp = snapshot.val();
                     userReviewKey_temp = snapshot.key;
                     review_temp_list.push(snapshot.val());
@@ -59,14 +62,14 @@ class RestaurantDetail extends Component{
         var review_temp_list = [];
         var reviewKey_temp_list = [];
         var that = this;
-        if(firebase.auth().currentUser!=null){
+        if(firebase.auth().currentUser!==null){
             this.userRef = firebase.database().ref('users');
             this.userRef.orderByChild('email').equalTo(firebase.auth().currentUser.email).once('child_added',  function(snapshot) {
                 var reviewed = snapshot.val().reviewed;
                 var bool = false;
                 for (var i in reviewed) {
-                    if(reviewed[i].split("/")[1] == id){
-                           bool = true; 
+                    if(reviewed[i].split("/")[1] === id){
+                           bool = true;
                     }
                 }
                 that.setState({hasReviewed : bool}, ()=>{this.state.hasReviewed ?
@@ -83,7 +86,7 @@ class RestaurantDetail extends Component{
         var that = this;
         dishRatingRef.orderByKey().equalTo(resId).on('child_added', function(snapshot){
             snapshot.forEach(function(childSnapShot){
-                var value = childSnapShot.val();
+                //var value = childSnapShot.val();
                 tempdish.push(childSnapShot.val());
             });
             tempdish.sort(that.compare);
@@ -92,7 +95,7 @@ class RestaurantDetail extends Component{
         });
     }
     compare(a, b){
-        return -(a.vote - b.vote);
+        return b.vote - a.vote;
     }
     componentWillMount(){
         this.restaurantRef = firebase.database().ref('business');
@@ -104,7 +107,7 @@ class RestaurantDetail extends Component{
                 var val = snapshot.val();
                 var address = "";
                 for(var i = 0; i < val.location.display_address.length; i++){
-                    if(i!=val.location.display_address.length-1)
+                    if(i!==val.location.display_address.length-1)
                         address += val.location.display_address[i]+', ';
                     else
                         address += val.location.display_address[i];
@@ -191,18 +194,18 @@ class RestaurantDetail extends Component{
         }
     }
     showWriteReview(){
-        if(firebase.auth().currentUser!=null&&!this.state.hasReviewed){
-            return <button type="button"><Link to={'/reviews/new/'+this.state.snapshotKey}>Write a review</Link></button>
+        if(firebase.auth().currentUser&&!this.state.hasReviewed){
+            return <Button type="button"><Link to={'/reviews/new/'+this.state.snapshotKey}>Write a review</Link></Button>
         }
     }
     showEditButton(review, index){
-        if(firebase.auth().currentUser!=null&&(this.state.hasReviewed && review.author == this.state.userReview.author)){
-            return <button type="button" ><Link to={'/reviews/edit/'+this.state.reviewKeys[index]}>Edit</Link></button>
+        if(firebase.auth().currentUser&&(this.state.hasReviewed && review.author === this.state.userReview.author)){
+            return <Button type="button"><Link to={'/reviews/edit/'+this.state.reviewKeys[index]}>Edit</Link></Button>
         }
     }
     showFlagButton(review, index){
-        if(firebase.auth().currentUser!=null&&(!this.state.hasReviewed||review.author != this.state.userReview.author)){
-            return <button type="button" ><Link to={'/reviews/new_review_flag/'+this.state.reviewKeys[index]}>Flag this review</Link></button>
+        if(firebase.auth().currentUser&&(!this.state.hasReviewed||review.author !== this.state.userReview.author)){
+            return <Button type="button"><Link to={'/reviews/new_review_flag/'+this.state.reviewKeys[index]}>Flag this review</Link></Button>
         }
     }
     showImageUploading(){
@@ -210,12 +213,11 @@ class RestaurantDetail extends Component{
             return      <table>
                             <tbody>
                                 <tr>
-                                    <td>Add a Photo:</td>
-                                    <td></td>
+                                    <td><p className="App-intro"><strong>Add a Photo</strong></p></td>
                                 </tr>
                                 <tr>
                                     <td><input type="file" id="input"/></td>
-                                    <td><button type="button" onClick={this.imageUpload}>Add</button></td>
+                                    <td><Button bsStyle="success" type="button" onClick={this.imageUpload}>Add</Button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -223,75 +225,76 @@ class RestaurantDetail extends Component{
     }
     showReviewImages(review, index){
         var imageList = ""
-        if(this.state.hasReviewed && review.author == this.state.userReview.author){
+        if(this.state.hasReviewed && review.author === this.state.userReview.author){
             imageList = this.state.userImages;
         }
         else{
-            imageList = review.images   
+            imageList = review.images
         }
         return  <div>
-                    {/*
-                        { 
+                        {
                             imageList.map((image, index) =>(
-                                image != "" ?
-                                    <a key={index} target="_blank" href={image}>
-                                        <img src={image} width="220" height="160" />
+                                image !== "" ?
+                                    <a key={index} target="_blank" href={image} >
+                                        <Col xs={6} md={6}>
+                                            <Image className="review-photo" src={image} thumbnail/>
+                                        </Col>
                                     </a>
+
                                 : ""
                             ))
                         }
-                    */}
-                    </div>  
+                    </div>
     }
     render() {
         var showDishRating = (
             <div className="dishRating">
             <h3><strong>Top Dishes</strong></h3>
-                <ListGroup>
                     {this.state.topDishes.map((dish, index)=>
-                    <ListGroupItem>{dish.name}<Badge>{dish.vote}</Badge></ListGroupItem>
+                    <ListGroup key={index}>
+                        <ListGroupItem>{dish.name}<Badge>{dish.vote}</Badge></ListGroupItem>
+                    </ListGroup>
                 )}
-                </ListGroup>
             </div>
         )
         var showDetail = (
             <div>
                 <div>
                     <h1>{ this.state.name}</h1>
-                    <Table><tbody>
+                    <table><tbody>
                         <tr>
-                            <td width="128"><img src={this.state.avatar} width="128" height="128"/></td>
+                            <td width="132"><img src={this.state.avatar} alt={this.state.name+' avatar'} width="128" height="128"/></td>
                             <td>
                             {<StarRatingComponent
                                                 name="star"
-                                                editing = {false}
+                                                editing={false}
                                                 starColor="#ffb400"
                                                 emptyStarColor="#ffb400"
                                                 value={parseFloat(this.state.rating)}
                                                 renderStarIcon={(index, value) => {
-                                                    return <span className={index <= value ? 'fa fa-star' : (index == value+0.5 ?'fa fa-star-half-full' : 'fa fa-star-o')} />;
+                                                    return <span className={index <= value ? 'fa fa-star' : (index === value+0.5 ?'fa fa-star-half-full' : 'fa fa-star-o')} />;
                                                     }
                                                 }
                             />}
-                            <br></br>{this.state.numReview ? this.state.numReview : '0'} reviews
-                            <br></br>{this.state.location}
-                            <br></br>Categories: {this.state.categories ? this.state.categories : 'none'}
-                            <br></br>Phone: {this.state.phone ? this.state.phone : 'unknown'}
-                            <br></br>Price: {(this.state.price === '') ? 'unknown' : this.state.price}
+                            <br/>{this.state.numReview ? this.state.numReview : '0'} review{this.state.numReview && Math.round(parseFloat(this.state.numReview)) === 1 ? '' : 's'}
+                            <br/>{this.state.location}
+                            <br/>Categories: {renderList(this.state.categories, ', ')}
+                            <br/>Phone: {this.state.phone ? this.state.phone : 'unknown'}
+                            <br/>Price: {this.state.price ? this.state.price : 'unknown'}
                             </td>
                         </tr>
-                    </tbody></Table>
+                    </tbody></table>
+                    <hr/>
                 </div>
                 <div>
                     { this.state.images.map((image, index) =>(
                             <a key={index} target="_blank" href={image}>
-                                <img src={image} width="220" height="160" />
+                                <Image className="review-photo" src={image} thumbnail/>
                             </a>
                         )
                     )}
                 </div>
                 <div>
-                    <br></br>
                     {this.showImageUploading()}
                     {this.showWriteReview()}
                 </div>
@@ -299,56 +302,59 @@ class RestaurantDetail extends Component{
         )
         var showReview = (
             <div>
-                <Table striped condensed hover responsive>
-                    <thead>
-                    <tr>
-                        <th>Author</th>
-                        <th>Rating</th>
-                        <th>Review</th>
-                        <th>Edit Button</th>
-                        <th>Flag Button</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        this.state.reviews.map((review, index) =>(
-                            <tr key={index}>
-                                <td>
-                                    { review.author }
-                                </td>
+                <Table className='rtable' filterable={['author', 'rating', 'review']} itemsPerPage={30} pageButtonLimit={15} previousPageLabel="Previous " nextPageLabel=" Next" filterPlaceholder="Filter by author, rating, or review text">
+                    <Thead>
+                        <Th column='author'>Author</Th>
+                        <Th column='rating'>Rating</Th>
+                        <Th column='review'>Review</Th>
+                        <Th column='buttons'> </Th>
+                    </Thead>
+                    { this.state.reviews.map((review, index) =>(
+                            <Tr key={index}>
+                                <Td height='100%' column='author' value={review.author} data={
+                                    <table height='100%' width='200px'><tbody>
+                                        <tr><td>{review.author}</td></tr>
+                                        <tr height='100%'/>
+                                    </tbody></table>
+                                }/>
 
-                                <td>
-                                    <StarRatingComponent
-                                        name="star"
-                                        editing={false}
-                                        starColor="#ffb400"
-                                        emptyStarColor="#ffb400"
-                                        value={parseFloat(review.rating)}
-                                        renderStarIcon={(index, value) => {
-                                            return <span className={index <= value ? 'fa fa-star' : (index === value+0.5 ?'fa fa-star-half-full' : 'fa fa-star-o')} />;
-                                            }
-                                        }
-                                    />
-                                </td>
+                                <Td column='rating' value={parseFloat(review.rating)} data={
+                                    <table height='100%' width='90px'><tbody>
+                                        <tr><td>
+                                            <StarRatingComponent
+                                                name="star"
+                                                editing={false}
+                                                starColor="#ffb400"
+                                                emptyStarColor="#ffb400"
+                                                value={parseFloat(review.rating)}
+                                                renderStarIcon={(index, value) => {
+                                                    return <span className={index <= value ? 'fa fa-star' : (index === value+0.5 ?'fa fa-star-half-full' : 'fa fa-star-o')} />;
+                                                    }
+                                                }
+                                            />
+                                        </td></tr>
+                                        <tr height='100%'/>
+                                    </tbody></table>
+                                }/>
 
-                                <td>
-                                    { review.text }
-                                </td>
+                                <Td column='review' width='100%' value={review.text} data={
+                                    <table height='100%'><tbody>
+                                        <tr><td>{review.text}</td></tr>
+                                        <tr><td>{this.showReviewImages(review, index)}</td></tr>
+                                        <tr height='100%'/>
+                                    </tbody></table>
+                                }/>
 
-                                <td>
-                                    {this.showEditButton(review, index)}
-                                </td>
-
-                                <td>
-                                    {this.showFlagButton(review, index)}
-                                </td>
-                                <td>
-                                    {this.showReviewImages(review, index)}
-                                </td>
-                            </tr>
+                                <Td column='buttons' data={
+                                    <table height='100%'><tbody><tr>
+                                        <td>{this.showEditButton(review, index)}</td>
+                                        <td>{this.showFlagButton(review, index)}</td>
+                                    </tr>
+                                    <tr height='100%'/></tbody></table>
+                                }/>
+                            </Tr>
                         ))
                     }
-                    </tbody>
                 </Table>
             </div>
         )
