@@ -195,17 +195,17 @@ class RestaurantDetail extends Component{
     }
     showWriteReview(){
         if(firebase.auth().currentUser&&!this.state.hasReviewed){
-            return <Button type="button"><Link to={'/reviews/new/'+this.state.snapshotKey}>Write a review</Link></Button>
+            return <Link to={'/reviews/new/'+this.state.snapshotKey}><Button type="button">Write a review</Button></Link>
         }
     }
     showEditButton(review, index){
         if(firebase.auth().currentUser&&(this.state.hasReviewed && review.author === this.state.userReview.author)){
-            return <Button type="button"><Link to={'/reviews/edit/'+this.state.reviewKeys[index]}>Edit</Link></Button>
+            return <Link to={'/reviews/edit/'+this.state.reviewKeys[index]}><Button type="button">Edit</Button></Link>
         }
     }
     showFlagButton(review, index){
         if(firebase.auth().currentUser&&(!this.state.hasReviewed||review.author !== this.state.userReview.author)){
-            return <Button type="button"><Link to={'/reviews/new_review_flag/'+this.state.reviewKeys[index]}>Flag this review</Link></Button>
+            return <Link to={'/reviews/new_review_flag/'+this.state.reviewKeys[index]}><Button type="button">Flag this review</Button></Link>
         }
     }
     showImageUploading(){
