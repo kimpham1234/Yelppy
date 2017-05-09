@@ -83,7 +83,7 @@ class Restaurants extends Component{
     render(){
 		return(
 			<div>
-				<Button><Link to='restaurants/new'>Create a new restaurant</Link></Button>
+				<Link to='restaurants/new'><Button>Create a new restaurant</Button></Link>
 				<p className="App-intro"><strong>List of restaurants</strong></p>
 				<Table className="rtable" id="table" sortable={true} defaultSort={{column:"rating", direction:"desc"}} itemsPerPage={this.props.idArray ? 3 : 20} pageButtonLimit={15} previousPageLabel="Previous " nextPageLabel=" Next" filterable={['info']} filterPlaceholder="Filter by name or category">
 					<Thead>
@@ -99,8 +99,7 @@ class Restaurants extends Component{
                             <Td column="info" value={restaurant.name+' '+renderList(restaurant.categories, ' ')} width='100%' data={
                                 <table height='100%'><tbody>
                                     <tr><td><Link to={'/restaurants/'+restaurant.id}>{restaurant.name}</Link></td></tr>
-                                    <tr><td>{restaurant.location.display_address[0]}</td></tr>
-                                    <tr><td>{restaurant.location.display_address[1]}</td></tr>
+                                    {restaurant.location.display_address.map((line, index) => (<tr><td>{line}</td></tr>))}
                                     <tr><td>Phone: {restaurant.phone ? restaurant.phone : "not available"}</td></tr>
                                     <tr><td>Price: {restaurant.price ? restaurant.price : "not available"}</td></tr>
                                     <tr><td>
