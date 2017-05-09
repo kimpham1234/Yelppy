@@ -104,7 +104,7 @@ export default class SearchResults extends Component{
                 tempID = results[i].place_id;
                 idArr.push(tempID);
                 //console.log("tempID after assignment" + tempID);
-                console.log("tempID in if statement: " + tempID);
+                //console.log("tempID in if statement: " + tempID);
                 that.businessRef.orderByChild('id').equalTo(tempID).on('value', function (snapshot) {
                     console.log("tempID in query callback: " + tempID);
                     // We don't have this entry in our db, so lets insert it
@@ -229,7 +229,7 @@ export default class SearchResults extends Component{
                         <div style={{ height: "100%", width: "100%" }} />
                     }
                     mapElement={
-                        <div id="map" className="map-element" style={{ height: "700px", width: "600px" }} />
+                        <div id="map" className="map-element" style={{ height: "800px", width: "600px" }} />
                     }
                     centerLocation={this.state.center}
                     onMapMounted={this.handleMapLoaded}

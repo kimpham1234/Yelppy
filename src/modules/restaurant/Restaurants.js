@@ -8,22 +8,49 @@ import { Table, Thead, Th, Tr, Td } from 'reactable';
 class Restaurants extends Component{
 
 
-	constructor(){
-		super();
+	constructor(props){
+		super(props);
 		this.state = {restaurants:[]};
 	}
+
+    componentWillReceiveProps(nextProps){
+        this.restaurantListRef = firebase.database().ref('business');
+		let that = this;
+		let list = [];
+
+		this.setState({restaurants:[]}, function(){
+            //listen for the value of restaurant once when first load
+            this.restaurantListRef.once('value', function(snapshot) {
+                snapshot.forEach(function(childSnapshot) {
+                    //console.log(that.props);
+                    //that.state.restaurants.push(childSnapshot.val());
+                    //that.setState({restaurants: that.state.restaurants})
+                    if( nextProps.idArray ){
+                        if( nextProps.idArray.indexOf(childSnapshot.val().id) !== -1 ){
+                            list.push(childSnapshot.val())
+                        }
+                    }else{
+                        list.push(childSnapshot.val());
+                    }
+
+                });
+                that.setState({restaurants: list});
+            });
+		})
+
+    }
 
 	componentWillMount(){
 		this.restaurantListRef = firebase.database().ref('business');
 		var that = this;
-		console.log(this);
+		//console.log(this);
 
 		var list = [];
 
 		//listen for the value of restaurant once when first load
 		this.restaurantListRef.once('value', function(snapshot) {
 		  snapshot.forEach(function(childSnapshot) {
-		  	console.log(that.props);
+		  	//console.log(that.props);
 		    //that.state.restaurants.push(childSnapshot.val());
 		    //that.setState({restaurants: that.state.restaurants})
 			if( that.props.idArray ){
@@ -55,7 +82,7 @@ class Restaurants extends Component{
 			<div>
 				<Button><Link to='restaurants/new'>Create a new restaurant</Link></Button>
 				<p className="App-intro"><strong>List of restaurants</strong></p>
-				<Table className="rtable" id="table" sortable={true} defaultSort={{column:"rating", direction:"desc"}} itemsPerPage={20} pageButtonLimit={15} previousPageLabel="Previous " nextPageLabel=" Next" filterable={['info']} filterPlaceholder="Filter by name or category">
+				<Table className="rtable" id="table" sortable={true} defaultSort={{column:"rating", direction:"desc"}} itemsPerPage={this.props.idArray ? 3 : 20} pageButtonLimit={15} previousPageLabel="Previous " nextPageLabel=" Next" filterable={['info']} filterPlaceholder="Filter by name or category">
 					<Thead>
                         <Th column="avatar">Avatar</Th>
                         <Th column="info">Info</Th>
