@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
-import { Link, Router } from 'react-router'
-import { ListGroupItem, ListGroup, Table, Well } from 'react-bootstrap';
+import { Link } from 'react-router'
+import { ListGroupItem, ListGroup } from 'react-bootstrap';
 import ResetPassword from './ResetPassword.js';
 const picURL = "https://firebasestorage.googleapis.com/v0/b/yelppy-80fb2.appspot.com/o/images%2FDefault%2FnoPictureYet.png?alt=media&token=d07db72a-0963-488e-b228-9ab020bd0d41";
 export default class Profile extends Component {
@@ -15,7 +15,6 @@ export default class Profile extends Component {
 		this.userRef=firebase.database().ref('users');
 		var that=this;
 		var tempReviewed = "";
-		var that = this;
 		this.userRef.orderByChild('email').equalTo(userEmail).on('child_added', function(snapshot){
 			that.setState({
 				profile: snapshot.val(),
@@ -63,7 +62,7 @@ export default class Profile extends Component {
                     // Upload completed successfully, now we can get the download URL
                     var downloadURL = uploadTask.snapshot.downloadURL;
                     var images_temp_list = that.state.images;
-                    if(images_temp_list[0]==picURL)
+                    if(images_temp_list[0]===picURL)
                         images_temp_list[0] = downloadURL;
                     else images_temp_list.push(downloadURL);
                     that.setState({images: images_temp_list});
