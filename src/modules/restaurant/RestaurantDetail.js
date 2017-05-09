@@ -266,7 +266,7 @@ class RestaurantDetail extends Component{
                     <table><tbody>
                         <tr>
                             <td width="132"><img src={this.state.avatar} alt={this.state.name+' avatar'} width="128" height="128"/></td>
-                            <td>
+                            <td width='100%'>
                             {<StarRatingComponent
                                                 name="star"
                                                 editing={false}
@@ -284,7 +284,7 @@ class RestaurantDetail extends Component{
                             <br/>Phone: {this.state.phone ? this.state.phone : 'unknown'}
                             <br/>Price: {this.state.price ? this.state.price : 'unknown'}
                             </td>
-                            <td><img src={mapString} style={{"padding-left": "200px", "position": "relative", "top": "-10px"}}/></td>
+                            <td><img src={mapString} style={{"position": "relative", "top": "-10px"}} alt={this.state.name+' map'}/></td>
                         </tr>
                     </tbody></table>
                     <hr/>
@@ -303,7 +303,7 @@ class RestaurantDetail extends Component{
                 </div>
             </div>
         )
-        var showReview = (
+        var showReview = this.state.reviews.length ? (
             <div>
                 <Table className='rtable' filterable={['author', 'rating', 'review']} itemsPerPage={30} pageButtonLimit={15} previousPageLabel="Previous " nextPageLabel=" Next" filterPlaceholder="Filter by author, rating, or review text">
                     <Thead>
@@ -360,7 +360,7 @@ class RestaurantDetail extends Component{
                     }
                 </Table>
             </div>
-        )
+        ) : 'No reviews yet.';
         return (
             <div>
                 {showDetail}
