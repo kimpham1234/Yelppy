@@ -256,7 +256,9 @@ class RestaurantDetail extends Component{
                     </ListGroup>
                 )}
             </div>
-        )
+        );
+        let mapString = "https://maps.googleapis.com/maps/api/staticmap?center=" + this.state.coordinates.latitude + ',' + this.state.coordinates.longitude +
+            "&zoom=12&size=150x150&markers=" + this.state.coordinates.latitude + ',' + this.state.coordinates.longitude;
         var showDetail = (
             <div>
                 <div>
@@ -282,6 +284,7 @@ class RestaurantDetail extends Component{
                             <br/>Phone: {this.state.phone ? this.state.phone : 'unknown'}
                             <br/>Price: {this.state.price ? this.state.price : 'unknown'}
                             </td>
+                            <td><img src={mapString} style={{"padding-left": "200px", "position": "relative", "top": "-10px"}}/></td>
                         </tr>
                     </tbody></table>
                     <hr/>
