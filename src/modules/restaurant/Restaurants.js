@@ -17,26 +17,27 @@ class Restaurants extends Component{
         this.restaurantListRef = firebase.database().ref('business');
 		let that = this;
 		let list = [];
-
-		this.setState({restaurants:[]}, function(){
-            //listen for the value of restaurant once when first load
-            this.restaurantListRef.once('value', function(snapshot) {
-                snapshot.forEach(function(childSnapshot) {
-                    //console.log(that.props);
-                    //that.state.restaurants.push(childSnapshot.val());
-                    //that.setState({restaurants: that.state.restaurants})
-                    if( nextProps.idArray ){
-                        if( nextProps.idArray.indexOf(childSnapshot.val().id) !== -1 ){
-                            list.push(childSnapshot.val())
+		if( this.props != nextProps ) {
+            this.setState({restaurants: []}, function () {
+                //listen for the value of restaurant once when first load
+                this.restaurantListRef.once('value', function (snapshot) {
+                    snapshot.forEach(function (childSnapshot) {
+                        //console.log(that.props);
+                        //that.state.restaurants.push(childSnapshot.val());
+                        //that.setState({restaurants: that.state.restaurants})
+                        if (nextProps.idArray) {
+                            if (nextProps.idArray.indexOf(childSnapshot.val().id) !== -1) {
+                                list.push(childSnapshot.val())
+                            }
+                        } else {
+                            list.push(childSnapshot.val());
                         }
-                    }else{
-                        list.push(childSnapshot.val());
-                    }
 
+                    });
+                    that.setState({restaurants: list});
                 });
-                that.setState({restaurants: list});
             });
-		})
+        }
 
     }
 
@@ -136,7 +137,7 @@ export function renderList(input, spacing) {
     if (!input) {
         return 'none';
     } else if (typeof(input) === 'string') {
-        return input;
+        return input.split('_').join(' ');
     } else {
         var text = '';
         for (var index = 0; index < input.length; index ++)

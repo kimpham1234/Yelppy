@@ -98,7 +98,7 @@ export default class SearchResults extends Component{
                 //console.log(results[i]);
                 let tempID = "";
                 let newBusiness = "";
-                let restaurantThumbnail = results[i].photos[0].getUrl({maxWidth: 50});
+                let restaurantThumbnail = results[i].photos ? results[i].photos[0].getUrl({maxWidth: 50}) : '';
 
                 let that = this;
                 tempID = results[i].place_id;
@@ -106,7 +106,7 @@ export default class SearchResults extends Component{
                 //console.log("tempID after assignment" + tempID);
                 //console.log("tempID in if statement: " + tempID);
                 that.businessRef.orderByChild('id').equalTo(tempID).on('value', function (snapshot) {
-                    console.log("tempID in query callback: " + tempID);
+                    //console.log("tempID in query callback: " + tempID);
                     // We don't have this entry in our db, so lets insert it
                     if (snapshot.val() == null) {
                         // First we need to hit google for the details
@@ -117,7 +117,7 @@ export default class SearchResults extends Component{
                                 let placeArr = place.formatted_address.split(',');
                                 newBusiness = that.businessRef.push();
                                 newBusiness.set({
-                                    avatar: place.photos[0].getUrl({maxWidth: 700}),
+                                    avatar: place.photos ? place.photos[0].getUrl({maxWidth: 700}) : '',
                                     categories: place.types,
                                     id: place.place_id,
                                     coordinates: {
@@ -220,6 +220,10 @@ export default class SearchResults extends Component{
 
     }
 
+    onMarkerClose(marker){
+
+    }
+
     render(){
 
         return(
@@ -239,6 +243,7 @@ export default class SearchResults extends Component{
                     bounds={this.state.bounds}
                     markers={this.state.markers}
                     onMarkerRightClick={_.noop}
+                    onMarkerClose={this.onMarkerClose}
                     onMarkerClick={this.onMarkerClick}
                 />
                 <Restaurants idArray={this.state.idArr} ></Restaurants>
